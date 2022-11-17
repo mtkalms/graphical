@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "graphical"
+version = "0.1.0"
+description = ""
+authors = ["Matthias Kalms <mtkalms@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+pytest = "^7.2.0"
+rich = "^12.6.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
