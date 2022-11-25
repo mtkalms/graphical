@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Union, List
+from typing import Union, List, Optional, Tuple
 
 from rich.color import Color
 from rich.console import ConsoleOptions, RenderResult, Console
@@ -19,7 +19,33 @@ class SparklineStyle(Enum):
         return obj
 
     def __init__(self, chars: List[str]):
-        self.chars = chars
+        self.chars: List[str] = chars
+        self.last: int = len(self.chars) - 1
+
+
+class SparklineRenderer:
+
+    @staticmethod
+    def render(
+        values: List[float],
+        value_range: Optional[Tuple[float, float]] = None,
+        graph_style: SparklineStyle = SparklineStyle.AREA
+    ) -> str:
+        if value_range:
+            lower, upper = value_range
+        else:
+            lower, upper = min(values), max(values)
+        steps = (upper - lower) / graph_style.last
+        graph = ""
+        for value in values:
+            if value > upper:
+                idx = graph_style.last
+            elif value < lower:
+                idx = 0
+            else:
+                idx = int((value - lower) / steps)
+            graph += graph_style.chars[idx]
+        return graph
 
 
 class Sparkline:
@@ -27,21 +53,18 @@ class Sparkline:
     def __init__(
         self,
         values: List[float],
+        value_range: Optional[Tuple[float, float]] = None,
         color: Union[Color, str] = "default",
         bgcolor: Union[Color, str] = "default",
         graph_style: SparklineStyle = SparklineStyle.AREA
     ):
-        self.style = Style(color=color, bgcolor=bgcolor)
         self.values = values
-        self.chars = graph_style.chars
+        self.value_range = value_range
+        self.style = Style(color=color, bgcolor=bgcolor)
+        self.graph_style = graph_style
 
     def __rich_console__(self, console: Console, options: ConsoleOptions) -> RenderResult:
-        lower, upper = min(self.values), max(self.values)
-        steps = (upper - lower) / (len(self.chars) - 1)
-        graph = ""
-        for value in self.values:
-            idx = int((value - lower) // steps)
-            graph += self.chars[idx]
+        graph = SparklineRenderer.render(self.values, self.value_range, self.graph_style)
         yield Segment(graph, self.style)
         yield Segment("\n")
 
@@ -65,6 +88,6 @@ if __name__ == '__main__':
         print()
 
         data = [sin(2 * pi * d / 10) for d in range(100)]
-        line = Sparkline(data, color="purple", graph_style=style)
+        line = Sparkline(data, value_range=(0, 2), color="purple", graph_style=style)
         print(line)
         print()
