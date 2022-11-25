@@ -13,8 +13,8 @@ Coming soon ...
 - [termgraph][termgraph]: bar and calendar graphs
 - [termcharts][termcharts]: bar, pie and doughnut charts made for Rich
 - [plotext][plotext]: plots and images with rich integration
-- [plotille][plotille]: plots, histograms and images rich
-- [termplot][termplot]: simple plots that can be used in rich
+- [plotille][plotille]: plots, histograms and images
+- [termplot][termplot]: simple plots that can be used in Rich
 - [terminalplot][terminalplot]: minimalistic plots
 - [drawille][drawille]: drawing in Braille characters
 - [gantt][gantt]: gantt charts
