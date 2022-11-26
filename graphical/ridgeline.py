@@ -92,7 +92,10 @@ class RidgelineGraph:
             yield Segment("\n")
 
     def __rich_measure__(self, console: Console, options: ConsoleOptions) -> Measurement:
-        pass
+        width_labels = max(len(d.label) for d in self.rows) + 1
+        width_graphs = max(len(d.values) for d in self.rows) + 2
+        width = width_labels + width_graphs
+        return Measurement(width, width)
 
 
 if __name__ == '__main__':
