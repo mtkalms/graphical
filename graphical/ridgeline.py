@@ -27,7 +27,8 @@ class RidgelineGraph:
         value_range: Optional[Tuple[int, int]] = None,
         color: Union[Color, str] = "default",
         graph_style: SparklineStyle = SparklineStyle.AREA,
-        box: Optional[Box] = HEAVY
+        box: Optional[Box] = HEAVY,
+        ticks: Optional[Tuple[float, float]] = None
     ):
         self.title = title
         self.value_range = value_range
@@ -35,6 +36,7 @@ class RidgelineGraph:
         self.graph_style = graph_style
         self.box = box
         self.rows: List[RidgelineRow] = []
+        self.ticks = ticks
 
     def add_row(
         self,
@@ -83,6 +85,12 @@ class RidgelineGraph:
         yield Segment(self.box.bottom_right)
         yield Segment("\n")
 
+        if self.ticks:
+            yield Segment(" " * (width_labels + 1))
+            yield Segment(f"{self.ticks[0] : <{width_graphs // 2}}")
+            yield Segment(f"{self.ticks[1] : >{width_graphs - width_graphs // 2}}")
+            yield Segment("\n")
+
     def __rich_measure__(self, console: Console, options: ConsoleOptions) -> Measurement:
         pass
 
@@ -95,10 +103,19 @@ if __name__ == '__main__':
     def wave(r: int) -> int:
         return int(sin((r + randint(0, 3)) * 2 * pi / 25) * 40 - 50)
 
-    graph = RidgelineGraph("Ridgeline Graph Example", color="purple")
-    for b in range(12):
-        data = [wave(d) for d in range(100)]
-        graph.add_row(f"row {b}", data)
+    for style in SparklineStyle:
+        print(style.name)
+        print()
 
-    print()
-    print(graph)
+        graph = RidgelineGraph(
+            title="Ridgeline Graph Example",
+            color="purple",
+            graph_style=style,
+            ticks=(0, 100)
+        )
+        for b in range(12):
+            data = [wave(d) for d in range(100)]
+            graph.add_row(f"row {b}", data)
+
+        print(graph)
+        print()
