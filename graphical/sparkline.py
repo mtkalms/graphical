@@ -75,6 +75,7 @@ class Sparkline:
 
 if __name__ == '__main__':
     from rich import print
+    from rich.table import Table
     from random import randint
     from math import sin, pi
 
@@ -91,3 +92,15 @@ if __name__ == '__main__':
         line = Sparkline(data, value_range=(0, 2), color="purple", graph_style=style)
         print(line)
         print()
+
+        data = [sin(2 * pi * d / 10) for d in range(20)]
+        line = Sparkline(data, color="purple", graph_style=style)
+
+        table = Table(
+            title="Sparkline Table Example",
+            show_header=False
+        )
+        table.add_row("row 0", line)
+        table.add_row("row 1", line)
+        table.add_row("row 2", line)
+        print(table)
