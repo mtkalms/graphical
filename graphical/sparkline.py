@@ -33,12 +33,14 @@ class Sparkline:
         value_range: Optional[Tuple[float, float]] = None,
         color: Union[Color, str] = "default",
         bgcolor: Union[Color, str] = "default",
-        plot_style: OneLinePlotStyle = OneLinePlotStyle.AREA
+        plot_style: OneLinePlotStyle = OneLinePlotStyle.AREA,
+        end: str = "\n"
     ):
         self.values = values
         self.value_range = value_range
         self.style = Style(color=color, bgcolor=bgcolor)
         self.plot_style = plot_style
+        self.end = end
 
     def __rich_console__(self, console: Console, options: ConsoleOptions) -> RenderResult:
         value_range = self.value_range or (min(self.values), max(self.values))
@@ -72,7 +74,7 @@ class Sparkline:
                     cell_style=cell_style
                 )
             yield Segment(cells, self.style)
-        yield Segment("\n")
+        yield Segment(self.end)
 
     def __rich_measure__(self, console: Console, options: ConsoleOptions) -> Measurement:
         width = len(self.values)

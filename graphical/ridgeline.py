@@ -9,7 +9,7 @@ from rich.segment import Segment
 from rich.style import Style
 
 from graphical.cell import PlotCellRenderer
-from graphical.sparkline import OneLinePlotStyle
+from graphical.sparkline import OneLinePlotStyle, Sparkline
 
 
 @dataclass
@@ -73,20 +73,20 @@ class RidgelineGraph:
         yield Segment("\n")
 
         for row in self.rows:
-            style = Style(color=row.color) if row.color != "default" else self.style
+            row_style = Style(color=row.color) if row.color != "default" else self.style
 
             yield Segment(f"{row.label : >{width_labels - 1 }} ")
             yield Segment(self.box.row_right)
 
             plot_style = row.plot_style if row.plot_style else self.plot_style
-            cells = ""
-            for value in row.values:
-                cells += PlotCellRenderer.render(
-                    value=value,
-                    value_range=value_range,
-                    cell_style=plot_style.cell_style
-                )
-            yield Segment(cells, style)
+            yield Sparkline(
+                values=row.values,
+                value_range=value_range,
+                color=row_style.color or "default",
+                bgcolor=row_style.bgcolor or "default",
+                plot_style=plot_style,
+                end=""
+            )
             yield Segment(self.box.mid_right)
             yield Segment("\n")
 
