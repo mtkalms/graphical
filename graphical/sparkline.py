@@ -1,7 +1,7 @@
 from enum import Enum
 from typing import Union, List, Optional, Tuple
 
-from rich.color import Color
+from rich.color import Color, blend_rgb
 from rich.console import ConsoleOptions, RenderResult, Console
 from rich.measure import Measurement
 from rich.segment import Segment
@@ -13,6 +13,7 @@ from graphical.cell import PlotCellStyle, PlotCellRenderer
 class OneLinePlotStyle(Enum):
     LINE = PlotCellStyle.LINE
     AREA = PlotCellStyle.AREA
+    HORIZON = PlotCellStyle.AREA
 
     def __new__(cls, *args, **kwargs):
         value = len(cls.__members__) + 1
@@ -35,19 +36,42 @@ class Sparkline:
         plot_style: OneLinePlotStyle = OneLinePlotStyle.AREA
     ):
         self.values = values
-        self.value_range = value_range if value_range else (min(values), max(values))
+        self.value_range = value_range
         self.style = Style(color=color, bgcolor=bgcolor)
         self.plot_style = plot_style
 
     def __rich_console__(self, console: Console, options: ConsoleOptions) -> RenderResult:
-        cells = ""
-        for value in self.values:
-            cells += PlotCellRenderer.render(
-                value=value,
-                value_range=self.value_range,
-                cell_style=self.plot_style.cell_style
+        value_range = self.value_range or (min(self.values), max(self.values))
+        cell_style = self.plot_style.cell_style
+
+        if self.plot_style == OneLinePlotStyle.HORIZON:
+            lower, upper = value_range
+            mid = lower + (upper - lower) / 2
+            mid_shade = Color.from_triplet(
+                blend_rgb(
+                    self.style.bgcolor.get_truecolor(),
+                    self.style.color.get_truecolor(),
+                    0.5
+                )
             )
-        yield Segment(cells, self.style)
+            lower_style = Style(bgcolor=self.style.bgcolor, color=mid_shade)
+            upper_style = Style(bgcolor=mid_shade, color=self.style.color)
+            for value in self.values:
+                cell = PlotCellRenderer.render(
+                    value=value,
+                    value_range=(lower, mid) if value < mid else (mid, upper),
+                    cell_style=cell_style
+                )
+                yield Segment(cell, style=lower_style if value < mid else upper_style)
+        else:
+            cells = ""
+            for value in self.values:
+                cells += PlotCellRenderer.render(
+                    value=value,
+                    value_range=value_range,
+                    cell_style=cell_style
+                )
+            yield Segment(cells, self.style)
         yield Segment("\n")
 
     def __rich_measure__(self, console: Console, options: ConsoleOptions) -> Measurement:
@@ -66,7 +90,7 @@ if __name__ == '__main__':
         print()
 
         data = [randint(0, 100) for d in range(100)]
-        line = Sparkline(data, color="blue", plot_style=style)
+        line = Sparkline(data, color="cyan", plot_style=style)
         print(line)
         print()
 
