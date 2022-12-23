@@ -8,8 +8,7 @@ from rich.measure import Measurement
 from rich.segment import Segment
 from rich.style import Style
 
-from graphical.cell import PlotCellRenderer
-from graphical.sparkline import OneLinePlotStyle, Sparkline
+from .sparkline import OneLinePlotStyle, Sparkline
 
 
 @dataclass
