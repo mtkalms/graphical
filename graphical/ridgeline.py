@@ -8,7 +8,8 @@ from rich.measure import Measurement
 from rich.segment import Segment
 from rich.style import Style
 
-from graphical.sparkline import SparklineStyle, SparklineRenderer
+from graphical.cell import PlotCellRenderer
+from graphical.sparkline import OneLinePlotStyle
 
 
 @dataclass
@@ -16,7 +17,10 @@ class RidgelineRow:
     label: str
     values: List[float]
     color: Union[Color, str] = "default"
-    graph_style: Optional[SparklineStyle] = None
+    plot_style: Optional[OneLinePlotStyle] = None
+
+    def value_range(self):
+        return min(self.values), max(self.values)
 
 
 class RidgelineGraph:
@@ -26,14 +30,14 @@ class RidgelineGraph:
         title: str,
         value_range: Optional[Tuple[int, int]] = None,
         color: Union[Color, str] = "default",
-        graph_style: SparklineStyle = SparklineStyle.AREA,
+        plot_style: OneLinePlotStyle = OneLinePlotStyle.AREA,
         box: Optional[Box] = HEAVY,
         ticks: Optional[Tuple[float, float]] = None
     ):
         self.title = title
         self.value_range = value_range
         self.style = Style(color=color)
-        self.graph_style = graph_style
+        self.plot_style = plot_style
         self.box = box
         self.rows: List[RidgelineRow] = []
         self.ticks = ticks
@@ -43,15 +47,20 @@ class RidgelineGraph:
         label: str,
         values: List[float],
         color: Union[Color, str] = "default",
-        graph_style: Optional[SparklineStyle] = None
+        plot_style: Optional[OneLinePlotStyle] = None
     ) -> RidgelineRow:
-        row = RidgelineRow(label, values, color, graph_style)
+        row = RidgelineRow(label, values, color, plot_style)
         self.rows.append(row)
         return row
 
     def __rich_console__(self, console: Console, options: ConsoleOptions) -> RenderResult:
         width_labels = max(len(d.label) for d in self.rows) + 1
         width_graphs = max(len(d.values) for d in self.rows)
+        if self.value_range:
+            value_range = self.value_range
+        else:
+            row_min, row_max = zip(*[row.value_range() for row in self.rows])
+            value_range = min(row_min), max(row_max)
 
         yield Segment(" " * width_labels)
         yield Segment(f"{self.title : ^{width_graphs + 2}}")
@@ -69,13 +78,15 @@ class RidgelineGraph:
             yield Segment(f"{row.label : >{width_labels - 1 }} ")
             yield Segment(self.box.row_right)
 
-            graph_style = row.graph_style if row.graph_style else self.graph_style
-            graph = SparklineRenderer.render(
-                row.values,
-                value_range=self.value_range,
-                graph_style=graph_style
-            )
-            yield Segment(graph, style)
+            plot_style = row.plot_style if row.plot_style else self.plot_style
+            cells = ""
+            for value in row.values:
+                cells += PlotCellRenderer.render(
+                    value=value,
+                    value_range=value_range,
+                    cell_style=plot_style.cell_style
+                )
+            yield Segment(cells, style)
             yield Segment(self.box.mid_right)
             yield Segment("\n")
 
@@ -106,14 +117,14 @@ if __name__ == '__main__':
     def wave(r: int) -> int:
         return int(sin((r + randint(0, 3)) * 2 * pi / 25) * 40 - 50)
 
-    for style in SparklineStyle:
+    for style in OneLinePlotStyle:
         print(style.name)
         print()
 
         graph = RidgelineGraph(
             title="Ridgeline Graph Example",
             color="purple",
-            graph_style=style,
+            plot_style=style,
             ticks=(0, 100)
         )
         for b in range(12):
