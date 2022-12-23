@@ -118,11 +118,8 @@ if __name__ == '__main__':
         return int(sin((r + randint(0, 3)) * 2 * pi / 25) * 40 - 50)
 
     for style in OneLinePlotStyle:
-        print(style.name)
-        print()
-
         graph = RidgelineGraph(
-            title="Ridgeline Graph Example",
+            title=f"Ridgeline Graph Example ({style.name})",
             color="purple",
             plot_style=style,
             ticks=(0, 100)

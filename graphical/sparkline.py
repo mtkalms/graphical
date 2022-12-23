@@ -88,7 +88,7 @@ if __name__ == '__main__':
     from math import sin, pi
 
     for style in OneLinePlotStyle:
-        print(style.name)
+        print(f"Sparkline Examples ({style.name})")
         print()
 
         data = [randint(0, 100) for d in range(100)]
@@ -101,11 +101,12 @@ if __name__ == '__main__':
         print(line)
         print()
 
-        data = [sin(2 * pi * d / 10) for d in range(20)]
+    for style in OneLinePlotStyle:
+        data = [sin(2 * pi * d / 10) for d in range(50)]
         line = Sparkline(data, color="purple", plot_style=style)
 
         table = Table(
-            title="Sparkline Table Example",
+            title=f"Sparkline Table Example ({style.name})",
             show_header=False
         )
         table.add_row("row 0", line)
