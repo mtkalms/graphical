@@ -10,7 +10,13 @@ Graphical is a Python library that adds graphs and visuals to [Rich][rich] and [
 
 ### Ridgeline
 
-![Sparkline Table Example](img/ridgeline.svg)
+![Ridgeline Example](img/ridgeline.svg)
+
+<details>
+  <summary>Variations</summary>
+
+  ![Ridgeline Variations Example](img/ridgeline-variations.svg)
+</details>
 
 ## Similar Projects
 
@@ -58,7 +64,6 @@ This is a list of textual sketches of different graph types that are also candid
 #### Contour Plot
 
 ![](img/contourplot.png)
-
 
 ### Complex Graphs
 

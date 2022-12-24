@@ -26,7 +26,7 @@ THEME = TerminalTheme(
 )
 
 
-def wave(num: int, offset: int, seed: int = 0) -> List[float]:
+def wave(num: int, offset: int, seed: int = 0, scale: float = 1.0) -> List[float]:
     result = [sin(2 * pi * (d + offset) / 10) for d in range(num)]
     if seed > 0:  # overlay second wave
         result = [val * sin(2 * pi * d / (40 + seed * 5)) for d, val in enumerate(result)]
@@ -56,6 +56,20 @@ if __name__ == '__main__':
 
     console = Console(record=True, width=WIDTH)
     console.print()
+    graph = RidgelineGraph(
+        title="",
+        color="purple",
+        plot_style=OneLinePlotStyle.AREA
+    )
+    for idx in range(12):
+        data = wave(76, idx, idx, 0.8)
+        graph.add_row(label=calendar.month_abbr[idx + 1], values=data)
+    console.print(graph, justify="center")
+    console.print()
+    console.save_svg("ridgeline.svg", title="Ridgeline Example", theme=THEME)
+
+    console = Console(record=True, width=WIDTH)
+    console.print()
     for style in OneLinePlotStyle:
         graph = RidgelineGraph(
             title=style.name,
@@ -67,4 +81,4 @@ if __name__ == '__main__':
             graph.add_row(label=calendar.month_abbr[idx + 1], values=data)
         console.print(graph, justify="center")
         console.print()
-    console.save_svg("ridgeline.svg", title="Ridgeline Example", theme=THEME)
+    console.save_svg("ridgeline-variations.svg", title="Ridgeline Style Examples", theme=THEME)
