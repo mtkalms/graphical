@@ -41,11 +41,11 @@ This is a list of textual sketches of different graph types that are also candid
 
 ![](img/boxplot.png)
 
-#### Candlestick Chart
+#### Gantt Chart
 
 ![](img/ganttchart.png)
 
-#### Gantt Chart
+#### Candlestick Chart
 
 ![](img/candlestickchart.png)
 
