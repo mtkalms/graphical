@@ -4,7 +4,9 @@ Graphical is a Python library that adds graphs and visuals to [Rich][rich] and [
 
 ## Graphical Library
 
-Coming soon ...
+### Sparkline / Ridgeline
+
+![](img/ridgeline.png)
 
 ## Similar Projects
 
@@ -48,10 +50,6 @@ This is a list of textual sketches of different graph types that are also candid
 #### Candlestick Chart
 
 ![](img/candlestickchart.png)
-
-#### Sparkline / Ridgeline
-
-![](img/ridgeline.png)
 
 #### Contour Plot
 
