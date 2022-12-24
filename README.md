@@ -4,9 +4,13 @@ Graphical is a Python library that adds graphs and visuals to [Rich][rich] and [
 
 ## Graphical Library
 
-### Sparkline / Ridgeline
+### Sparkline
 
-![](img/ridgeline.png)
+![Sparkline Table Example](img/sparkline-table.svg)
+
+### Ridgeline
+
+![Sparkline Table Example](img/ridgeline.svg)
 
 ## Similar Projects
 
