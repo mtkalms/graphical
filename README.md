@@ -29,7 +29,7 @@ Graphical is a Python library that adds graphs and visuals to [Rich][rich] and [
 
 This is a list of textual sketches of different graph types that are also candidates for future implementation.
 
-### Row-bases Graphs
+### Row-based Graphs
 
 #### Bar Chart
 
