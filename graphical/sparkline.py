@@ -26,7 +26,6 @@ class OneLinePlotStyle(Enum):
 
 
 class Sparkline:
-
     def __init__(
         self,
         values: List[float],
@@ -34,7 +33,7 @@ class Sparkline:
         color: Union[Color, str] = "default",
         bgcolor: Union[Color, str] = "default",
         plot_style: OneLinePlotStyle = OneLinePlotStyle.AREA,
-        end: str = "\n"
+        end: str = "\n",
     ):
         self.values = values
         self.value_range = value_range
@@ -42,7 +41,9 @@ class Sparkline:
         self.plot_style = plot_style
         self.end = end
 
-    def __rich_console__(self, console: Console, options: ConsoleOptions) -> RenderResult:
+    def __rich_console__(
+        self, console: Console, options: ConsoleOptions
+    ) -> RenderResult:
         value_range = self.value_range or (min(self.values), max(self.values))
         cell_style = self.plot_style.cell_style
 
@@ -53,7 +54,7 @@ class Sparkline:
                 blend_rgb(
                     self.style.bgcolor.get_truecolor(),
                     self.style.color.get_truecolor(),
-                    0.5
+                    0.5,
                 )
             )
             lower_style = Style(bgcolor=self.style.bgcolor, color=mid_shade)
@@ -62,26 +63,26 @@ class Sparkline:
                 cell = PlotCellRenderer.render(
                     value=value,
                     value_range=(lower, mid) if value < mid else (mid, upper),
-                    cell_style=cell_style
+                    cell_style=cell_style,
                 )
                 yield Segment(cell, style=lower_style if value < mid else upper_style)
         else:
             cells = ""
             for value in self.values:
                 cells += PlotCellRenderer.render(
-                    value=value,
-                    value_range=value_range,
-                    cell_style=cell_style
+                    value=value, value_range=value_range, cell_style=cell_style
                 )
             yield Segment(cells, self.style)
         yield Segment(self.end)
 
-    def __rich_measure__(self, console: Console, options: ConsoleOptions) -> Measurement:
+    def __rich_measure__(
+        self, console: Console, options: ConsoleOptions
+    ) -> Measurement:
         width = len(self.values)
         return Measurement(width, width)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     from rich import print
     from rich.table import Table
     from random import randint
@@ -106,8 +107,7 @@ if __name__ == '__main__':
         line = Sparkline(data, color="purple", plot_style=style)
 
         table = Table(
-            title=f"Sparkline Table Example ({style.name})",
-            show_header=False
+            title=f"Sparkline Table Example ({style.name})", show_header=False
         )
         table.add_row("row 0", line)
         table.add_row("row 1", line)

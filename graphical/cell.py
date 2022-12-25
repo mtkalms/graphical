@@ -3,8 +3,8 @@ from typing import Optional, Tuple, List
 
 
 class PlotCellStyle(Enum):
-    AREA = ['▁', '▂', '▃', '▄', '▅', '▆', '▇', '█'], ' ', '█'
-    LINE = ['▁', '⎽', '⎼', '─', '⎻', '⎺', '▔', '▔'], ' ', ' '
+    AREA = ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"], " ", "█"
+    LINE = ["▁", "⎽", "⎼", "─", "⎻", "⎺", "▔", "▔"], " ", " "
 
     def __new__(cls, *args, **kwargs):
         value = len(cls.__members__) + 1
@@ -19,12 +19,11 @@ class PlotCellStyle(Enum):
 
 
 class PlotCellRenderer:
-
     @staticmethod
     def render(
         value: float,
         value_range: Optional[Tuple[float, float]],
-        cell_style: PlotCellStyle = PlotCellStyle.AREA
+        cell_style: PlotCellStyle = PlotCellStyle.AREA,
     ) -> str:
         lower, upper = value_range
         steps = (upper - lower) / (len(cell_style.chars) - 1)

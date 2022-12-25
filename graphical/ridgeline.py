@@ -23,7 +23,6 @@ class RidgelineRow:
 
 
 class RidgelineGraph:
-
     def __init__(
         self,
         title: str,
@@ -31,7 +30,7 @@ class RidgelineGraph:
         color: Union[Color, str] = "default",
         plot_style: OneLinePlotStyle = OneLinePlotStyle.AREA,
         box: Optional[Box] = HEAVY,
-        ticks: Optional[Tuple[float, float]] = None
+        ticks: Optional[Tuple[float, float]] = None,
     ):
         self.title = title
         self.value_range = value_range
@@ -46,13 +45,15 @@ class RidgelineGraph:
         label: str,
         values: List[float],
         color: Union[Color, str] = "default",
-        plot_style: Optional[OneLinePlotStyle] = None
+        plot_style: Optional[OneLinePlotStyle] = None,
     ) -> RidgelineRow:
         row = RidgelineRow(label, values, color, plot_style)
         self.rows.append(row)
         return row
 
-    def __rich_console__(self, console: Console, options: ConsoleOptions) -> RenderResult:
+    def __rich_console__(
+        self, console: Console, options: ConsoleOptions
+    ) -> RenderResult:
         width_labels = max(len(d.label) for d in self.rows) + 1
         width_graphs = max(len(d.values) for d in self.rows)
         if self.value_range:
@@ -74,7 +75,7 @@ class RidgelineGraph:
         for row in self.rows:
             row_style = Style(color=row.color) if row.color != "default" else self.style
 
-            yield Segment(f"{row.label : >{width_labels - 1 }} ")
+            yield Segment(f"{row.label : >{width_labels - 1}} ")
             yield Segment(self.box.row_right)
 
             plot_style = row.plot_style if row.plot_style else self.plot_style
@@ -84,7 +85,7 @@ class RidgelineGraph:
                 color=row_style.color or "default",
                 bgcolor=row_style.bgcolor or "default",
                 plot_style=plot_style,
-                end=""
+                end="",
             )
             yield Segment(self.box.mid_right)
             yield Segment("\n")
@@ -101,14 +102,16 @@ class RidgelineGraph:
             yield Segment(f"{self.ticks[1] : >{width_graphs - width_graphs // 2}}")
             yield Segment("\n")
 
-    def __rich_measure__(self, console: Console, options: ConsoleOptions) -> Measurement:
+    def __rich_measure__(
+        self, console: Console, options: ConsoleOptions
+    ) -> Measurement:
         width_labels = max(len(d.label) for d in self.rows) + 1
         width_graphs = max(len(d.values) for d in self.rows) + 2
         width = width_labels + width_graphs
         return Measurement(width, width)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     from rich import print
     from random import randint
     from math import sin, pi
@@ -121,7 +124,7 @@ if __name__ == '__main__':
             title=f"Ridgeline Graph Example ({style.name})",
             color="purple",
             plot_style=style,
-            ticks=(0, 100)
+            ticks=(0, 100),
         )
         for b in range(12):
             data = [wave(d) for d in range(100)]
