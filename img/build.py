@@ -59,7 +59,8 @@ if __name__ == '__main__':
     graph = RidgelineGraph(
         title="",
         color="purple",
-        plot_style=OneLinePlotStyle.AREA
+        plot_style=OneLinePlotStyle.AREA,
+        ticks=(0, 100)
     )
     for idx in range(12):
         data = wave(76, idx, idx, 0.8)
@@ -74,7 +75,8 @@ if __name__ == '__main__':
         graph = RidgelineGraph(
             title=style.name,
             color="purple",
-            plot_style=style
+            plot_style=style,
+            ticks=(0, 100)
         )
         for idx in range(12):
             data = wave(76, idx, idx)
