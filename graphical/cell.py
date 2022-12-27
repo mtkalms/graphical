@@ -12,7 +12,7 @@ class PlotCellStyle(Enum):
     """Horizontal Line Plot Cell"""
     LINE_V = ("▏│▕", " ", " ", None, None)
     """Vertical Line Plot Cell"""
-    SHADES = (" ░▒▓█", " ", "█", None, "█▓▒░ ")
+    SHADE = (" ░▒▓█", " ", "█", None, "█▓▒░ ")
     """Shade Plot Cell"""
 
     def __new__(cls, *args, **kwargs):

@@ -14,6 +14,7 @@ class OneLinePlotStyle(Enum):
     LINE = PlotCellStyle.LINE_H
     AREA = PlotCellStyle.AREA_H
     HORIZON = PlotCellStyle.AREA_H
+    SHADE = PlotCellStyle.SHADE
 
     def __new__(cls, *args, **kwargs):
         value = len(cls.__members__) + 1

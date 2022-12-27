@@ -39,7 +39,7 @@ if __name__ == "__main__":
 
     # Sparkline Table Example
 
-    data = wave(19, 0)
+    data = wave(14, 0)
 
     table = Table()
     table.add_column("Plot Style")
