@@ -5,10 +5,15 @@ from typing import Optional, Tuple, List
 
 class PlotCellStyle(Enum):
     AREA_H = (" ▁▂▃▄▅▆▇█", " ", "█", " ▁▁▄▄▄▄██", "██▀▀▀▔▔▔ ")
+    """Horizontal Area Plot Cell"""
     AREA_V = (" ▏▎▍▌▋▊▉█", " ", "█", " ▕▕▐▐▐▐██", "██▐▐▐▕▕▕ ")
+    """Vertical Area Plot Cell"""
     LINE_H = (" ▁⎽⎼─⎻⎺▔", " ", " ", None, None)
+    """Horizontal Line Plot Cell"""
     LINE_V = ("▏│▕", " ", " ", None, None)
+    """Vertical Line Plot Cell"""
     SHADES = (" ░▒▓█", " ", "█", None, "█▓▒░ ")
+    """Shade Plot Cell"""
 
     def __new__(cls, *args, **kwargs):
         value = len(cls.__members__) + 1
