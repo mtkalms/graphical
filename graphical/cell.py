@@ -4,36 +4,11 @@ from typing import Optional, Tuple, List
 
 
 class PlotCellStyle(Enum):
-    AREA_H = (
-        [" ", "▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"],
-        ["█", "█", "▀", "▀", "▀", "▔", "▔", "▔", " "],
-        " ",
-        "█",
-    )
-    AREA_V = (
-        [" ", "▏", "▎", "▍", "▌", "▋", "▊", "▉", "█"],
-        ["█", "█", "▐", "▐", "▐", "▕", "▕", "▕", " "],
-        " ",
-        "█",
-    )
-    LINE_H = (
-        [" ", "▁", "⎽", "⎼", "─", "⎻", "⎺", "▔"],
-        None,
-        " ",
-        " ",
-    )
-    LINE_V = (
-        ["▏", "│", "▕"],
-        None,
-        " ",
-        " ",
-    )
-    SHADES = (
-        [" ", "░", "▒", "▓", "█"],
-        ["█", "▓", "▒", "░", " "],
-        " ",
-        "█",
-    )
+    AREA_H = (" ▁▂▃▄▅▆▇█", "██▀▀▀▔▔▔ ", " ", "█")
+    AREA_V = (" ▏▎▍▌▋▊▉█", "██▐▐▐▕▕▕ ", " ", "█")
+    LINE_H = (" ▁⎽⎼─⎻⎺▔", None, " ", " ")
+    LINE_V = ("▏│▕", None, " ", " ")
+    SHADES = (" ░▒▓█", "█▓▒░ ", " ", "█")
 
     def __new__(cls, *args, **kwargs):
         value = len(cls.__members__) + 1
@@ -41,11 +16,9 @@ class PlotCellStyle(Enum):
         obj._value_ = value
         return obj
 
-    def __init__(
-        self, chars: List[str], inverted: Optional[List[str]], under: str, over: str
-    ):
-        self.chars: List[str] = chars
-        self.inverted: List[str] = inverted or chars
+    def __init__(self, chars: str, inverted: Optional[str], under: str, over: str):
+        self.chars: str = chars
+        self.inverted: str = inverted or chars
         self.under = under
         self.over = over
 
