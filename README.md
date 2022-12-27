@@ -2,13 +2,15 @@
 
 Graphical is a Python library that adds graphs and visuals to [Rich][rich] and [Textual][textual].
 
-Future versions of Textual will include a limited number of graphs and charts (see [roadmap][roadmap]).
+
+> **NOTE:**  Future versions of Textual will include a limited number of graphs and charts (see [Textual roadmap][roadmap]).
+Redundant graph types in Graphical will be adapted accordingly or might become deprecated.
 
 ## Graphical Library
 
 ### Sparkline
 
-Sparklines might be part of Textual in the future (see [roadmap][roadmap]).
+> Sparklines might be part of future versions of Textual (see [Textual roadmap][roadmap]).
 
 ![Sparkline Table Example](img/sparkline-table.svg)
 
@@ -43,7 +45,7 @@ This is a list of textual sketches of different graph types that are also candid
 
 #### Bar Chart
 
-Bar charts might be part of Textual in the future (see [roadmap][roadmap]).
+> Bar charts might be part of future versions of Textual (see [Textual roadmap][roadmap]).
 
 ![](img/barchart.png)
 
@@ -65,7 +67,7 @@ Bar charts might be part of Textual in the future (see [roadmap][roadmap]).
 
 #### Candlestick Chart
 
-Candlestick charts might be part of Textual in the future (see [roadmap][roadmap]).
+> Candlestick charts might be part of future versions of Textual (see [Textual roadmap][roadmap]).
 
 ![](img/candlestickchart.png)
 
