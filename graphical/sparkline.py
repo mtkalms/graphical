@@ -11,9 +11,9 @@ from .cell import PlotCellStyle, PlotCellRenderer
 
 
 class OneLinePlotStyle(Enum):
-    LINE = PlotCellStyle.LINE
-    AREA = PlotCellStyle.AREA
-    HORIZON = PlotCellStyle.AREA
+    LINE = PlotCellStyle.LINE_H
+    AREA = PlotCellStyle.AREA_H
+    HORIZON = PlotCellStyle.AREA_H
 
     def __new__(cls, *args, **kwargs):
         value = len(cls.__members__) + 1
