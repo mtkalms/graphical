@@ -4,9 +4,9 @@ from typing import Optional, Tuple, List
 
 
 class PlotCellStyle(Enum):
-    BLOCK_H = (" ▁▂▃▄▅▆▇█", " ", "█", " ▁▁▄▄▄▄██", "██▀▀▀▔▔▔ ")
+    BLOCK_H = (" ▏▎▍▌▋▊▉█", " ", "█", " ▕▕▐▐▐▐██", "██▐▐▐▕▕▕ ")
     """Cell for horizontal area or full-width bar plots."""
-    BLOCK_V = (" ▏▎▍▌▋▊▉█", " ", "█", " ▕▕▐▐▐▐██", "██▐▐▐▕▕▕ ")
+    BLOCK_V = (" ▁▂▃▄▅▆▇█", " ", "█", " ▁▁▄▄▄▄██", "██▀▀▀▔▔▔ ")
     """Cell for vertical area or full-width bar plots."""
     BAR_LIGHT_H = (" ╴─", " ", "─", None, "─╶ ")
     """Cell for horizontal light bar plots."""
@@ -16,9 +16,9 @@ class PlotCellStyle(Enum):
     """Cell for horizontal heavy bar plots."""
     BAR_HEAVY_V = (" ╻┃", " ", "┃", None, "┃╹ ")
     """Cell for vertical heavy bar plots."""
-    LINE_H = (" ▁⎽⎼─⎻⎺▔", " ", " ", None, None)
+    LINE_H = ("▏│▕", " ", " ", None, None)
     """Cell for horizontal line plots."""
-    LINE_V = ("▏│▕", " ", " ", None, None)
+    LINE_V = (" ▁⎽⎼─⎻⎺▔", " ", " ", None, None)
     """Cell for vertical line plots."""
     SHADE = (" ░▒▓█", " ", "█", None, "█▓▒░ ")
     """Cell for shading."""
