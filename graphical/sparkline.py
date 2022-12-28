@@ -12,8 +12,8 @@ from .cell import PlotCellStyle, PlotCellRenderer
 
 class OneLinePlotStyle(Enum):
     LINE = PlotCellStyle.LINE_H
-    AREA = PlotCellStyle.AREA_H
-    HORIZON = PlotCellStyle.AREA_H
+    AREA = PlotCellStyle.BLOCK_H
+    HORIZON = PlotCellStyle.BLOCK_H
     SHADE = PlotCellStyle.SHADE
 
     def __new__(cls, *args, **kwargs):

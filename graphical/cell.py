@@ -4,16 +4,16 @@ from typing import Optional, Tuple, List
 
 
 class PlotCellStyle(Enum):
-    AREA_H = (" ▁▂▃▄▅▆▇█", " ", "█", " ▁▁▄▄▄▄██", "██▀▀▀▔▔▔ ")
-    """Horizontal Area Plot Cell"""
-    AREA_V = (" ▏▎▍▌▋▊▉█", " ", "█", " ▕▕▐▐▐▐██", "██▐▐▐▕▕▕ ")
-    """Vertical Area Plot Cell"""
+    BLOCK_H = (" ▁▂▃▄▅▆▇█", " ", "█", " ▁▁▄▄▄▄██", "██▀▀▀▔▔▔ ")
+    """Cell for horizontal area or full-width bar plots."""
+    BLOCK_V = (" ▏▎▍▌▋▊▉█", " ", "█", " ▕▕▐▐▐▐██", "██▐▐▐▕▕▕ ")
+    """Cell for vertical area or full-width bar plots."""
     LINE_H = (" ▁⎽⎼─⎻⎺▔", " ", " ", None, None)
-    """Horizontal Line Plot Cell"""
+    """Cell for horizontal line plots."""
     LINE_V = ("▏│▕", " ", " ", None, None)
-    """Vertical Line Plot Cell"""
+    """Cell for vertical line plots."""
     SHADE = (" ░▒▓█", " ", "█", None, "█▓▒░ ")
-    """Shade Plot Cell"""
+    """Cell for shading."""
 
     def __new__(cls, *args, **kwargs):
         value = len(cls.__members__) + 1
@@ -44,7 +44,7 @@ class PlotCellRenderer:
     def render(
         value: float,
         value_range: Optional[Tuple[float, float]],
-        cell_style: PlotCellStyle = PlotCellStyle.AREA_H,
+        cell_style: PlotCellStyle = PlotCellStyle.BLOCK_H,
         invert: bool = False,
         match_inverted: bool = False,
     ) -> str:
