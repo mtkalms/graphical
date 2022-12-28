@@ -8,6 +8,14 @@ class PlotCellStyle(Enum):
     """Cell for horizontal area or full-width bar plots."""
     BLOCK_V = (" ▏▎▍▌▋▊▉█", " ", "█", " ▕▕▐▐▐▐██", "██▐▐▐▕▕▕ ")
     """Cell for vertical area or full-width bar plots."""
+    BAR_LIGHT_H = (" ╴─", " ", "─", None, "─╶ ")
+    """Cell for horizontal light bar plots."""
+    BAR_LIGHT_V = (" ╷│", " ", "│", None, "│╵ ")
+    """Cell for vertical light bar plots."""
+    BAR_HEAVY_H = (" ╸━", " ", "━", None, "━╺ ")
+    """Cell for horizontal heavy bar plots."""
+    BAR_HEAVY_V = (" ╻┃", " ", "┃", None, "┃╹ ")
+    """Cell for vertical heavy bar plots."""
     LINE_H = (" ▁⎽⎼─⎻⎺▔", " ", " ", None, None)
     """Cell for horizontal line plots."""
     LINE_V = ("▏│▕", " ", " ", None, None)
