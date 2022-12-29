@@ -26,7 +26,7 @@ class RidgelineChart:
     def __init__(
         self,
         title: str,
-        value_range: Optional[Tuple[int, int]] = None,
+        value_range: Optional[Tuple[float, float]] = None,
         color: Union[Color, str] = "default",
         plot_style: OneLinePlotStyle = OneLinePlotStyle.AREA,
         box: Box = HEAVY,
