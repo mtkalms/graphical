@@ -1,5 +1,4 @@
 import calendar
-import random
 from math import sin, pi
 from typing import List
 
@@ -108,11 +107,11 @@ if __name__ == "__main__":
 
     # Bar Table Example
 
-    def create_bars():
+    def create_bars(value: float):
         return [
             Bar(
-                value=random.randint(0, 100),
-                value_range=(0, 100),
+                value=value,
+                value_range=(0, 2),
                 width=16,
                 color="purple",
                 bar_style=bar_style,
@@ -126,8 +125,8 @@ if __name__ == "__main__":
     table.add_column()
     for bar_style in BarStyle:
         table.add_column(bar_style.name)
-    for idx in range(12):
-        table.add_row(calendar.month_abbr[idx + 1], *create_bars())
+    for idx, value in enumerate(wave(12, 0, 0)):
+        table.add_row(calendar.month_abbr[idx + 1], *create_bars(value + 1))
     console.print(table, justify="center")
     console.save_svg("bar-table.svg", title="Bar Table Example", theme=THEME)
 
