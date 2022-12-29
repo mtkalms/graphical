@@ -29,7 +29,7 @@ class RidgelineChart:
         value_range: Optional[Tuple[int, int]] = None,
         color: Union[Color, str] = "default",
         plot_style: OneLinePlotStyle = OneLinePlotStyle.AREA,
-        box: Optional[Box] = HEAVY,
+        box: Box = HEAVY,
         ticks: Optional[Tuple[float, float]] = None,
     ):
         self.title = title
