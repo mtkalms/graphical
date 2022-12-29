@@ -15,6 +15,14 @@ from .cell import PlotCellStyle, PlotCellRenderer
 WIDTH = 50
 
 
+def _stacked(values: List[float]) -> List[float]:
+    stacked = []
+    for value in values:
+        last_value = stacked[-1] if stacked else 0
+        stacked.append(value + last_value)
+    return stacked
+
+
 class BarStyle(Enum):
     LIGHT = PlotCellStyle.BAR_LIGHT_H, PlotCellStyle.BAR_LIGHT_V
     HEAVY = PlotCellStyle.BAR_HEAVY_H, PlotCellStyle.BAR_HEAVY_V
@@ -119,6 +127,46 @@ class DivergingBar:
         return Measurement(self.width, self.width)
 
 
+class StackedBar:
+    def __init__(
+        self,
+        values: List[float],
+        value_range: Tuple[float, float],
+        colors: List[Union[Color, str]],
+        width: int = WIDTH,
+        bgcolor: Union[Color, str] = "default",
+        end: str = "\n",
+    ):
+        self.values = values
+        self.value_range = value_range
+        self.width = width
+        self.colors = colors
+        self.bgcolor = bgcolor
+        self.end = end
+
+    def __rich_console__(
+        self, console: Console, options: ConsoleOptions
+    ) -> RenderResult:
+        step = self.value_range[1] / self.width
+        values = _stacked(self.values)
+        colors = [self.colors[d % len(self.colors)] for d in range(len(values))]
+        colors.append(self.bgcolor)
+        current = 0
+        for idx in range(self.width):
+            cell_range = idx * step, (idx + 1) * step
+            if values[current] < cell_range[0] and current < len(values) - 1:
+                current += 1
+            cell = PlotCellRenderer.render(values[current], value_range=cell_range)
+            style = Style(color=colors[current], bgcolor=colors[current + 1])
+            yield Segment(cell, style)
+        yield Segment(self.end)
+
+    def __rich_measure__(
+        self, console: Console, options: ConsoleOptions
+    ) -> Measurement:
+        return Measurement(self.width, self.width)
+
+
 @dataclass
 class BarChartRow:
     label: str
@@ -190,8 +238,18 @@ if __name__ == "__main__":
     from rich import print
     from random import randint
 
+    print("Bar Example")
+    print()
+
     for style in BarStyle:
         print(Bar(15.7, (0, 200), color="purple", bar_style=style))
+
+    print()
+    print("Stacked Bar Example")
+    print()
+
+    print(StackedBar([50, 20, 10], (0, 200), colors=["red", "yellow", "green"]))
+    print()
 
     for style in BarStyle:
         bar_chart = BarChart(
@@ -203,3 +261,4 @@ if __name__ == "__main__":
         for idx in range(12):
             bar_chart.add_row(f"idx {idx}", randint(0, 100))
         print(bar_chart)
+        print()
