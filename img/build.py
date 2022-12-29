@@ -84,7 +84,7 @@ if __name__ == "__main__":
         graph.add_row(label=calendar.month_abbr[idx + 1], values=data)
     console.print(graph, justify="center")
     console.print()
-    console.save_svg("ridgeline.svg", title="Ridgeline Example", theme=THEME)
+    console.save_svg("ridgeline.svg", title="RidgelineChart Example", theme=THEME)
 
     console = Console(record=True, width=WIDTH)
     console.print()
@@ -102,7 +102,7 @@ if __name__ == "__main__":
         console.print(graph, justify="center")
         console.print()
     console.save_svg(
-        "ridgeline-variations.svg", title="Ridgeline Style Examples", theme=THEME
+        "ridgeline-variations.svg", title="RidgelineChart Style Examples", theme=THEME
     )
 
     # Bar Table Example

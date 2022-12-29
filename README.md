@@ -14,7 +14,7 @@ Redundant graph types in Graphical will be adapted accordingly or might become d
 
 ![Sparkline Table Example](img/sparkline-table.svg)
 
-### Ridgeline
+### Ridgeline Chart
 
 ![Ridgeline Example](img/ridgeline.svg)
 
