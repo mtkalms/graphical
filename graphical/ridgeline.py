@@ -22,7 +22,7 @@ class RidgelineRow:
         return min(self.values), max(self.values)
 
 
-class RidgelineGraph:
+class RidgelineChart:
     def __init__(
         self,
         title: str,
@@ -120,7 +120,7 @@ if __name__ == "__main__":
         return int(sin((r + randint(0, 3)) * 2 * pi / 25) * 40 - 50)
 
     for style in OneLinePlotStyle:
-        graph = RidgelineGraph(
+        graph = RidgelineChart(
             title=f"Ridgeline Graph Example ({style.name})",
             color="purple",
             plot_style=style,

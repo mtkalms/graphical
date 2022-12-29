@@ -8,7 +8,7 @@ from rich.table import Table
 from rich.terminal_theme import TerminalTheme
 
 from graphical.bar import Bar, BarStyle
-from graphical.ridgeline import RidgelineGraph
+from graphical.ridgeline import RidgelineChart
 from graphical.sparkline import OneLinePlotStyle, Sparkline
 
 WIDTH = 90
@@ -64,7 +64,7 @@ if __name__ == "__main__":
 
     console = Console(record=True, width=WIDTH)
     console.print()
-    graph = RidgelineGraph(
+    graph = RidgelineChart(
         title="", color="purple", plot_style=OneLinePlotStyle.AREA, ticks=(0, 100)
     )
     for idx in range(12):
@@ -77,7 +77,7 @@ if __name__ == "__main__":
     console = Console(record=True, width=WIDTH)
     console.print()
     for style in OneLinePlotStyle:
-        graph = RidgelineGraph(
+        graph = RidgelineChart(
             title=style.name, color="purple", plot_style=style, ticks=(0, 100)
         )
         for idx in range(12):
