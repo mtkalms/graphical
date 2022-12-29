@@ -122,13 +122,13 @@ if __name__ == "__main__":
 
     console = Console(record=True, width=WIDTH)
     console.print()
-    table = Table(width=86)
+    table = Table(width=82)
     table.add_column()
     for bar_style in BarStyle:
         table.add_column(bar_style.name)
     for idx in range(12):
         table.add_row(calendar.month_abbr[idx + 1], *create_bars())
-    console.print(table)
+    console.print(table, justify="center")
     console.save_svg("bar-table.svg", title="Bar Table Example", theme=THEME)
 
     # BarChart Example
