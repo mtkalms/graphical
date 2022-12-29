@@ -240,12 +240,18 @@ if __name__ == "__main__":
 
     print("Bar Example")
     print()
-
     for style in BarStyle:
         print(Bar(15.7, (0, 200), color="purple", bar_style=style))
-
     print()
-    print("Stacked Bar Example")
+
+    print("DivergingBar Example")
+    print()
+
+    print(DivergingBar(-100, (-200, 200), width=21, color="purple"))
+    print(DivergingBar(100, (-200, 200), width=21, color="purple"))
+    print()
+
+    print("StackedBar Example")
     print()
 
     print(StackedBar([50, 20, 10], (0, 200), colors=["red", "yellow", "green"]))
