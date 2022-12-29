@@ -24,6 +24,11 @@ Redundant graph types in Graphical will be adapted accordingly or might become d
   ![Ridgeline Variations Example](img/ridgeline-variations.svg)
 </details>
 
+### Bar
+
+![Bar Table Example](img/bar-table.svg)
+
+
 ## Similar Projects
 
 - [asciichart][asciichart]: beautiful line plots

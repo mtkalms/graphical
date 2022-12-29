@@ -1,4 +1,5 @@
 import calendar
+import random
 from math import sin, pi
 from typing import List
 
@@ -6,6 +7,7 @@ from rich.console import Console
 from rich.table import Table
 from rich.terminal_theme import TerminalTheme
 
+from graphical.bar import Bar, BarStyle
 from graphical.ridgeline import RidgelineGraph
 from graphical.sparkline import OneLinePlotStyle, Sparkline
 
@@ -86,3 +88,29 @@ if __name__ == "__main__":
     console.save_svg(
         "ridgeline-variations.svg", title="Ridgeline Style Examples", theme=THEME
     )
+
+    # Bar Table Example
+
+    def create_bars():
+        return [
+            Bar(
+                value=random.randint(0, 100),
+                value_range=value_range,
+                width=16,
+                color="purple",
+                bar_style=bar_style,
+            )
+            for bar_style in BarStyle
+        ]
+
+    console = Console(record=True, width=WIDTH)
+    console.print()
+    value_range = (0, 100)
+    table = Table(width=86)
+    table.add_column()
+    for bar_style in BarStyle:
+        table.add_column(bar_style.name)
+    for idx in range(12):
+        table.add_row(calendar.month_abbr[idx + 1], *create_bars())
+    console.print(table)
+    console.save_svg("bar-table.svg", title="Bar Table Example", theme=THEME)
