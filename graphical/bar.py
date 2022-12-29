@@ -9,6 +9,7 @@ from rich.measure import Measurement
 from rich.segment import Segment
 from rich.style import Style
 
+from .chart import LabelChartRenderer
 from .cell import PlotCellStyle, PlotCellRenderer
 
 WIDTH = 50
@@ -114,24 +115,11 @@ class BarChart:
         width_labels = max(len(d.label) for d in self.rows) + 1
         width_graphs = self.width - width_labels - 2
 
-        yield Segment(" " * width_labels)
-        yield Segment(f"{self.title : ^{width_graphs + 2}}")
-        yield Segment("\n")
-
-        yield Segment(" " * width_labels)
-        yield Segment(self.box.top_left)
-        yield Segment(self.box.top * width_graphs)
-        yield Segment(self.box.top_right)
-        yield Segment("\n")
-
+        chart = LabelChartRenderer(title=self.title, ticks=self.ticks, box=self.box)
         for row in self.rows:
             row_style = Style(color=row.color) if row.color != "default" else self.style
-
-            yield Segment(f"{row.label : >{width_labels - 1}} ")
-            yield Segment(self.box.row_right)
-
             bar_style = row.bar_style if row.bar_style else self.bar_style
-            yield Bar(
+            content = Bar(
                 value=row.value,
                 width=width_graphs,
                 value_range=self.value_range,
@@ -140,20 +128,8 @@ class BarChart:
                 bar_style=bar_style,
                 end="",
             )
-            yield Segment(self.box.mid_right)
-            yield Segment("\n")
-
-        yield Segment(" " * width_labels)
-        yield Segment(self.box.bottom_left)
-        yield Segment(self.box.bottom * width_graphs)
-        yield Segment(self.box.bottom_right)
-        yield Segment("\n")
-
-        if self.ticks:
-            yield Segment(" " * (width_labels + 1))
-            yield Segment(f"{self.ticks[0] : <{width_graphs // 2}}")
-            yield Segment(f"{self.ticks[1] : >{width_graphs - width_graphs // 2}}")
-            yield Segment("\n")
+            chart.add_row(content=content, content_width=width_graphs, label=row.label)
+        yield from chart.render()
 
     def __rich_measure__(
         self, console: Console, options: ConsoleOptions
@@ -169,12 +145,12 @@ if __name__ == "__main__":
         print(Bar(15.7, (0, 200), color="purple", bar_style=style))
 
     for style in BarStyle:
-        chart = BarChart(
+        bar_chart = BarChart(
             title="BarChart Example",
             value_range=(0, 100),
             color="purple",
             bar_style=style,
         )
         for idx in range(12):
-            chart.add_row(f"idx {idx}", randint(0, 100))
-        print(chart)
+            bar_chart.add_row(f"idx {idx}", randint(0, 100))
+        print(bar_chart)

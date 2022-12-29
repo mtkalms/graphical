@@ -5,9 +5,9 @@ from rich.box import Box, HEAVY
 from rich.color import Color
 from rich.console import Console, ConsoleOptions, RenderResult
 from rich.measure import Measurement
-from rich.segment import Segment
 from rich.style import Style
 
+from .chart import LabelChartRenderer
 from .sparkline import OneLinePlotStyle, Sparkline
 
 
@@ -54,7 +54,6 @@ class RidgelineChart:
     def __rich_console__(
         self, console: Console, options: ConsoleOptions
     ) -> RenderResult:
-        width_labels = max(len(d.label) for d in self.rows) + 1
         width_graphs = max(len(d.values) for d in self.rows)
         if self.value_range:
             value_range = self.value_range
@@ -62,24 +61,11 @@ class RidgelineChart:
             row_min, row_max = zip(*[row.value_range() for row in self.rows])
             value_range = min(row_min), max(row_max)
 
-        yield Segment(" " * width_labels)
-        yield Segment(f"{self.title : ^{width_graphs + 2}}")
-        yield Segment("\n")
-
-        yield Segment(" " * width_labels)
-        yield Segment(self.box.top_left)
-        yield Segment(self.box.top * width_graphs)
-        yield Segment(self.box.top_right)
-        yield Segment("\n")
-
+        chart = LabelChartRenderer(title=self.title, ticks=self.ticks, box=self.box)
         for row in self.rows:
             row_style = Style(color=row.color) if row.color != "default" else self.style
-
-            yield Segment(f"{row.label : >{width_labels - 1}} ")
-            yield Segment(self.box.row_right)
-
             plot_style = row.plot_style if row.plot_style else self.plot_style
-            yield Sparkline(
+            content = Sparkline(
                 values=row.values,
                 value_range=value_range,
                 color=row_style.color or "default",
@@ -87,27 +73,16 @@ class RidgelineChart:
                 plot_style=plot_style,
                 end="",
             )
-            yield Segment(self.box.mid_right)
-            yield Segment("\n")
-
-        yield Segment(" " * width_labels)
-        yield Segment(self.box.bottom_left)
-        yield Segment(self.box.bottom * width_graphs)
-        yield Segment(self.box.bottom_right)
-        yield Segment("\n")
-
-        if self.ticks:
-            yield Segment(" " * (width_labels + 1))
-            yield Segment(f"{self.ticks[0] : <{width_graphs // 2}}")
-            yield Segment(f"{self.ticks[1] : >{width_graphs - width_graphs // 2}}")
-            yield Segment("\n")
+            chart.add_row(content=content, content_width=width_graphs, label=row.label)
+        yield from chart.render()
 
     def __rich_measure__(
         self, console: Console, options: ConsoleOptions
     ) -> Measurement:
         width_labels = max(len(d.label) for d in self.rows) + 1
-        width_graphs = max(len(d.values) for d in self.rows) + 2
-        width = width_labels + width_graphs
+        width_graphs = max(len(d.values) for d in self.rows)
+        width_border = 2
+        width = width_labels + width_graphs + width_border
         return Measurement(width, width)
 
 
