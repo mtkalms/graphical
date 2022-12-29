@@ -28,6 +28,10 @@ Redundant graph types in Graphical will be adapted accordingly or might become d
 
 ![Bar Table Example](img/bar-table.svg)
 
+### Diverging Bar
+
+![DivergingBar Table Example](img/diverging-bar-table.svg)
+
 #### Bar Chart
 
 > Bar charts might be part of future versions of Textual (see [Textual roadmap][roadmap]).

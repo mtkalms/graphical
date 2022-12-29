@@ -6,7 +6,7 @@ from rich.console import Console
 from rich.table import Table
 from rich.terminal_theme import TerminalTheme
 
-from graphical.bar import Bar, BarStyle, BarChart
+from graphical.bar import Bar, BarStyle, BarChart, DivergingBar
 from graphical.ridgeline import RidgelineChart
 from graphical.sparkline import OneLinePlotStyle, Sparkline
 
@@ -129,6 +129,34 @@ if __name__ == "__main__":
         table.add_row(calendar.month_abbr[idx + 1], *create_bars(value + 1))
     console.print(table, justify="center")
     console.save_svg("bar-table.svg", title="Bar Table Example", theme=THEME)
+
+    # DivergingBar Table Example
+
+    def create_diverging_bars(value: float):
+        return [
+            DivergingBar(
+                value=value,
+                value_range=(-1, 1),
+                width=16,
+                color="purple",
+                color_negative="red",
+                bar_style=bar_style,
+            )
+            for bar_style in BarStyle
+        ]
+
+    console = Console(record=True, width=WIDTH)
+    console.print()
+    table = Table(width=82)
+    table.add_column()
+    for bar_style in BarStyle:
+        table.add_column(bar_style.name)
+    for idx, value in enumerate(wave(12, 0, 0)):
+        table.add_row(calendar.month_abbr[idx + 1], *create_diverging_bars(value))
+    console.print(table, justify="center")
+    console.save_svg(
+        "diverging-bar-table.svg", title="DivergingBar Table Example", theme=THEME
+    )
 
     # BarChart Example
 

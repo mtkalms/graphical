@@ -70,6 +70,55 @@ class Bar:
         return Measurement(self.width, self.width)
 
 
+class DivergingBar:
+    def __init__(
+        self,
+        value: float,
+        value_range: Tuple[float, float],
+        width: int = WIDTH,
+        color: Union[Color, str] = "default",
+        color_negative: Optional[Union[Color, str]] = None,
+        bgcolor: Union[Color, str] = "default",
+        bar_style: BarStyle = BarStyle.BLOCK,
+        end: str = "\n",
+    ):
+        self.value = value
+        self.value_range = value_range
+        self.width = width - width % 2
+        self.style = Style(color=color, bgcolor=bgcolor)
+        self.style_negative = Style(color=color_negative or color, bgcolor=bgcolor)
+        self.bar_style = bar_style
+        self.end = end
+
+    def __rich_console__(
+        self, console: Console, options: ConsoleOptions
+    ) -> RenderResult:
+        max_abs_value = max(abs(d) for d in self.value_range)
+        value_range = -max_abs_value, max_abs_value
+        cell_style = self.bar_style.horizontal
+        step = (value_range[1] * 2) / self.width
+        cells = ""
+        for idx in range(self.width):
+            cell_range = value_range[0] + idx * step, value_range[0] + (idx + 1) * step
+            cells += PlotCellRenderer.render(
+                self.value,
+                value_range=cell_range,
+                cell_style=cell_style,
+                invert=self.value < 0
+                and cell_range[0] < 0
+                or self.value > 0 > cell_range[0],
+            )
+        yield Segment(
+            cells, style=self.style if self.value > 0 else self.style_negative
+        )
+        yield Segment(self.end)
+
+    def __rich_measure__(
+        self, console: Console, options: ConsoleOptions
+    ) -> Measurement:
+        return Measurement(self.width, self.width)
+
+
 @dataclass
 class BarChartRow:
     label: str
