@@ -28,6 +28,18 @@ Redundant graph types in Graphical will be adapted accordingly or might become d
 
 ![Bar Table Example](img/bar-table.svg)
 
+#### Bar Chart
+
+> Bar charts might be part of future versions of Textual (see [Textual roadmap][roadmap]).
+
+![BarChart Example](img/barchart.svg)
+
+<details>
+  <summary>Variations</summary>
+
+  ![BarChart Variations Example](img/barchart-variations.svg)
+</details>
+
 
 ## Similar Projects
 
@@ -47,12 +59,6 @@ Redundant graph types in Graphical will be adapted accordingly or might become d
 This is a list of textual sketches of different graph types that are also candidates for future implementation.
 
 ### Row-based Graphs
-
-#### Bar Chart
-
-> Bar charts might be part of future versions of Textual (see [Textual roadmap][roadmap]).
-
-![](img/barchart.png)
 
 #### Double Bar Chart
 

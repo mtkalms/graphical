@@ -7,7 +7,7 @@ from rich.console import Console
 from rich.table import Table
 from rich.terminal_theme import TerminalTheme
 
-from graphical.bar import Bar, BarStyle
+from graphical.bar import Bar, BarStyle, BarChart
 from graphical.ridgeline import RidgelineChart
 from graphical.sparkline import OneLinePlotStyle, Sparkline
 
@@ -28,18 +28,17 @@ THEME = TerminalTheme(
 )
 
 
-def wave(num: int, offset: int, seed: int = 0, scale: float = 1.0) -> List[float]:
+def wave(num: int, offset: int = 0, seed: int = 0, scale: float = 1.0) -> List[float]:
     result = [sin(2 * pi * (d + offset) / 10) for d in range(num)]
     if seed > 0:  # overlay second wave
         result = [
-            val * sin(2 * pi * d / (40 + seed * 5)) for d, val in enumerate(result)
+            val * sin(2 * pi * d / (40 + seed * 5)) * scale
+            for d, val in enumerate(result)
         ]
     return result
 
 
 if __name__ == "__main__":
-
-    value_range = (-1.5, 1.5)
 
     # Sparkline Table Example
 
@@ -53,7 +52,7 @@ if __name__ == "__main__":
         Sparkline(
             values=data,
             color="purple",
-            value_range=value_range,
+            value_range=(-1.5, 1.5),
             plot_style=style,
         )
         for style in OneLinePlotStyle
@@ -74,7 +73,7 @@ if __name__ == "__main__":
     console.print()
     graph = RidgelineChart(
         title="",
-        value_range=value_range,
+        value_range=(-1.5, 1.5),
         color="purple",
         plot_style=OneLinePlotStyle.AREA,
         ticks=(0, 100),
@@ -86,12 +85,14 @@ if __name__ == "__main__":
     console.print()
     console.save_svg("ridgeline.svg", title="RidgelineChart Example", theme=THEME)
 
+    # RidgelineChart Variations Example
+
     console = Console(record=True, width=WIDTH)
     console.print()
     for style in OneLinePlotStyle:
         graph = RidgelineChart(
             title=style.name,
-            value_range=value_range,
+            value_range=(-1.5, 1.5),
             color="purple",
             plot_style=style,
             ticks=(0, 100),
@@ -111,7 +112,7 @@ if __name__ == "__main__":
         return [
             Bar(
                 value=random.randint(0, 100),
-                value_range=value_range,
+                value_range=(0, 100),
                 width=16,
                 color="purple",
                 bar_style=bar_style,
@@ -121,7 +122,6 @@ if __name__ == "__main__":
 
     console = Console(record=True, width=WIDTH)
     console.print()
-    value_range = (0, 100)
     table = Table(width=86)
     table.add_column()
     for bar_style in BarStyle:
@@ -130,3 +130,41 @@ if __name__ == "__main__":
         table.add_row(calendar.month_abbr[idx + 1], *create_bars())
     console.print(table)
     console.save_svg("bar-table.svg", title="Bar Table Example", theme=THEME)
+
+    # BarChart Example
+
+    console = Console(record=True, width=WIDTH)
+    console.print()
+    graph = BarChart(
+        title="",
+        width=83,
+        value_range=(0, 2),
+        color="purple",
+        ticks=(0, 2.0),
+    )
+    for idx, value in enumerate(wave(12, 0, 0)):
+        graph.add_row(label=calendar.month_abbr[idx + 1], value=value + 1)
+    console.print(graph, justify="center")
+    console.print()
+    console.save_svg("barchart.svg", title="BarChart Example", theme=THEME)
+
+    # BarChart Variations Example
+
+    console = Console(record=True, width=WIDTH)
+    console.print()
+    for style in BarStyle:
+        graph = BarChart(
+            title=style.name,
+            width=83,
+            value_range=(0, 2),
+            color="purple",
+            bar_style=style,
+            ticks=(0, 2.0),
+        )
+        for idx, value in enumerate(wave(12, 0, 0)):
+            graph.add_row(label=calendar.month_abbr[idx + 1], value=value + 1)
+        console.print(graph, justify="center")
+        console.print()
+    console.save_svg(
+        "barchart-variations.svg", title="BarChart Style Examples", theme=THEME
+    )
