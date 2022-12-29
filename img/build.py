@@ -39,6 +39,8 @@ def wave(num: int, offset: int, seed: int = 0, scale: float = 1.0) -> List[float
 
 if __name__ == "__main__":
 
+    value_range = (-1.5, 1.5)
+
     # Sparkline Table Example
 
     data = wave(14, 0)
@@ -48,7 +50,13 @@ if __name__ == "__main__":
     for style in OneLinePlotStyle:
         table.add_column(style.name)
     lines = [
-        Sparkline(data, color="purple", plot_style=style) for style in OneLinePlotStyle
+        Sparkline(
+            values=data,
+            color="purple",
+            value_range=value_range,
+            plot_style=style,
+        )
+        for style in OneLinePlotStyle
     ]
     table.add_row("Sparkline", *lines)
 
@@ -65,7 +73,11 @@ if __name__ == "__main__":
     console = Console(record=True, width=WIDTH)
     console.print()
     graph = RidgelineChart(
-        title="", color="purple", plot_style=OneLinePlotStyle.AREA, ticks=(0, 100)
+        title="",
+        value_range=value_range,
+        color="purple",
+        plot_style=OneLinePlotStyle.AREA,
+        ticks=(0, 100),
     )
     for idx in range(12):
         data = wave(76, idx, idx, 0.8)
@@ -78,7 +90,11 @@ if __name__ == "__main__":
     console.print()
     for style in OneLinePlotStyle:
         graph = RidgelineChart(
-            title=style.name, color="purple", plot_style=style, ticks=(0, 100)
+            title=style.name,
+            value_range=value_range,
+            color="purple",
+            plot_style=style,
+            ticks=(0, 100),
         )
         for idx in range(12):
             data = wave(76, idx, idx)
