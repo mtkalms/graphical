@@ -9,7 +9,7 @@ from rich.measure import Measurement
 from rich.segment import Segment
 from rich.style import Style
 
-from graphical.cell import PlotCellStyle, PlotCellRenderer
+from .cell import PlotCellStyle, PlotCellRenderer
 
 WIDTH = 50
 
