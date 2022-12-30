@@ -18,7 +18,7 @@ WIDTH = 50
 def _stacked(values: List[float]) -> List[float]:
     stacked = []
     for value in values:
-        last_value = stacked[-1] if stacked else 0
+        last_value = 0 if not stacked else stacked[-1]
         stacked.append(value + last_value)
     return stacked
 
@@ -383,8 +383,8 @@ if __name__ == "__main__":
 
     print("Bar Example")
     print()
-    for style in BarStyle:
-        print(Bar(15.7, (0, 200), color="purple", bar_style=style))
+    for current_style in BarStyle:
+        print(Bar(15.7, (0, 200), color="purple", bar_style=current_style))
     print()
 
     print("DivergingBar Example")
@@ -401,10 +401,10 @@ if __name__ == "__main__":
     print()
 
     bar_chart = BarChart(title="BarChart Example", value_range=(0, 100), color="purple")
-    for idx in range(6):
-        row = bar_chart.add_row(f"idx {idx}", randint(0, 100))
-        if idx == 3:
-            row.bgcolor = "white"
+    for row_idx in range(6):
+        current_row = bar_chart.add_row(f"idx {row_idx}", randint(0, 100))
+        if row_idx == 3:
+            current_row.bgcolor = "white"
     print(bar_chart)
     print()
 
@@ -414,10 +414,10 @@ if __name__ == "__main__":
         color="purple",
         color_negative="red",
     )
-    for idx in range(6):
-        row = bar_chart.add_row(f"idx {idx}", randint(-100, 100))
-        if idx == 3:
-            row.bgcolor = "white"
+    for row_idx in range(6):
+        current_row = bar_chart.add_row(f"idx {row_idx}", randint(-100, 100))
+        if row_idx == 3:
+            current_row.bgcolor = "white"
     print(bar_chart)
     print()
 
@@ -426,9 +426,11 @@ if __name__ == "__main__":
         value_range=(0, 100),
         colors=["purple", "red", "yellow"],
     )
-    for idx in range(6):
-        row = bar_chart.add_row(f"idx {idx}", [randint(0, 33) for _ in range(3)])
-        if idx == 3:
-            row.bgcolor = "white"
+    for row_idx in range(6):
+        current_row = bar_chart.add_row(
+            f"idx {row_idx}", [randint(0, 33) for _ in range(3)]
+        )
+        if row_idx == 3:
+            current_row.bgcolor = "white"
     print(bar_chart)
     print()
