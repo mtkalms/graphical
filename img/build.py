@@ -6,7 +6,17 @@ from rich.console import Console
 from rich.table import Table
 from rich.terminal_theme import TerminalTheme
 
-from graphical.bar import Bar, BarStyle, BarChart, DivergingBar
+from graphical.bar import (
+    Bar,
+    BarStyle,
+    BarChart,
+    DivergingBar,
+    StackedBar,
+    DoubleBar,
+    DivergingBarChart,
+    StackedBarChart,
+    DoubleBarChart,
+)
 from graphical.ridgeline import RidgelineChart
 from graphical.sparkline import OneLinePlotStyle, Sparkline
 
@@ -112,32 +122,19 @@ if __name__ == "__main__":
             Bar(
                 value=value,
                 value_range=(0, 2),
-                width=16,
+                width=10,
                 color="purple",
                 bar_style=bar_style,
             )
             for bar_style in BarStyle
         ]
 
-    console = Console(record=True, width=WIDTH)
-    console.print()
-    table = Table(width=82)
-    table.add_column()
-    for bar_style in BarStyle:
-        table.add_column(bar_style.name)
-    for idx, value in enumerate(wave(12, 0, 0)):
-        table.add_row(calendar.month_abbr[idx + 1], *create_bars(value + 1))
-    console.print(table, justify="center")
-    console.save_svg("bar-table.svg", title="Bar Table Example", theme=THEME)
-
-    # DivergingBar Table Example
-
     def create_diverging_bars(value: float):
         return [
             DivergingBar(
                 value=value,
                 value_range=(-1, 1),
-                width=16,
+                width=10,
                 color="purple",
                 color_negative="red",
                 bar_style=bar_style,
@@ -148,15 +145,48 @@ if __name__ == "__main__":
     console = Console(record=True, width=WIDTH)
     console.print()
     table = Table(width=82)
-    table.add_column()
+    table.add_column("")
     for bar_style in BarStyle:
         table.add_column(bar_style.name)
-    for idx, value in enumerate(wave(12, 0, 0)):
-        table.add_row(calendar.month_abbr[idx + 1], *create_diverging_bars(value))
-    console.print(table, justify="center")
-    console.save_svg(
-        "diverging-bar-table.svg", title="DivergingBar Table Example", theme=THEME
+    table.add_column("HALF")
+    table.add_row("Bar", *create_bars(1), "")
+    table.add_row("", *create_bars(0.5), "")
+    table.add_section()
+    table.add_row("DivergingBar", *create_diverging_bars(0.5), "")
+    table.add_row("", *create_diverging_bars(-0.5), "")
+    table.add_section()
+    bar = StackedBar(
+        values=[3, 2, 1],
+        value_range=(0, 10),
+        colors=["purple", "red", "yellow"],
+        width=10,
     )
+    table.add_row("StackedBar", "", "", bar, "", "")
+    bar = StackedBar(
+        values=[2, 3, 2],
+        value_range=(0, 10),
+        colors=["purple", "red", "yellow"],
+        width=10,
+    )
+    table.add_row("", "", "", bar, "", "")
+    table.add_section()
+    bar = DoubleBar(
+        values=[3, 2],
+        value_range=(0, 4),
+        colors=["purple", "red"],
+        width=10,
+    )
+    table.add_row("DoubleBar", "", "", "", "", bar)
+    bar = DoubleBar(
+        values=[3, 2],
+        value_range=(0, 4),
+        colors=["purple", "red"],
+        width=10,
+    )
+    table.add_row("", "", "", "", "", bar)
+
+    console.print(table, justify="center")
+    console.save_svg("bar-table.svg", title="Bar Table Example", theme=THEME)
 
     # BarChart Example
 
@@ -165,9 +195,9 @@ if __name__ == "__main__":
     graph = BarChart(
         title="",
         width=83,
-        value_range=(0, 2),
+        value_range=(0, 3),
         color="purple",
-        ticks=(0, 2.0),
+        ticks=(0, 3.0),
     )
     for idx, value in enumerate(wave(12, 0, 0)):
         graph.add_row(label=calendar.month_abbr[idx + 1], value=value + 1)
@@ -175,23 +205,64 @@ if __name__ == "__main__":
     console.print()
     console.save_svg("barchart.svg", title="BarChart Example", theme=THEME)
 
-    # BarChart Variations Example
+    # DivergingBarChart Example
 
     console = Console(record=True, width=WIDTH)
     console.print()
-    for style in BarStyle:
-        graph = BarChart(
-            title=style.name,
-            width=83,
-            value_range=(0, 2),
-            color="purple",
-            bar_style=style,
-            ticks=(0, 2.0),
-        )
-        for idx, value in enumerate(wave(12, 0, 0)):
-            graph.add_row(label=calendar.month_abbr[idx + 1], value=value + 1)
-        console.print(graph, justify="center")
-        console.print()
-    console.save_svg(
-        "barchart-variations.svg", title="BarChart Style Examples", theme=THEME
+    graph = DivergingBarChart(
+        title="",
+        width=83,
+        value_range=(-1.5, 1.5),
+        color="purple",
+        color_negative="red",
+        ticks=(-1.5, 1.5),
     )
+    for idx, value in enumerate(wave(12, 1, 0)):
+        graph.add_row(label=calendar.month_abbr[idx + 1], value=value + 0.3)
+    console.print(graph, justify="center")
+    console.print()
+    console.save_svg(
+        "diverging-barchart.svg", title="DivergingBarChart Example", theme=THEME
+    )
+
+    # DivergingBarChart Example
+
+    console = Console(record=True, width=WIDTH)
+    console.print()
+    graph = StackedBarChart(
+        title="",
+        width=83,
+        value_range=(0, 6),
+        colors=["purple", "red", "yellow"],
+        ticks=(0, 6.0),
+    )
+    waves = zip(wave(12, 0, 0), wave(12, 6, 0), wave(12, 3, 0))
+    for idx, values in enumerate(waves):
+        graph.add_row(
+            label=calendar.month_abbr[idx + 1], values=[v + 1 for v in values]
+        )
+    console.print(graph, justify="center")
+    console.print()
+    console.save_svg(
+        "stacked-barchart.svg", title="StackedBarChart Example", theme=THEME
+    )
+
+    # DivergingBarChart Example
+
+    console = Console(record=True, width=WIDTH)
+    console.print()
+    graph = DoubleBarChart(
+        title="",
+        width=83,
+        value_range=(0, 3),
+        colors=["purple", "red"],
+        ticks=(0, 3.0),
+    )
+    waves = zip(wave(12, 0, 0), wave(12, 6, 0))
+    for idx, values in enumerate(waves):
+        graph.add_row(
+            label=calendar.month_abbr[idx + 1], values=[v + 1 for v in values]
+        )
+    console.print(graph, justify="center")
+    console.print()
+    console.save_svg("double-barchart.svg", title="DoubleBarChart Example", theme=THEME)

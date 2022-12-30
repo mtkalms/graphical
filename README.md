@@ -28,22 +28,23 @@ Redundant graph types in Graphical will be adapted accordingly or might become d
 
 ![Bar Table Example](img/bar-table.svg)
 
-### Diverging Bar
-
-![DivergingBar Table Example](img/diverging-bar-table.svg)
-
 #### Bar Chart
 
 > Bar charts might be part of future versions of Textual (see [Textual roadmap][roadmap]).
 
 ![BarChart Example](img/barchart.svg)
 
-<details>
-  <summary>Variations</summary>
+### Diverging Bar Chart
 
-  ![BarChart Variations Example](img/barchart-variations.svg)
-</details>
+![DivergingBarChart Example](img/diverging-barchart.svg)
 
+### Stacked Bar Chart
+
+![StackedBarChart Example](img/stacked-barchart.svg)
+
+### Double Bar Chart
+
+![DoubleBarChart Example](img/double-barchart.svg)
 
 ## Similar Projects
 
@@ -63,14 +64,6 @@ Redundant graph types in Graphical will be adapted accordingly or might become d
 This is a list of textual sketches of different graph types that are also candidates for future implementation.
 
 ### Row-based Graphs
-
-#### Double Bar Chart
-
-![](img/doublebarchart.png)
-
-#### Stacked Bar Chart
-
-![](img/stackedbarchart.png)
 
 #### Boxplot
 
