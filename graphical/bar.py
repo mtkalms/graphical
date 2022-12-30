@@ -175,6 +175,14 @@ class BarChartRow:
     bar_style: Optional[BarStyle] = None
 
 
+@dataclass
+class MultiBarChartRow:
+    label: str
+    values: List[float]
+    colors: List[Union[Color, str]] = None
+    bar_style: Optional[BarStyle] = None
+
+
 class BarChart:
     def __init__(
         self,
@@ -297,6 +305,55 @@ class DivergingBarChart:
         return Measurement(self.width, self.width)
 
 
+class StackedBarChart:
+    def __init__(
+        self,
+        title: str,
+        value_range: Tuple[float, float],
+        colors: List[Union[Color, str]] = "default",
+        width: int = WIDTH,
+        bar_style: BarStyle = BarStyle.BLOCK,
+        box: Box = HEAVY,
+        ticks: Optional[Tuple[float, float]] = None,
+    ):
+        self.title = title
+        self.value_range = value_range
+        self.colors = colors
+        self.width = width
+        self.bar_style = bar_style
+        self.box = box
+        self.ticks = ticks
+        self.rows: List[MultiBarChartRow] = []
+
+    def add_row(self, label: str, values: List[float]) -> MultiBarChartRow:
+        row = MultiBarChartRow(label, values)
+        self.rows.append(row)
+        return row
+
+    def __rich_console__(
+        self, console: Console, options: ConsoleOptions
+    ) -> RenderResult:
+        width_labels = max(len(d.label) for d in self.rows) + 1
+        width_graphs = self.width - width_labels - 2
+
+        chart = LabelChartRenderer(title=self.title, ticks=self.ticks, box=self.box)
+        for row in self.rows:
+            content = StackedBar(
+                values=row.values,
+                width=width_graphs,
+                value_range=self.value_range,
+                colors=row.colors or self.colors,
+                end="",
+            )
+            chart.add_row(content=content, content_width=width_graphs, label=row.label)
+        yield from chart.render()
+
+    def __rich_measure__(
+        self, console: Console, options: ConsoleOptions
+    ) -> Measurement:
+        return Measurement(self.width, self.width)
+
+
 if __name__ == "__main__":
     from rich import print
     from random import randint
@@ -334,5 +391,15 @@ if __name__ == "__main__":
     )
     for idx in range(12):
         bar_chart.add_row(f"idx {idx}", randint(-100, 100))
+    print(bar_chart)
+    print()
+
+    bar_chart = StackedBarChart(
+        title="Diverging Example",
+        value_range=(0, 100),
+        colors=["purple", "red", "yellow"],
+    )
+    for idx in range(12):
+        bar_chart.add_row(f"idx {idx}", [randint(0, 33) for _ in range(3)])
     print(bar_chart)
     print()
