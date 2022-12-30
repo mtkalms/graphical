@@ -172,6 +172,7 @@ class BarChartRow:
     label: str
     value: float
     color: Union[Color, str] = "default"
+    bgcolor: Union[Color, str] = "default"
     bar_style: Optional[BarStyle] = None
 
 
@@ -180,6 +181,7 @@ class MultiBarChartRow:
     label: str
     values: List[float]
     colors: List[Union[Color, str]] = None
+    bgcolor: Union[Color, str] = "default"
     bar_style: Optional[BarStyle] = None
 
 
@@ -189,6 +191,7 @@ class BarChart:
         title: str,
         value_range: Tuple[float, float],
         color: Union[Color, str] = "default",
+        bgcolor: Union[Color, str] = "default",
         ticks: Optional[Tuple[float, float]] = None,
         width: int = WIDTH,
         bar_style: BarStyle = BarStyle.BLOCK,
@@ -196,7 +199,8 @@ class BarChart:
     ):
         self.title = title
         self.value_range = value_range
-        self.style = Style(color=color)
+        self.color = color
+        self.bgcolor = bgcolor
         self.ticks = ticks
         self.width = width
         self.bar_style = bar_style
@@ -207,10 +211,17 @@ class BarChart:
         self,
         label: str,
         value: float,
-        color: Union[Color, str] = "default",
+        color: Optional[Union[Color, str]] = None,
+        bgcolor: Optional[Union[Color, str]] = None,
         bar_style: Optional[BarStyle] = None,
     ) -> BarChartRow:
-        row = BarChartRow(label, value, color, bar_style)
+        row = BarChartRow(
+            label=label,
+            value=value,
+            color=color,
+            bgcolor=bgcolor,
+            bar_style=bar_style,
+        )
         self.rows.append(row)
         return row
 
@@ -219,18 +230,15 @@ class BarChart:
     ) -> RenderResult:
         width_labels = max(len(d.label) for d in self.rows) + 1
         width_graphs = self.width - width_labels - 2
-
         chart = LabelChartRenderer(title=self.title, ticks=self.ticks, box=self.box)
         for row in self.rows:
-            row_style = Style(color=row.color) if row.color != "default" else self.style
-            bar_style = row.bar_style if row.bar_style else self.bar_style
             content = Bar(
                 value=row.value,
                 width=width_graphs,
                 value_range=self.value_range,
-                color=row_style.color or "default",
-                bgcolor=row_style.bgcolor or "default",
-                bar_style=bar_style,
+                color=row.color or self.color,
+                bgcolor=row.bgcolor or self.bgcolor,
+                bar_style=row.bar_style or self.bar_style,
                 end="",
             )
             chart.add_row(content=content, content_width=width_graphs, label=row.label)
@@ -270,9 +278,15 @@ class DivergingBarChart:
         self,
         label: str,
         value: float,
+        bgcolor: Optional[Union[Color, str]] = None,
         bar_style: Optional[BarStyle] = None,
     ) -> BarChartRow:
-        row = BarChartRow(label, value, bar_style=bar_style)
+        row = BarChartRow(
+            label=label,
+            value=value,
+            bgcolor=bgcolor,
+            bar_style=bar_style,
+        )
         self.rows.append(row)
         return row
 
@@ -282,18 +296,16 @@ class DivergingBarChart:
         width_labels = max(len(d.label) for d in self.rows) + 1
         width_graphs = self.width - width_labels - 2
         width_graphs -= width_graphs % 2
-
         chart = LabelChartRenderer(title=self.title, ticks=self.ticks, box=self.box)
         for row in self.rows:
-            bar_style = row.bar_style if row.bar_style else self.bar_style
             content = DivergingBar(
                 value=row.value,
                 width=width_graphs,
                 value_range=self.value_range,
                 color=self.color,
                 color_negative=self.color_negative,
-                bgcolor=self.bgcolor,
-                bar_style=bar_style,
+                bgcolor=row.bgcolor or self.bgcolor,
+                bar_style=row.bar_style or self.bar_style,
                 end="",
             )
             chart.add_row(content=content, content_width=width_graphs, label=row.label)
@@ -311,6 +323,7 @@ class StackedBarChart:
         title: str,
         value_range: Tuple[float, float],
         colors: List[Union[Color, str]] = "default",
+        bgcolor: Union[Color, str] = "default",
         ticks: Optional[Tuple[float, float]] = None,
         width: int = WIDTH,
         bar_style: BarStyle = BarStyle.BLOCK,
@@ -319,14 +332,24 @@ class StackedBarChart:
         self.title = title
         self.value_range = value_range
         self.colors = colors
+        self.bgcolor = bgcolor
         self.ticks = ticks
         self.width = width
         self.bar_style = bar_style
         self.box = box
         self.rows: List[MultiBarChartRow] = []
 
-    def add_row(self, label: str, values: List[float]) -> MultiBarChartRow:
-        row = MultiBarChartRow(label, values)
+    def add_row(
+        self,
+        label: str,
+        values: List[float],
+        bgcolor: Optional[Union[Color, str]] = None,
+    ) -> MultiBarChartRow:
+        row = MultiBarChartRow(
+            label=label,
+            values=values,
+            bgcolor=bgcolor,
+        )
         self.rows.append(row)
         return row
 
@@ -335,7 +358,6 @@ class StackedBarChart:
     ) -> RenderResult:
         width_labels = max(len(d.label) for d in self.rows) + 1
         width_graphs = self.width - width_labels - 2
-
         chart = LabelChartRenderer(title=self.title, ticks=self.ticks, box=self.box)
         for row in self.rows:
             content = StackedBar(
@@ -343,6 +365,7 @@ class StackedBarChart:
                 width=width_graphs,
                 value_range=self.value_range,
                 colors=row.colors or self.colors,
+                bgcolor=row.bgcolor or self.bgcolor,
                 end="",
             )
             chart.add_row(content=content, content_width=width_graphs, label=row.label)
@@ -378,8 +401,10 @@ if __name__ == "__main__":
     print()
 
     bar_chart = BarChart(title="BarChart Example", value_range=(0, 100), color="purple")
-    for idx in range(12):
-        bar_chart.add_row(f"idx {idx}", randint(0, 100))
+    for idx in range(6):
+        row = bar_chart.add_row(f"idx {idx}", randint(0, 100))
+        if idx == 3:
+            row.bgcolor = "white"
     print(bar_chart)
     print()
 
@@ -389,8 +414,10 @@ if __name__ == "__main__":
         color="purple",
         color_negative="red",
     )
-    for idx in range(12):
-        bar_chart.add_row(f"idx {idx}", randint(-100, 100))
+    for idx in range(6):
+        row = bar_chart.add_row(f"idx {idx}", randint(-100, 100))
+        if idx == 3:
+            row.bgcolor = "white"
     print(bar_chart)
     print()
 
@@ -399,7 +426,9 @@ if __name__ == "__main__":
         value_range=(0, 100),
         colors=["purple", "red", "yellow"],
     )
-    for idx in range(12):
-        bar_chart.add_row(f"idx {idx}", [randint(0, 33) for _ in range(3)])
+    for idx in range(6):
+        row = bar_chart.add_row(f"idx {idx}", [randint(0, 33) for _ in range(3)])
+        if idx == 3:
+            row.bgcolor = "white"
     print(bar_chart)
     print()
