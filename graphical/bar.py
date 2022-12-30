@@ -377,7 +377,6 @@ class StackedBarChart:
         bgcolor: Union[Color, str] = "default",
         ticks: Optional[Tuple[float, float]] = None,
         width: int = WIDTH,
-        bar_style: BarStyle = BarStyle.BLOCK,
         box: Box = HEAVY,
     ):
         self.title = title
@@ -386,7 +385,6 @@ class StackedBarChart:
         self.bgcolor = bgcolor
         self.ticks = ticks
         self.width = width
-        self.bar_style = bar_style
         self.box = box
         self.rows: List[MultiBarChartRow] = []
 
@@ -412,6 +410,64 @@ class StackedBarChart:
         chart = LabelChartRenderer(title=self.title, ticks=self.ticks, box=self.box)
         for row in self.rows:
             content = StackedBar(
+                values=row.values,
+                width=width_graphs,
+                value_range=self.value_range,
+                colors=row.colors or self.colors,
+                bgcolor=row.bgcolor or self.bgcolor,
+                end="",
+            )
+            chart.add_row(content=content, content_width=width_graphs, label=row.label)
+        yield from chart.render()
+
+    def __rich_measure__(
+        self, console: Console, options: ConsoleOptions
+    ) -> Measurement:
+        return Measurement(self.width, self.width)
+
+
+class DoubleBarChart:
+    def __init__(
+        self,
+        title: str,
+        value_range: Tuple[float, float],
+        colors: List[Union[Color, str]] = "default",
+        bgcolor: Union[Color, str] = "default",
+        ticks: Optional[Tuple[float, float]] = None,
+        width: int = WIDTH,
+        box: Box = HEAVY,
+    ):
+        self.title = title
+        self.value_range = value_range
+        self.colors = colors
+        self.bgcolor = bgcolor
+        self.ticks = ticks
+        self.width = width
+        self.box = box
+        self.rows: List[MultiBarChartRow] = []
+
+    def add_row(
+        self,
+        label: str,
+        values: List[float],
+        bgcolor: Optional[Union[Color, str]] = None,
+    ) -> MultiBarChartRow:
+        row = MultiBarChartRow(
+            label=label,
+            values=values,
+            bgcolor=bgcolor,
+        )
+        self.rows.append(row)
+        return row
+
+    def __rich_console__(
+        self, console: Console, options: ConsoleOptions
+    ) -> RenderResult:
+        width_labels = max(len(d.label) for d in self.rows) + 1
+        width_graphs = self.width - width_labels - 2
+        chart = LabelChartRenderer(title=self.title, ticks=self.ticks, box=self.box)
+        for row in self.rows:
+            content = DoubleBar(
                 values=row.values,
                 width=width_graphs,
                 value_range=self.value_range,
@@ -476,13 +532,27 @@ if __name__ == "__main__":
     print()
 
     bar_chart = StackedBarChart(
-        title="Diverging Example",
+        title="DivergingBar Example",
         value_range=(0, 100),
         colors=["purple", "red", "yellow"],
     )
     for row_idx in range(6):
         current_row = bar_chart.add_row(
             f"idx {row_idx}", [randint(0, 33) for _ in range(3)]
+        )
+        if row_idx == 3:
+            current_row.bgcolor = "white"
+    print(bar_chart)
+    print()
+
+    bar_chart = DoubleBarChart(
+        title="DoubleBar Example",
+        value_range=(0, 100),
+        colors=["purple", "red"],
+    )
+    for row_idx in range(6):
+        current_row = bar_chart.add_row(
+            f"idx {row_idx}", [randint(0, 33) for _ in range(2)]
         )
         if row_idx == 3:
             current_row.bgcolor = "white"
