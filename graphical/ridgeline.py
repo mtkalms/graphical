@@ -28,17 +28,17 @@ class RidgelineChart:
         title: str,
         value_range: Optional[Tuple[float, float]] = None,
         color: Union[Color, str] = "default",
+        ticks: Optional[Tuple[float, float]] = None,
         plot_style: OneLinePlotStyle = OneLinePlotStyle.AREA,
         box: Box = HEAVY,
-        ticks: Optional[Tuple[float, float]] = None,
     ):
         self.title = title
         self.value_range = value_range
         self.style = Style(color=color)
+        self.ticks = ticks
         self.plot_style = plot_style
         self.box = box
         self.rows: List[RidgelineRow] = []
-        self.ticks = ticks
 
     def add_row(
         self,

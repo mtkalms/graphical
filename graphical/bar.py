@@ -45,9 +45,9 @@ class Bar:
         self,
         value: float,
         value_range: Tuple[float, float],
-        width: int = WIDTH,
         color: Union[Color, str] = "default",
         bgcolor: Union[Color, str] = "default",
+        width: int = WIDTH,
         bar_style: BarStyle = BarStyle.BLOCK,
         end: str = "\n",
     ):
@@ -83,18 +83,18 @@ class DivergingBar:
         self,
         value: float,
         value_range: Tuple[float, float],
-        width: int = WIDTH,
         color: Union[Color, str] = "default",
         color_negative: Optional[Union[Color, str]] = None,
         bgcolor: Union[Color, str] = "default",
+        width: int = WIDTH,
         bar_style: BarStyle = BarStyle.BLOCK,
         end: str = "\n",
     ):
         self.value = value
         self.value_range = value_range
-        self.width = width - width % 2
         self.style = Style(color=color, bgcolor=bgcolor)
         self.style_negative = Style(color=color_negative or color, bgcolor=bgcolor)
+        self.width = width - width % 2
         self.bar_style = bar_style
         self.end = end
 
@@ -139,9 +139,9 @@ class StackedBar:
     ):
         self.values = values
         self.value_range = value_range
-        self.width = width
         self.colors = colors
         self.bgcolor = bgcolor
+        self.width = width
         self.end = end
 
     def __rich_console__(
@@ -188,19 +188,19 @@ class BarChart:
         self,
         title: str,
         value_range: Tuple[float, float],
-        width: int = WIDTH,
         color: Union[Color, str] = "default",
+        ticks: Optional[Tuple[float, float]] = None,
+        width: int = WIDTH,
         bar_style: BarStyle = BarStyle.BLOCK,
         box: Box = HEAVY,
-        ticks: Optional[Tuple[float, float]] = None,
     ):
         self.title = title
         self.value_range = value_range
-        self.width = width
         self.style = Style(color=color)
+        self.ticks = ticks
+        self.width = width
         self.bar_style = bar_style
         self.box = box
-        self.ticks = ticks
         self.rows: List[BarChartRow] = []
 
     def add_row(
@@ -247,23 +247,23 @@ class DivergingBarChart:
         self,
         title: str,
         value_range: Tuple[float, float],
-        width: int = WIDTH,
         color: Union[Color, str] = "default",
         color_negative: Optional[Union[Color, str]] = None,
         bgcolor: Union[Color, str] = "default",
+        ticks: Optional[Tuple[float, float]] = None,
+        width: int = WIDTH,
         bar_style: BarStyle = BarStyle.BLOCK,
         box: Box = HEAVY,
-        ticks: Optional[Tuple[float, float]] = None,
     ):
         self.title = title
         self.value_range = value_range
-        self.width = width
         self.color = color
         self.color_negative = color_negative
         self.bgcolor = bgcolor
+        self.ticks = ticks
+        self.width = width
         self.bar_style = bar_style
         self.box = box
-        self.ticks = ticks
         self.rows: List[BarChartRow] = []
 
     def add_row(
@@ -311,18 +311,18 @@ class StackedBarChart:
         title: str,
         value_range: Tuple[float, float],
         colors: List[Union[Color, str]] = "default",
+        ticks: Optional[Tuple[float, float]] = None,
         width: int = WIDTH,
         bar_style: BarStyle = BarStyle.BLOCK,
         box: Box = HEAVY,
-        ticks: Optional[Tuple[float, float]] = None,
     ):
         self.title = title
         self.value_range = value_range
         self.colors = colors
+        self.ticks = ticks
         self.width = width
         self.bar_style = bar_style
         self.box = box
-        self.ticks = ticks
         self.rows: List[MultiBarChartRow] = []
 
     def add_row(self, label: str, values: List[float]) -> MultiBarChartRow:
