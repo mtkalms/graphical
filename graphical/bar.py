@@ -167,6 +167,57 @@ class StackedBar:
         return Measurement(self.width, self.width)
 
 
+class DoubleBar:
+    def __init__(
+        self,
+        values: List[float],
+        value_range: Tuple[float, float],
+        colors: List[Union[Color, str]],
+        bgcolor: Union[Color, str] = "default",
+        width: int = WIDTH,
+        end: str = "\n",
+    ):
+        self.values = values
+        self.value_range = value_range
+        self.colors = colors
+        self.bgcolor = bgcolor
+        self.width = width
+        self.end = end
+
+    def __rich_console__(
+        self, console: Console, options: ConsoleOptions
+    ) -> RenderResult:
+        step = self.value_range[1] / self.width
+        for idx in range(self.width):
+            cell_range = idx * step, (idx + 1) * step
+            first_lower = self.values[0] > cell_range[1]
+            first_match = cell_range[0] < self.values[0] < cell_range[1]
+            second_lower = self.values[1] > cell_range[1]
+            second_match = cell_range[0] < self.values[1] < cell_range[1]
+            if first_lower or first_match:
+                color = self.colors[0]
+                cell = "▀"
+                if second_lower or second_match:
+                    bgcolor = self.colors[1]
+                else:
+                    bgcolor = self.bgcolor
+            else:
+                color = self.colors[1]
+                bgcolor = self.bgcolor
+                if second_lower or second_match:
+                    cell = "▄"
+                else:
+                    cell = " "
+            style = Style(color=color, bgcolor=bgcolor)
+            yield Segment(cell, style=style)
+        yield Segment(self.end)
+
+    def __rich_measure__(
+        self, console: Console, options: ConsoleOptions
+    ) -> Measurement:
+        return Measurement(self.width, self.width)
+
+
 @dataclass
 class BarChartRow:
     label: str
@@ -389,15 +440,18 @@ if __name__ == "__main__":
 
     print("DivergingBar Example")
     print()
-
     print(DivergingBar(-100, (-200, 200), width=21, color="purple"))
     print(DivergingBar(100, (-200, 200), width=21, color="purple"))
     print()
 
     print("StackedBar Example")
     print()
-
     print(StackedBar([50, 20, 10], (0, 200), colors=["red", "yellow", "green"]))
+    print()
+
+    print("StackedBar Example")
+    print()
+    print(DoubleBar([50, 20], (0, 200), colors=["purple", "red"]))
     print()
 
     bar_chart = BarChart(title="BarChart Example", value_range=(0, 100), color="purple")
