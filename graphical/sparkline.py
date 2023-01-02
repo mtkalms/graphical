@@ -84,33 +84,42 @@ class Sparkline:
 
 
 if __name__ == "__main__":
-    from rich import print
-    from rich.table import Table
-    from random import randint
     from math import sin, pi
+    from rich.table import Table
 
+    WIDTH_CONSOLE = 120
+
+    def wave(
+        num: int, offset: int = 0, seed: int = 0, scale: float = 1.0
+    ) -> List[float]:
+        result = [sin(2 * pi * (d + offset) / 10) for d in range(num)]
+        if seed > 0:  # overlay second wave
+            result = [
+                val * sin(2 * pi * d / (40 + seed * 5)) * scale
+                for d, val in enumerate(result)
+            ]
+        return result
+
+    # Sparkline Table Example
+
+    data = wave(22, 0)
+
+    table = Table()
+    table.add_column("Plot Style")
     for style in OneLinePlotStyle:
-        print(f"Sparkline Examples ({style.name})")
-        print()
-
-        data = [randint(0, 100) for d in range(100)]
-        line = Sparkline(data, color="cyan", plot_style=style)
-        print(line)
-        print()
-
-        data = [sin(2 * pi * d / 10) for d in range(100)]
-        line = Sparkline(data, value_range=(0, 2), color="purple", plot_style=style)
-        print(line)
-        print()
-
-    for style in OneLinePlotStyle:
-        data = [sin(2 * pi * d / 10) for d in range(50)]
-        line = Sparkline(data, color="purple", plot_style=style)
-
-        table = Table(
-            title=f"Sparkline Table Example ({style.name})", show_header=False
+        table.add_column(style.name)
+    lines = [
+        Sparkline(
+            values=data,
+            color="purple",
+            value_range=(-1.5, 1.5),
+            plot_style=style,
         )
-        table.add_row("row 0", line)
-        table.add_row("row 1", line)
-        table.add_row("row 2", line)
-        print(table)
+        for style in OneLinePlotStyle
+    ]
+    table.add_row("Sparkline", *lines)
+
+    console = Console(record=True, width=WIDTH_CONSOLE)
+    console.print()
+    console.print(table, justify="center")
+    console.print()

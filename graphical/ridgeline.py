@@ -87,23 +87,54 @@ class RidgelineChart:
 
 
 if __name__ == "__main__":
-    from rich import print
-    from random import randint
+    import calendar
+
     from math import sin, pi
 
-    def wave(r: int) -> int:
-        return int(sin((r + randint(0, 3)) * 2 * pi / 25) * 40 - 50)
+    WIDTH_CONSOLE = 120
 
+    def wave(
+        num: int, offset: int = 0, seed: int = 0, scale: float = 1.0
+    ) -> List[float]:
+        result = [sin(2 * pi * (d + offset) / 10) for d in range(num)]
+        if seed > 0:  # overlay second wave
+            result = [
+                val * sin(2 * pi * d / (40 + seed * 5)) * scale
+                for d, val in enumerate(result)
+            ]
+        return result
+
+    # RidgelineGraph Example
+
+    console = Console(record=True, width=WIDTH_CONSOLE)
+    console.print()
+    graph = RidgelineChart(
+        title="",
+        value_range=(-1.5, 1.5),
+        color="purple",
+        plot_style=OneLinePlotStyle.AREA,
+        ticks=(0, 100),
+    )
+    for idx in range(12):
+        data = wave(108, idx, idx, 0.8)
+        graph.add_row(label=calendar.month_abbr[idx + 1], values=data)
+    console.print(graph, justify="center")
+    console.print()
+
+    # RidgelineChart Variations Example
+
+    console = Console(record=True, width=WIDTH_CONSOLE)
+    console.print()
     for style in OneLinePlotStyle:
         graph = RidgelineChart(
-            title=f"Ridgeline Graph Example ({style.name})",
+            title=style.name,
+            value_range=(-1.5, 1.5),
             color="purple",
             plot_style=style,
             ticks=(0, 100),
         )
-        for b in range(12):
-            data = [wave(d) for d in range(100)]
-            graph.add_row(f"row {b}", data)
-
-        print(graph)
-        print()
+        for idx in range(12):
+            data = wave(108, idx, idx)
+            graph.add_row(label=calendar.month_abbr[idx + 1], values=data)
+        console.print(graph, justify="center")
+        console.print()

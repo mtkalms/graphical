@@ -9,8 +9,8 @@ from rich.measure import Measurement
 from rich.segment import Segment
 from rich.style import Style
 
-from .chart import LabelChartRenderer
 from .cell import PlotCellStyle, PlotCellRenderer
+from .chart import LabelChartRenderer
 
 WIDTH = 50
 
@@ -485,76 +485,164 @@ class DoubleBarChart:
 
 
 if __name__ == "__main__":
-    from rich import print
-    from random import randint
+    import calendar
 
-    print("Bar Example")
-    print()
-    for current_style in BarStyle:
-        print(Bar(15.7, (0, 200), color="purple", bar_style=current_style))
-    print()
+    from math import sin, pi
+    from rich.table import Table
 
-    print("DivergingBar Example")
-    print()
-    print(DivergingBar(-100, (-200, 200), width=21, color="purple"))
-    print(DivergingBar(100, (-200, 200), width=21, color="purple"))
-    print()
+    WIDTH_CONSOLE = 120
+    WIDTH_VISUALS = 114
 
-    print("StackedBar Example")
-    print()
-    print(StackedBar([50, 20, 10], (0, 200), colors=["red", "yellow", "green"]))
-    print()
+    def wave(
+        num: int, offset: int = 0, seed: int = 0, scale: float = 1.0
+    ) -> List[float]:
+        result = [sin(2 * pi * (d + offset) / 10) for d in range(num)]
+        if seed > 0:  # overlay second wave
+            result = [
+                val * sin(2 * pi * d / (40 + seed * 5)) * scale
+                for d, val in enumerate(result)
+            ]
+        return result
 
-    print("StackedBar Example")
-    print()
-    print(DoubleBar([50, 20], (0, 200), colors=["purple", "red"]))
-    print()
+    def create_bars(value: float):
+        return [
+            Bar(
+                value=value,
+                value_range=(0, 2),
+                width=15,
+                color="purple",
+                bar_style=bar_style,
+            )
+            for bar_style in BarStyle
+        ]
 
-    bar_chart = BarChart(title="BarChart Example", value_range=(0, 100), color="purple")
-    for row_idx in range(6):
-        current_row = bar_chart.add_row(f"idx {row_idx}", randint(0, 100))
-        if row_idx == 3:
-            current_row.bgcolor = "white"
-    print(bar_chart)
-    print()
+    def create_diverging_bars(value: float):
+        return [
+            DivergingBar(
+                value=value,
+                value_range=(-1, 1),
+                width=17,
+                color="purple",
+                color_negative="red",
+                bar_style=bar_style,
+            )
+            for bar_style in BarStyle
+        ]
 
-    bar_chart = DivergingBarChart(
-        title="Diverging Example",
-        value_range=(-100, 100),
+    # Bar Table Example
+
+    console = Console(record=True, width=WIDTH_CONSOLE)
+    console.print()
+    table = Table(width=WIDTH_CONSOLE - 6)
+    table.add_column("")
+    for bar_style in BarStyle:
+        table.add_column(bar_style.name)
+    table.add_column("HALF")
+    table.add_row("Bar", *create_bars(1), "")
+    table.add_row("", *create_bars(0.5), "")
+    table.add_section()
+    table.add_row("DivergingBar", *create_diverging_bars(0.5), "")
+    table.add_row("", *create_diverging_bars(-0.5), "")
+    table.add_section()
+    bar = StackedBar(
+        values=[3, 2, 1],
+        value_range=(0, 10),
+        colors=["purple", "red", "yellow"],
+        width=17,
+    )
+    table.add_row("StackedBar", "", "", bar, "", "")
+    bar = StackedBar(
+        values=[2, 3, 2],
+        value_range=(0, 10),
+        colors=["purple", "red", "yellow"],
+        width=17,
+    )
+    table.add_row("", "", "", bar, "", "")
+    table.add_section()
+    bar = DoubleBar(
+        values=[3, 2],
+        value_range=(0, 4),
+        colors=["purple", "red"],
+        width=17,
+    )
+    table.add_row("DoubleBar", "", "", "", "", bar)
+    bar = DoubleBar(
+        values=[3, 2],
+        value_range=(0, 4),
+        colors=["purple", "red"],
+        width=17,
+    )
+    table.add_row("", "", "", "", "", bar)
+
+    console.print(table, justify="center")
+
+    # BarChart Example
+
+    console = Console(record=True, width=WIDTH_CONSOLE)
+    console.print()
+    graph = BarChart(
+        title="",
+        width=WIDTH_VISUALS,
+        value_range=(0, 3),
+        color="purple",
+        ticks=(0, 3.0),
+    )
+    for idx, value in enumerate(wave(12, 0, 0)):
+        graph.add_row(label=calendar.month_abbr[idx + 1], value=value + 1)
+    console.print(graph, justify="center")
+    console.print()
+
+    # DivergingBarChart Example
+
+    console = Console(record=True, width=WIDTH_CONSOLE)
+    console.print()
+    graph = DivergingBarChart(
+        title="",
+        width=WIDTH_VISUALS,
+        value_range=(-1.5, 1.5),
         color="purple",
         color_negative="red",
+        ticks=(-1.5, 1.5),
     )
-    for row_idx in range(6):
-        current_row = bar_chart.add_row(f"idx {row_idx}", randint(-100, 100))
-        if row_idx == 3:
-            current_row.bgcolor = "white"
-    print(bar_chart)
-    print()
+    for idx, value in enumerate(wave(12, 1, 0)):
+        graph.add_row(label=calendar.month_abbr[idx + 1], value=value + 0.3)
+    console.print(graph, justify="center")
+    console.print()
 
-    bar_chart = StackedBarChart(
-        title="DivergingBar Example",
-        value_range=(0, 100),
+    # DivergingBarChart Example
+
+    console = Console(record=True, width=WIDTH_CONSOLE)
+    console.print()
+    graph = StackedBarChart(
+        title="",
+        width=WIDTH_VISUALS,
+        value_range=(0, 6),
         colors=["purple", "red", "yellow"],
+        ticks=(0, 6.0),
     )
-    for row_idx in range(6):
-        current_row = bar_chart.add_row(
-            f"idx {row_idx}", [randint(0, 33) for _ in range(3)]
+    waves = zip(wave(12, 0, 0), wave(12, 6, 0), wave(12, 3, 0))
+    for idx, values in enumerate(waves):
+        graph.add_row(
+            label=calendar.month_abbr[idx + 1], values=[v + 1 for v in values]
         )
-        if row_idx == 3:
-            current_row.bgcolor = "white"
-    print(bar_chart)
-    print()
+    console.print(graph, justify="center")
+    console.print()
 
-    bar_chart = DoubleBarChart(
-        title="DoubleBar Example",
-        value_range=(0, 100),
+    # DivergingBarChart Example
+
+    console = Console(record=True, width=WIDTH_CONSOLE)
+    console.print()
+    graph = DoubleBarChart(
+        title="",
+        width=WIDTH_VISUALS,
+        value_range=(0, 3),
         colors=["purple", "red"],
+        ticks=(0, 3.0),
     )
-    for row_idx in range(6):
-        current_row = bar_chart.add_row(
-            f"idx {row_idx}", [randint(0, 33) for _ in range(2)]
+    waves = zip(wave(12, 0, 0), wave(12, 6, 0))
+    for idx, values in enumerate(waves):
+        graph.add_row(
+            label=calendar.month_abbr[idx + 1], values=[v + 1 for v in values]
         )
-        if row_idx == 3:
-            current_row.bgcolor = "white"
-    print(bar_chart)
-    print()
+    console.print(graph, justify="center")
+    console.print()
