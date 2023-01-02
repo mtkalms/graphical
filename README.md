@@ -12,39 +12,43 @@ Redundant graph types in Graphical will be adapted accordingly or might become d
 
 > Sparklines might be part of future versions of Textual (see [Textual roadmap][roadmap]).
 
-![Sparkline Table Example](img/sparkline-table.svg)
+![Sparkline Table Example](img/sparkline-table.png)
 
 ### Ridgeline Chart
 
-![Ridgeline Example](img/ridgeline.svg)
+![Ridgeline Example](img/ridgeline.png)
 
 <details>
   <summary>Variations</summary>
 
-  ![Ridgeline Variations Example](img/ridgeline-variations.svg)
+  ![Ridgeline Line Example](img/ridgeline-line.png)
+  ![Ridgeline Area Example](img/ridgeline-area.png)
+  ![Ridgeline Horizon Example](img/ridgeline-horizon.png)
+  ![Ridgeline Shade Example](img/ridgeline-shade.png)
+
 </details>
 
 ### Bar
 
-![Bar Table Example](img/bar-table.svg)
+![Bar Table Example](img/bar-table.png)
 
 #### Bar Chart
 
 > Bar charts might be part of future versions of Textual (see [Textual roadmap][roadmap]).
 
-![BarChart Example](img/barchart.svg)
+![BarChart Example](img/barchart.png)
 
 ### Diverging Bar Chart
 
-![DivergingBarChart Example](img/diverging-barchart.svg)
+![DivergingBarChart Example](img/diverging-barchart.png)
 
 ### Stacked Bar Chart
 
-![StackedBarChart Example](img/stacked-barchart.svg)
+![StackedBarChart Example](img/stacked-barchart.png)
 
 ### Double Bar Chart
 
-![DoubleBarChart Example](img/double-barchart.svg)
+![DoubleBarChart Example](img/double-barchart.png)
 
 ## Similar Projects
 
