@@ -21,9 +21,16 @@ Redundant graph types in Graphical will be adapted accordingly or might become d
 <details>
   <summary>Variations</summary>
 
+  #### Line Plot
   ![Ridgeline Line Example](img/ridgeline-line.png)
+
+  #### Area Plot
   ![Ridgeline Area Example](img/ridgeline-area.png)
+
+  #### Horizon Plot
   ![Ridgeline Horizon Example](img/ridgeline-horizon.png)
+  
+  #### Shade Plot
   ![Ridgeline Shade Example](img/ridgeline-shade.png)
 
 </details>
@@ -38,15 +45,15 @@ Redundant graph types in Graphical will be adapted accordingly or might become d
 
 ![BarChart Example](img/barchart.png)
 
-### Diverging Bar Chart
+#### Diverging Bar Chart
 
 ![DivergingBarChart Example](img/diverging-barchart.png)
 
-### Stacked Bar Chart
+#### Stacked Bar Chart
 
 ![StackedBarChart Example](img/stacked-barchart.png)
 
-### Double Bar Chart
+#### Double Bar Chart
 
 ![DoubleBarChart Example](img/double-barchart.png)
 
