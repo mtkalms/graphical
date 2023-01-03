@@ -108,17 +108,16 @@ class DivergingBar:
         cells = ""
         for idx in range(self.width):
             cell_range = value_range[0] + idx * step, value_range[0] + (idx + 1) * step
+            negative_value = self.value <= 0 and cell_range[0] < 0
+            negative_range = self.value > 0 > cell_range[0]
             cells += PlotCellRenderer.render(
                 self.value,
                 value_range=cell_range,
                 cell_style=cell_style,
-                invert=self.value < 0
-                and cell_range[0] < 0
-                or self.value > 0 > cell_range[0],
+                invert=negative_value or negative_range,
             )
-        yield Segment(
-            cells, style=self.style if self.value > 0 else self.style_negative
-        )
+        style = self.style if self.value > 0 else self.style_negative
+        yield Segment(cells, style=style)
         yield Segment(self.end)
 
     def __rich_measure__(
