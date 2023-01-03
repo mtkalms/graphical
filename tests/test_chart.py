@@ -16,31 +16,32 @@ class RenderWrapper:
         yield from self.renderer.render()
 
 
-def test_render():
-    expected = (
-        "             Test Chart       \n"
-        "       ┏━━━━━━━━━━━━━━━━━━━━━┓\n"
-        " first ┫▁▂▃▅▆▆▅▄▂▁▁▂▃▅▆▆▅▄▂▁ ┃\n"
-        "       ┫Spacer               ┃\n"
-        "second ┫▁▂▃▅▆▆▅▄▂▁▁▂▃▅▆▆▅▄▂▁ ┃\n"
-        "       ┗━━━━━━━━━━━━━━━━━━━━━┛\n"
-        "        0                  10\n"
-    )
+class Test_LabelChartRenderer:
+    def test_render(self):
+        expected = (
+            "             Test Chart       \n"
+            "       ┏━━━━━━━━━━━━━━━━━━━━━┓\n"
+            " first ┫▁▂▃▅▆▆▅▄▂▁▁▂▃▅▆▆▅▄▂▁ ┃\n"
+            "       ┫Spacer               ┃\n"
+            "second ┫▁▂▃▅▆▆▅▄▂▁▁▂▃▅▆▆▅▄▂▁ ┃\n"
+            "       ┗━━━━━━━━━━━━━━━━━━━━━┛\n"
+            "        0                  10\n"
+        )
 
-    chart = LabelChartRenderer(title="Test Chart", ticks=(0, 10), box=HEAVY)
-    chart.add_row(
-        label="first",
-        content_width=20,
-        content="▁▂▃▅▆▆▅▄▂▁▁▂▃▅▆▆▅▄▂▁",
-    )
-    chart.add_row(
-        label=" ",
-        content_width=6,
-        content="Spacer",
-    )
-    chart.add_row(
-        label="second",
-        content_width=21,
-        content=Segment("▁▂▃▅▆▆▅▄▂▁▁▂▃▅▆▆▅▄▂▁ "),
-    )
-    assert render(RenderWrapper(chart)) == expected
+        chart = LabelChartRenderer(title="Test Chart", ticks=(0, 10), box=HEAVY)
+        chart.add_row(
+            label="first",
+            content_width=20,
+            content="▁▂▃▅▆▆▅▄▂▁▁▂▃▅▆▆▅▄▂▁",
+        )
+        chart.add_row(
+            label=" ",
+            content_width=6,
+            content="Spacer",
+        )
+        chart.add_row(
+            label="second",
+            content_width=21,
+            content=Segment("▁▂▃▅▆▆▅▄▂▁▁▂▃▅▆▆▅▄▂▁ "),
+        )
+        assert render(RenderWrapper(chart)) == expected
