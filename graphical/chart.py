@@ -52,7 +52,7 @@ class LabelChartRenderer:
         for row in self.rows:
             yield Segment(f"{row.label : >{width_labels - 1}} ")
             yield Segment(self.box.row_right)
-            yield row.content if type(row.content) == Segment else Segment(row.content)
+            yield Segment(row.content) if type(row.content) == str else row.content
             yield Segment(" " * (width_content - row.content_width))
             yield Segment(self.box.mid_right)
             yield Segment("\n")
