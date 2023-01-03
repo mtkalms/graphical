@@ -2,8 +2,7 @@ from dataclasses import dataclass
 from typing import List, Tuple, Optional
 
 from rich.box import Box, HEAVY
-from rich.console import Console, ConsoleOptions, RenderResult, RenderableType
-from rich.measure import Measurement
+from rich.console import RenderResult, RenderableType
 from rich.segment import Segment
 
 
