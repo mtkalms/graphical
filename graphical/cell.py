@@ -61,12 +61,12 @@ class PlotCellRenderer:
             chars = cell_style.matched
         else:
             chars = cell_style.inverted if invert else cell_style.chars
-        steps = (upper - lower) / (len(chars) - 1)
         if value < lower:
             return cell_style.over if invert else cell_style.under
         elif value > upper:
             return cell_style.under if invert else cell_style.over
-        return chars[int((value - lower) / steps)]
+        steps = (upper - lower) / (len(chars) - 1)
+        return chars[int(round((value - lower) / steps))]
 
 
 if __name__ == "__main__":
