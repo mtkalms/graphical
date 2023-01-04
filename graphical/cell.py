@@ -4,6 +4,16 @@ from typing import Optional, Tuple, List
 
 
 class PlotCellStyle(Enum):
+    """Cell styles for plot charts.
+
+    Args:
+        chars: String of chars for values in ascending order.
+        under: Char for value ranges under the value.
+        over: Char for value ranges over the value.
+        matched: String of chars for values in ascending order matching the length of inverted. Reverts to chars.
+        inverted: String of chars for values in descending order. Reverts to chars.
+    """
+
     BLOCK_H = (" ▏▎▍▌▋▊▉█", " ", "█", " ▕▕▐▐▐▐██", "██▐▐▐▕▕▕ ")
     """Cell for horizontal area or full-width bar plots."""
     BLOCK_V = (" ▁▂▃▄▅▆▇█", " ", "█", " ▁▁▄▄▄▄██", "██▀▀▀▔▔▔ ")
@@ -48,6 +58,8 @@ class PlotCellStyle(Enum):
 
 
 class PlotCellRenderer:
+    """Renderer for plot cells."""
+
     @staticmethod
     def render(
         value: float,
@@ -56,6 +68,18 @@ class PlotCellRenderer:
         invert: bool = False,
         match_inverted: bool = False,
     ) -> str:
+        """Render plot cell.
+
+        Args:
+            value: Value to plot.
+            value_range: Value range of the cell.
+            cell_style: Plot style to use.
+            invert: Invert cell direction.
+            match_inverted: Use limited resolution to match inverted cells.
+
+        Returns:
+            Char for plot cell.
+        """
         lower, upper = value_range
         if match_inverted and not invert:
             chars = cell_style.matched
