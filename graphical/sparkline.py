@@ -11,10 +11,20 @@ from .cell import PlotCellStyle, PlotCellRenderer
 
 
 class OneLinePlotStyle(Enum):
+    """Styles for one-line plots.
+
+    Args:
+        cell_style (PlotCellStyle): One of the plot styles defined in PlotCellStyle.
+    """
+
     LINE = PlotCellStyle.LINE_V
+    """Style for line plots."""
     AREA = PlotCellStyle.BLOCK_V
+    """Style for area plots"""
     HORIZON = PlotCellStyle.BLOCK_V
+    """Style for horizon plots."""
     SHADE = PlotCellStyle.SHADE
+    """Style for shaded plots."""
 
     def __new__(cls, *args, **kwargs):
         value = len(cls.__members__) + 1
@@ -27,6 +37,17 @@ class OneLinePlotStyle(Enum):
 
 
 class Sparkline:
+    """A console renderable to draw a Sparkline.
+
+    Args:
+        values (List[float]): Values displayed in the Sparkline.
+        value_range (Tuple[float, float], optional): Range of values displayed in the Sparkline.
+        color (Union[Color, str]): Color of the Sparkline.
+        bgcolor (Union[Color, str]): Background color of the Sparkline.
+        plot_style (OneLinePlotStyle): One of the plot styles defined in OneLinePlotStyle.
+        end (str): End character. Defaults to "\n".
+    """
+
     def __init__(
         self,
         values: List[float],
