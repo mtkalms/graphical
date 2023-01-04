@@ -1,6 +1,5 @@
-import os
 from enum import Enum
-from typing import Optional, Tuple, List
+from typing import Optional, Tuple
 
 
 class PlotCellStyle(Enum):
