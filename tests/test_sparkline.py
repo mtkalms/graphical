@@ -11,7 +11,7 @@ class Test_Sparkline:
         [
             (OneLinePlotStyle.LINE, 8, "  ▁⎽⎼─⎻⎺▔ "),
             (OneLinePlotStyle.AREA, 9, "  ▁▂▃▄▅▆▇██"),
-            (OneLinePlotStyle.HORIZON, 18, "   ▁▂▃▄▅▆▇ ▁▂▃▄▅▆▇██"),
+            (OneLinePlotStyle.HORIZON, 18, "  ▁▂▃▄▅▆▇█ ▁▂▃▄▅▆▇██"),
             (OneLinePlotStyle.SHADE, 5, "  ░▒▓██"),
         ],
     )
@@ -31,7 +31,7 @@ class Test_Sparkline:
         [
             (OneLinePlotStyle.LINE, 8, "  ▔⎺⎻─⎼⎽▁ "),
             (OneLinePlotStyle.AREA, 9, "███▇▆▅▄▃▂▁ "),
-            (OneLinePlotStyle.HORIZON, 18, "███▇▆▅▄▃▂▁ ▇▆▅▄▃▂▁  "),
+            (OneLinePlotStyle.HORIZON, 18, "███▇▆▅▄▃▂▁ █▇▆▅▄▃▂▁ "),
             (OneLinePlotStyle.SHADE, 5, "███▓▒░ "),
         ],
     )
