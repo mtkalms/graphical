@@ -8,12 +8,31 @@ from rich.segment import Segment
 
 @dataclass
 class LabelChartRow:
-    content: RenderableType
+    """Content row for labeled chart.
+
+    Args:
+        content (Union[RenderableType, Segment]): RenderableType representing the content.
+        content_width (int): Width of the content.
+        label (str): Label of the content line.
+    """
+
+    content: Union[RenderableType, Segment]
+    """Union[RenderableType, Segment]: Content line rendered in the chart."""
     content_width: int
+    """int: Width of the chart"""
     label: str = ""
+    """str: Label of the content line."""
 
 
 class LabelChartRenderer:
+    """Renderer for labeled charts.
+
+    Args:
+        title (str): The title of the chart rendered at the top.
+        ticks (Tuple[float, float], optional): Minimum and maximum value to display on the x-axis.
+        box (Box): One of the constants in rich.box used to draw the edges.
+    """
+
     def __init__(
         self,
         title: str,
@@ -31,11 +50,26 @@ class LabelChartRenderer:
         content_width: int,
         label: str = "",
     ) -> LabelChartRow:
+        """Add row to chart.
+
+        Args:
+            content (Union[RenderableType, Segment]): RenderableType representing the content.
+            content_width (int): Width of the content.
+            label (str): Label of the content line.
+
+        Returns:
+            LabelChartRow: Row created and added to LabelChartRenderer.
+        """
         row = LabelChartRow(content, content_width, label)
         self.rows.append(row)
         return row
 
     def render(self) -> RenderResult:
+        """Render the labeled chart.
+
+        Returns:
+            RenderResult: Rendered chart.
+        """
         width_labels = max(len(d.label) for d in self.rows) + 1
         width_content = max(d.content_width for d in self.rows)
 
