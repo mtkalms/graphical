@@ -242,7 +242,6 @@ class BarChart:
         value_range: Tuple[float, float],
         color: Union[Color, str] = "default",
         bgcolor: Union[Color, str] = "default",
-        ticks: Optional[Tuple[float, float]] = None,
         width: int = WIDTH,
         bar_style: BarStyle = BarStyle.BLOCK,
         box: Box = HEAVY,
@@ -251,7 +250,6 @@ class BarChart:
         self.value_range = value_range
         self.color = color
         self.bgcolor = bgcolor
-        self.ticks = ticks
         self.width = width
         self.bar_style = bar_style
         self.box = box
@@ -278,14 +276,18 @@ class BarChart:
     def __rich_console__(
         self, console: Console, options: ConsoleOptions
     ) -> RenderResult:
+        if self.value_range:
+            value_range = 0, self.value_range[1]
+        else:
+            value_range = 0, max(d.value for d in self.rows)
         width_labels = max(len(d.label) for d in self.rows) + 1
         width_graphs = self.width - width_labels - 2
-        chart = LabelChartRenderer(title=self.title, ticks=self.ticks, box=self.box)
+        chart = LabelChartRenderer(title=self.title, ticks=value_range, box=self.box)
         for row in self.rows:
             content = Bar(
                 value=row.value,
                 width=width_graphs,
-                value_range=self.value_range,
+                value_range=value_range,
                 color=row.color or self.color,
                 bgcolor=row.bgcolor or self.bgcolor,
                 bar_style=row.bar_style or self.bar_style,
@@ -308,7 +310,6 @@ class DivergingBarChart:
         color: Union[Color, str] = "default",
         color_negative: Optional[Union[Color, str]] = None,
         bgcolor: Union[Color, str] = "default",
-        ticks: Optional[Tuple[float, float]] = None,
         width: int = WIDTH,
         bar_style: BarStyle = BarStyle.BLOCK,
         box: Box = HEAVY,
@@ -318,7 +319,6 @@ class DivergingBarChart:
         self.color = color
         self.color_negative = color_negative
         self.bgcolor = bgcolor
-        self.ticks = ticks
         self.width = width
         self.bar_style = bar_style
         self.box = box
@@ -343,15 +343,23 @@ class DivergingBarChart:
     def __rich_console__(
         self, console: Console, options: ConsoleOptions
     ) -> RenderResult:
+
+        if self.value_range:
+            max_value = max(abs(d) for d in self.value_range)
+        else:
+            max_value = max(
+                max(d.value for d in self.rows), abs(min(d.value for d in self.rows))
+            )
+        value_range = -max_value, max_value
         width_labels = max(len(d.label) for d in self.rows) + 1
         width_graphs = self.width - width_labels - 2
         width_graphs -= width_graphs % 2
-        chart = LabelChartRenderer(title=self.title, ticks=self.ticks, box=self.box)
+        chart = LabelChartRenderer(title=self.title, ticks=value_range, box=self.box)
         for row in self.rows:
             content = DivergingBar(
                 value=row.value,
                 width=width_graphs,
-                value_range=self.value_range,
+                value_range=value_range,
                 color=self.color,
                 color_negative=self.color_negative,
                 bgcolor=row.bgcolor or self.bgcolor,
@@ -374,7 +382,6 @@ class StackedBarChart:
         value_range: Tuple[float, float],
         colors: List[Union[Color, str]] = "default",
         bgcolor: Union[Color, str] = "default",
-        ticks: Optional[Tuple[float, float]] = None,
         width: int = WIDTH,
         box: Box = HEAVY,
     ):
@@ -382,7 +389,6 @@ class StackedBarChart:
         self.value_range = value_range
         self.colors = colors
         self.bgcolor = bgcolor
-        self.ticks = ticks
         self.width = width
         self.box = box
         self.rows: List[MultiBarChartRow] = []
@@ -404,14 +410,18 @@ class StackedBarChart:
     def __rich_console__(
         self, console: Console, options: ConsoleOptions
     ) -> RenderResult:
+        if self.value_range:
+            value_range = 0, self.value_range[1]
+        else:
+            value_range = 0, max(max(d.values) for d in self.rows)
         width_labels = max(len(d.label) for d in self.rows) + 1
         width_graphs = self.width - width_labels - 2
-        chart = LabelChartRenderer(title=self.title, ticks=self.ticks, box=self.box)
+        chart = LabelChartRenderer(title=self.title, ticks=value_range, box=self.box)
         for row in self.rows:
             content = StackedBar(
                 values=row.values,
                 width=width_graphs,
-                value_range=self.value_range,
+                value_range=value_range,
                 colors=row.colors or self.colors,
                 bgcolor=row.bgcolor or self.bgcolor,
                 end="",
@@ -429,10 +439,9 @@ class DoubleBarChart:
     def __init__(
         self,
         title: str,
-        value_range: Tuple[float, float],
+        value_range: Optional[Tuple[float, float]] = None,
         colors: List[Union[Color, str]] = "default",
         bgcolor: Union[Color, str] = "default",
-        ticks: Optional[Tuple[float, float]] = None,
         width: int = WIDTH,
         box: Box = HEAVY,
     ):
@@ -440,7 +449,6 @@ class DoubleBarChart:
         self.value_range = value_range
         self.colors = colors
         self.bgcolor = bgcolor
-        self.ticks = ticks
         self.width = width
         self.box = box
         self.rows: List[MultiBarChartRow] = []
@@ -462,14 +470,18 @@ class DoubleBarChart:
     def __rich_console__(
         self, console: Console, options: ConsoleOptions
     ) -> RenderResult:
+        if self.value_range:
+            value_range = 0, self.value_range[1]
+        else:
+            value_range = 0, max(max(d.values) for d in self.rows)
         width_labels = max(len(d.label) for d in self.rows) + 1
         width_graphs = self.width - width_labels - 2
-        chart = LabelChartRenderer(title=self.title, ticks=self.ticks, box=self.box)
+        chart = LabelChartRenderer(title=self.title, ticks=value_range, box=self.box)
         for row in self.rows:
             content = DoubleBar(
                 values=row.values,
                 width=width_graphs,
-                value_range=self.value_range,
+                value_range=value_range,
                 colors=row.colors or self.colors,
                 bgcolor=row.bgcolor or self.bgcolor,
                 end="",
@@ -584,7 +596,6 @@ if __name__ == "__main__":
         width=WIDTH_VISUALS,
         value_range=(0, 3),
         color="purple",
-        ticks=(0, 3.0),
     )
     for idx, value in enumerate(wave(12, 0, 0)):
         graph.add_row(label=calendar.month_abbr[idx + 1], value=value + 1)
@@ -601,7 +612,6 @@ if __name__ == "__main__":
         value_range=(-1.5, 1.5),
         color="purple",
         color_negative="red",
-        ticks=(-1.5, 1.5),
     )
     for idx, value in enumerate(wave(12, 1, 0)):
         graph.add_row(label=calendar.month_abbr[idx + 1], value=value + 0.3)
@@ -617,7 +627,6 @@ if __name__ == "__main__":
         width=WIDTH_VISUALS,
         value_range=(0, 6),
         colors=["purple", "red", "yellow"],
-        ticks=(0, 6.0),
     )
     waves = zip(wave(12, 0, 0), wave(12, 6, 0), wave(12, 3, 0))
     for idx, values in enumerate(waves):
@@ -636,7 +645,6 @@ if __name__ == "__main__":
         width=WIDTH_VISUALS,
         value_range=(0, 3),
         colors=["purple", "red"],
-        ticks=(0, 3.0),
     )
     waves = zip(wave(12, 0, 0), wave(12, 6, 0))
     for idx, values in enumerate(waves):

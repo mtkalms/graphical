@@ -124,7 +124,6 @@ class Test_BarChart:
             title="Example BarChart",
             value_range=(0, 10),
             width=50,
-            ticks=(0, 10),
             box=HEAVY,
         )
         chart.add_row(label="first", value=5.0)
@@ -148,7 +147,6 @@ class Test_DivergingBarChart:
             title="Example DivergingBarChart",
             value_range=(-10, 10),
             width=50,
-            ticks=(-10, 10),
             box=HEAVY,
         )
         chart.add_row(label="first", value=5.0)
@@ -173,7 +171,6 @@ class Test_StackedBarChart:
             colors=["purple", "red"],
             value_range=(0, 10),
             width=50,
-            ticks=(0, 10),
             box=HEAVY,
         )
         chart.add_row(label="first", values=[2.0, 0.0])
@@ -198,7 +195,6 @@ class Test_DoubleBarChart:
             colors=["purple", "red"],
             value_range=(0, 10),
             width=50,
-            ticks=(0, 10),
             box=HEAVY,
         )
         chart.add_row(label="first", values=[2.0, 0.0])
