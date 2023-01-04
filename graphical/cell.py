@@ -6,11 +6,11 @@ class PlotCellStyle(Enum):
     """Cell styles for plot charts.
 
     Args:
-        chars: String of chars for values in ascending order.
-        under: Char for value ranges under the value.
-        over: Char for value ranges over the value.
-        matched: String of chars for values in ascending order matching the length of inverted. Reverts to chars.
-        inverted: String of chars for values in descending order. Reverts to chars.
+        chars (str): String of chars for values in ascending order.
+        under (str): Char for value ranges under the value.
+        over (str): Char for value ranges over the value.
+        matched (str): String of chars for values in ascending order matching the length of inverted. Reverts to chars.
+        inverted (str): String of chars for values in descending order. Reverts to chars.
     """
 
     BLOCK_H = (" ▏▎▍▌▋▊▉█", " ", "█", " ▕▕▐▐▐▐██", "██▐▐▐▕▕▕ ")
@@ -63,21 +63,21 @@ class PlotCellRenderer:
     def render(
         value: float,
         value_range: Optional[Tuple[float, float]],
-        cell_style: PlotCellStyle = PlotCellStyle.BLOCK_H,
+        cell_style: PlotCellStyle,
         invert: bool = False,
         match_inverted: bool = False,
     ) -> str:
         """Render plot cell.
 
         Args:
-            value: Value to plot.
-            value_range: Value range of the cell.
-            cell_style: Plot style to use.
-            invert: Invert cell direction.
-            match_inverted: Use limited resolution to match inverted cells.
+            value (float): Value represented in the plot.
+            value_range (Tuple[float, float], optional): Value range of the cell.
+            cell_style (PlotCellStyle): One of the plot styles defined in PlotCellStyle.
+            invert (bool): Invert cell direction. Defaults to False.
+            match_inverted (bool): Use limited resolution to match inverted cells. Defaults to False.
 
         Returns:
-            Char for plot cell.
+            str: Char for plot cell.
         """
         lower, upper = value_range
         if match_inverted and not invert:

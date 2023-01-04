@@ -155,7 +155,11 @@ class StackedBar:
             cell_range = idx * step, (idx + 1) * step
             if values[current] < cell_range[0] and current < len(values) - 1:
                 current += 1
-            cell = PlotCellRenderer.render(values[current], value_range=cell_range)
+            cell = PlotCellRenderer.render(
+                values[current],
+                value_range=cell_range,
+                cell_style=PlotCellStyle.BLOCK_H,
+            )
             style = Style(color=colors[current], bgcolor=colors[current + 1])
             yield Segment(cell, style)
         yield Segment(self.end)
