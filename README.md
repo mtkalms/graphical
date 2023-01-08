@@ -12,50 +12,55 @@ Redundant graph types in Graphical will be adapted accordingly or might become d
 
 > Sparklines might be part of future versions of Textual (see [Textual roadmap][roadmap]).
 
-![Sparkline Table Example](img/sparkline-table.png)
+<img src="img/sparkline-table.png" alt="Sparkline Table Example" style="height:300px;"/>
 
 ### Ridgeline Chart
 
-![Ridgeline Example](img/ridgeline.png)
+<img src="img/ridgeline.png" alt="Ridgeline Example" style="height:300px;"/>
 
 <details>
   <summary>Variations</summary>
 
   #### Line Plot
-  ![Ridgeline Line Example](img/ridgeline-line.png)
+
+  <img src="img/ridgeline-line.png" alt="Ridgeline Line Example" style="height:300px;"/>
 
   #### Area Plot
-  ![Ridgeline Area Example](img/ridgeline-area.png)
+
+  <img src="img/ridgeline-area.png" alt="Ridgeline Area Example" style="height:300px;"/>
 
   #### Horizon Plot
-  ![Ridgeline Horizon Example](img/ridgeline-horizon.png)
+
+  <img src="img/ridgeline-horizon.png" alt="Ridgeline Horizon Example" style="height:300px;"/>
   
   #### Shade Plot
-  ![Ridgeline Shade Example](img/ridgeline-shade.png)
+
+  <img src="img/ridgeline-shade.png" alt="Ridgeline Shade Example" style="height:300px;"/>
 
 </details>
 
 ### Bar
 
-![Bar Table Example](img/bar-table.png)
+<img src="img/bar-table.png" alt="Bar Table Example" style="height:300px;"/>
 
 #### Bar Chart
 
 > Bar charts might be part of future versions of Textual (see [Textual roadmap][roadmap]).
 
-![BarChart Example](img/barchart.png)
+<img src="img/barchart.png" alt="BarChart Example" style="height:300px;"/>
 
 #### Diverging Bar Chart
 
-![DivergingBarChart Example](img/diverging-barchart.png)
+<img src="img/diverging-barchart.png" alt="DivergingBarChart Example" style="height:300px;"/>
 
 #### Stacked Bar Chart
 
-![StackedBarChart Example](img/stacked-barchart.png)
+<img src="img/stacked-barchart.png" alt="StackedBarChart Example" style="height:300px;"/>
 
 #### Double Bar Chart
 
-![DoubleBarChart Example](img/double-barchart.png)
+<img src="img/double-barchart.png" alt="DoubleBarChart Example" style="height:300px;"/>
+
 
 ## Similar Projects
 
@@ -78,43 +83,46 @@ This is a list of textual sketches of different graph types that are also candid
 
 #### Boxplot
 
-![](img/boxplot.png)
+<img src="img/boxplot.png" alt="Boxplot Sketch" style="height:300px;"/>
 
 #### Gantt Chart
 
-![](img/ganttchart.png)
+<img src="img/ganttchart.png" alt="Gantt Chart Sketch" style="height:300px;"/>
 
 #### Candlestick Chart
 
 > Candlestick charts might be part of future versions of Textual (see [Textual roadmap][roadmap]).
 
-![](img/candlestickchart.png)
+<img src="img/candlestickchart.png" alt="Candlestick Chart Sketch" style="height:300px;"/>
 
 #### Contour Plot
 
-![](img/contourplot.png)
+<img src="img/contourplot.png" alt="Contour Plot Sketch" style="height:300px;"/>
 
 ### Complex Graphs
 
 #### Histogram
 
-![](img/histogram.png)
+<img src="img/histogram.png" alt="Histogram Sketch" style="height:300px;"/>
 
 #### Dendogram
 
-![](img/dendogram.png)
+<img src="img/dendogram.png" alt="Dendogram Sketch" style="height:300px;"/>
+
 
 #### Icicle Chart
 
-![](img/iciclechart.png)
+<img src="img/iciclechart.png" alt="Icicle Chart Sketch" style="height:300px;"/>
+
 
 #### Heatmap
 
-![](img/heatmap.png)
+<img src="img/heatmap.png" alt="Heatmap Sketch" style="height:400px;"/>
+
 
 #### Calendar
 
-![](img/calendar.png)
+<img src="img/calendar.png" alt="Calendar Sketch"/>
 
 
 [rich]: https://github.com/Textualize/rich
