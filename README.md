@@ -68,12 +68,13 @@ Redundant graph types in Graphical will be adapted accordingly or might become d
 - [termplotlib][termplotlib]: line plots and histograms with a matplotlib feel
 - [termgraph][termgraph]: bar and calendar graphs
 - [termcharts][termcharts]: bar, pie and doughnut charts made for Rich
-- [plotext][plotext]: plots and images with rich integration
+- [plotext][plotext] + [textual-plotext][textual-plotext]: plots and images with rich integration 
 - [plotille][plotille]: plots, histograms and images
 - [termplot][termplot]: simple plots that can be used in Rich
 - [terminalplot][terminalplot]: minimalistic plots
 - [drawille][drawille]: drawing in Braille characters
 - [gantt][gantt]: gantt charts
+- [netext][netext]: network graphs (based on rich 
 
 ## More Graph Ideas
 
@@ -138,3 +139,5 @@ This is a list of textual sketches of different graph types that are also candid
 [drawille]: https://github.com/asciimoo/drawille
 [gantt]: https://github.com/andrew-ls/gantt
 [roadmap]: https://textual.textualize.io/roadmap/
+[netext]: https://github.com/mahrz24/netext/
+[textual-plotext]: https://github.com/Textualize/textual-plotext
