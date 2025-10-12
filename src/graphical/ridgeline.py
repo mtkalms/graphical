@@ -7,8 +7,8 @@ from rich.console import Console, ConsoleOptions, RenderResult
 from rich.measure import Measurement
 from rich.style import Style
 
-from .chart import LabelChartRenderer
-from .sparkline import OneLinePlotStyle, Sparkline
+from graphical.chart import LabelChartRenderer
+from graphical.sparkline import OneLinePlotStyle, Sparkline
 
 
 @dataclass

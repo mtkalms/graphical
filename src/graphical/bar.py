@@ -9,8 +9,8 @@ from rich.measure import Measurement
 from rich.segment import Segment
 from rich.style import Style
 
-from .cell import PlotCellStyle, PlotCellRenderer
-from .chart import LabelChartRenderer
+from graphical.cell import PlotCellStyle, PlotCellRenderer
+from graphical.chart import LabelChartRenderer
 
 WIDTH = 50
 
