@@ -1,80 +1,67 @@
 # Graphical
 
-Graphical is a Python library that adds graphs and visuals to [Rich][rich] and [Textual][textual].
+Graphical is a Python library that adds graphs and visuals to [rich][rich] and [textual][textual].
 
-
-> **NOTE:**  Future versions of Textual will include a limited number of graphs and charts (see [Textual roadmap][roadmap]).
-Redundant graph types in Graphical will be adapted accordingly or might become deprecated.
+> **NOTE:** Future versions of textual might include a limited number of graphs and charts (see [roadmap][roadmap]).
 
 ## Graphical Library
 
 ### Sparkline
 
-> Sparklines might be part of future versions of Textual (see [Textual roadmap][roadmap]).
+> Sparklines are included in textual since version 0.27.0 (June 2023)
 
-<img src="img/sparkline-table.png" alt="Sparkline Table Example" style="height:300px;"/>
+<img src="img/sparkline.svg" alt="Sparkline Table Example" style="width:720px;"/>
 
 ### Ridgeline Chart
 
-<img src="img/ridgeline.png" alt="Ridgeline Example" style="height:300px;"/>
+<img src="img/ridgeline.svg" alt="Ridgeline Example" style="width:720px;"/>
 
 <details>
   <summary>Variations</summary>
-
-  #### Line Plot
-
-  <img src="img/ridgeline-line.png" alt="Ridgeline Line Example" style="height:300px;"/>
-
-  #### Area Plot
-
-  <img src="img/ridgeline-area.png" alt="Ridgeline Area Example" style="height:300px;"/>
-
-  #### Horizon Plot
-
-  <img src="img/ridgeline-horizon.png" alt="Ridgeline Horizon Example" style="height:300px;"/>
-  
-  #### Shade Plot
-
-  <img src="img/ridgeline-shade.png" alt="Ridgeline Shade Example" style="height:300px;"/>
-
+  <img src="img/ridgeline-variations.svg" alt="Ridgeline variations" style="width:720px;"/>
 </details>
 
 ### Bar
 
-<img src="img/bar-table.png" alt="Bar Table Example" style="height:300px;"/>
+<img src="img/bar-variations.svg" alt="Bar Table Example" style="width:720px;"/>
 
 #### Bar Chart
 
 > Bar charts might be part of future versions of Textual (see [Textual roadmap][roadmap]).
 
-<img src="img/barchart.png" alt="BarChart Example" style="height:300px;"/>
+<img src="img/bar.svg" alt="BarChart Example" style="width:720px;"/>
 
 #### Diverging Bar Chart
 
-<img src="img/diverging-barchart.png" alt="DivergingBarChart Example" style="height:300px;"/>
+<img src="img/bar-diverging.svg" alt="DivergingBarChart Example" style="width:720px;"/>
 
 #### Stacked Bar Chart
 
-<img src="img/stacked-barchart.png" alt="StackedBarChart Example" style="height:300px;"/>
+<img src="img/bar-stacked.svg" alt="StackedBarChart Example" style="width:720px;"/>
 
 #### Double Bar Chart
 
-<img src="img/double-barchart.png" alt="DoubleBarChart Example" style="height:300px;"/>
-
+<img src="img/bar-double.svg" alt="DoubleBarChart Example" style="width:720px;"/>
 
 ## Similar Projects
 
 - [asciichart][asciichart]: beautiful line plots
 - [termplotlib][termplotlib]: line plots and histograms with a matplotlib feel
 - [termgraph][termgraph]: bar and calendar graphs
-- [termcharts][termcharts]: bar, pie and doughnut charts made for Rich
-- [plotext][plotext] + [textual-plotext][textual-plotext]: plots and images with rich integration 
 - [plotille][plotille]: plots, histograms and images
 - [termplot][termplot]: simple plots that can be used in Rich
 - [terminalplot][terminalplot]: minimalistic plots
 - [drawille][drawille]: drawing in Braille characters
 - [gantt][gantt]: gantt charts
-- [netext][netext]: network graphs (based on rich 
+
+### rich ready
+
+- [netext][netext]: network graphs
+- [termcharts][termcharts]: bar, pie and doughnut charts
+
+### textual ready
+
+- [plotext][plotext] + [textual-plotext][textual-plotext]: plots and images
 
 ## More Graph Ideas
 
@@ -110,34 +97,30 @@ This is a list of textual sketches of different graph types that are also candid
 
 <img src="img/dendogram.png" alt="Dendogram Sketch" style="height:300px;"/>
 
-
 #### Icicle Chart
 
 <img src="img/iciclechart.png" alt="Icicle Chart Sketch" style="height:300px;"/>
-
 
 #### Heatmap
 
 <img src="img/heatmap.png" alt="Heatmap Sketch" style="height:400px;"/>
 
-
 #### Calendar
 
 <img src="img/calendar.png" alt="Calendar Sketch"/>
 
-
-[rich]: https://github.com/Textualize/rich
-[textual]: https://github.com/Textualize/textual
 [asciichart]: https://github.com/kroitor/asciichart
-[termplotlib]: https://github.com/nschloe/termplotlib
-[termgraph]: https://github.com/mkaz/termgraph
-[termcharts]: https://github.com/Abdur-rahmaanJ/termcharts
-[plotext]: https://github.com/piccolomo/plotext
-[plotille]: https://github.com/tammoippen/plotille
-[termplot]: https://github.com/justnoise/termplot
-[terminalplot]: https://github.com/kressi/terminalplot
 [drawille]: https://github.com/asciimoo/drawille
 [gantt]: https://github.com/andrew-ls/gantt
-[roadmap]: https://textual.textualize.io/roadmap/
 [netext]: https://github.com/mahrz24/netext/
+[plotext]: https://github.com/piccolomo/plotext
+[plotille]: https://github.com/tammoippen/plotille
+[rich]: https://github.com/Textualize/rich
+[roadmap]: https://textual.textualize.io/roadmap/
+[termcharts]: https://github.com/Abdur-rahmaanJ/termcharts
+[termgraph]: https://github.com/mkaz/termgraph
+[terminalplot]: https://github.com/kressi/terminalplot
+[termplot]: https://github.com/justnoise/termplot
+[termplotlib]: https://github.com/nschloe/termplotlib
 [textual-plotext]: https://github.com/Textualize/textual-plotext
+[textual]: https://github.com/Textualize/textual
