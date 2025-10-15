@@ -5,6 +5,7 @@ from typing import List
 from rich.table import Table
 from rich.console import Console
 from rich.box import SIMPLE
+from rich.terminal_theme import TerminalTheme
 
 from graphical.bar import Bar, BarChart, BarStyle, DivergingBar, DivergingBarChart, DoubleBar, DoubleBarChart, StackedBar, StackedBarChart
 from graphical.ridgeline import RidgelineChart
@@ -42,7 +43,21 @@ CODE_FORMAT = """\
     </g>
 </svg>
 """
-
+THEME = TerminalTheme(
+    (0, 0, 0),
+    (128, 128, 128),
+    [
+        (75, 78, 85),
+        (236, 58, 55),
+        (58, 217, 0),
+        (250,208,0),
+        (96, 138, 177),
+        (152, 114, 159),
+        (104, 160, 179),
+        (197, 200, 198),
+        (154, 155, 153),
+    ]
+)
 
 def wave(
     num: int, offset: int = 0, seed: int = 0, scale: float = 1.0
@@ -74,7 +89,7 @@ def sparkline_variations():
         )
     console = Console(record=True, width=WIDTH_CONSOLE)
     console.print(table, justify="center")
-    console.save_svg(IMG_PATH/'sparkline.svg', code_format=CODE_FORMAT, font_aspect_ratio=FAR)
+    console.save_svg(IMG_PATH/'sparkline.svg', code_format=CODE_FORMAT, font_aspect_ratio=FAR, theme=THEME)
 
 
 def rigdeline_example():
@@ -90,7 +105,7 @@ def rigdeline_example():
         data = wave(108, idx, idx, 0.8)
         graph.add_row(label=calendar.month_abbr[idx + 1], values=data)
     console.print(graph, justify="center")
-    console.save_svg(IMG_PATH/'ridgeline.svg', code_format=CODE_FORMAT, font_aspect_ratio=FAR)
+    console.save_svg(IMG_PATH/'ridgeline.svg', code_format=CODE_FORMAT, font_aspect_ratio=FAR, theme=THEME)
 
 
 def rigdeline_variations():
@@ -107,7 +122,7 @@ def rigdeline_variations():
             data = wave(108, idx, idx)
             graph.add_row(label=calendar.month_abbr[idx + 1], values=data)
         console.print(graph, justify="center")
-    console.save_svg(IMG_PATH/'ridgeline-variations.svg', code_format=CODE_FORMAT, font_aspect_ratio=FAR)
+    console.save_svg(IMG_PATH/'ridgeline-variations.svg', code_format=CODE_FORMAT, font_aspect_ratio=FAR, theme=THEME)
 
 
 def create_bars(value: float):
@@ -180,7 +195,7 @@ def bar_variations():
     )
     table.add_row("", "", "", "", "", bar)
     console.print(table, justify="center")
-    console.save_svg(IMG_PATH/'bar-variations.svg', code_format=CODE_FORMAT, font_aspect_ratio=FAR)
+    console.save_svg(IMG_PATH/'bar-variations.svg', code_format=CODE_FORMAT, font_aspect_ratio=FAR, theme=THEME)
 
 
 def bar_example():
@@ -194,7 +209,7 @@ def bar_example():
     for idx, value in enumerate(wave(12, 0, 0)):
         graph.add_row(label=calendar.month_abbr[idx + 1], value=value + 1)
     console.print(graph, justify="center")
-    console.save_svg(IMG_PATH/'bar.svg', code_format=CODE_FORMAT, font_aspect_ratio=FAR)
+    console.save_svg(IMG_PATH/'bar.svg', code_format=CODE_FORMAT, font_aspect_ratio=FAR, theme=THEME)
 
 
 def bar_diverging_example():
@@ -209,7 +224,7 @@ def bar_diverging_example():
     for idx, value in enumerate(wave(12, 1, 0)):
         graph.add_row(label=calendar.month_abbr[idx + 1], value=value + 0.3)
     console.print(graph, justify="center")
-    console.save_svg(IMG_PATH/'bar-diverging.svg', code_format=CODE_FORMAT, font_aspect_ratio=FAR)
+    console.save_svg(IMG_PATH/'bar-diverging.svg', code_format=CODE_FORMAT, font_aspect_ratio=FAR, theme=THEME)
 
 def bar_stacked_example():
     console = Console(record=True, width=WIDTH_CONSOLE)
@@ -225,7 +240,7 @@ def bar_stacked_example():
             label=calendar.month_abbr[idx + 1], values=[v + 1 for v in values]
         )
     console.print(graph, justify="center")
-    console.save_svg(IMG_PATH/'bar-stacked.svg', code_format=CODE_FORMAT, font_aspect_ratio=FAR)
+    console.save_svg(IMG_PATH/'bar-stacked.svg', code_format=CODE_FORMAT, font_aspect_ratio=FAR, theme=THEME)
 
 
 def bar_double_example():
@@ -242,7 +257,7 @@ def bar_double_example():
             label=calendar.month_abbr[idx + 1], values=[v + 1 for v in values]
         )
     console.print(graph, justify="center")
-    console.save_svg(IMG_PATH/'bar-double.svg', code_format=CODE_FORMAT, font_aspect_ratio=FAR)
+    console.save_svg(IMG_PATH/'bar-double.svg', code_format=CODE_FORMAT, font_aspect_ratio=FAR, theme=THEME)
 
 
 if __name__ == "__main__":

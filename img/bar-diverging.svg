@@ -8,9 +8,9 @@
         line-height: 18px;
         font-variant-east-asian: full-width;
     }
-    .terminal-687381476-r1 { fill: #c5c8c6 }
+    .terminal-687381476-r1 { fill: #808080 }
 .terminal-687381476-r2 { fill: #af00ff }
-.terminal-687381476-r3 { fill: #cc555a }
+.terminal-687381476-r3 { fill: #ec3a37 }
     </style>
     <defs>
     <clipPath id="terminal-687381476-clip-terminal">
