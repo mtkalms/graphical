@@ -18,20 +18,10 @@ CODE_FORMAT = (
             font-size: {char_height}px;
             line-height: {line_height}px;
             font-variant-east-asian: full-width;
-            filter: url(#merge);
         }}
     {styles}
     </style>
     <defs>
-        <filter id="merge">
-            <feMerge>
-                <feMergeNode in="SourceGraphic" />
-                <feMergeNode in="blur" />
-            </feMerge>
-        </filter>
-        <filter id="blur">
-            <feGaussianBlur in="SourceGraphic" stdDeviation="2" />
-        </filter>
         <clipPath id="{unique_id}-clip-terminal">
             <rect x="0" y="0" width="{terminal_width}" height="{terminal_height}" />
         </clipPath>
