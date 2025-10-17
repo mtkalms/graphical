@@ -12,22 +12,12 @@
             font-size: 20px;
             line-height: 24.4px;
             font-variant-east-asian: full-width;
-            filter: url(#merge);
         }
     .terminal-3185570072-r1 { fill: #808080 }
 .terminal-3185570072-r2 { fill: #af00ff }
 .terminal-3185570072-r3 { fill: #57007f }
     </style>
     <defs>
-        <filter id="merge">
-            <feMerge>
-                <feMergeNode in="SourceGraphic" />
-                <feMergeNode in="blur" />
-            </feMerge>
-        </filter>
-        <filter id="blur">
-            <feGaussianBlur in="SourceGraphic" stdDeviation="2" />
-        </filter>
         <clipPath id="terminal-3185570072-clip-terminal">
             <rect x="0" y="0" width="1463.0" height="218.6" />
         </clipPath>
