@@ -347,7 +347,6 @@ class DivergingBarChart:
     def __rich_console__(
         self, console: Console, options: ConsoleOptions
     ) -> RenderResult:
-
         if self.value_range:
             max_value = max(abs(d) for d in self.value_range)
         else:

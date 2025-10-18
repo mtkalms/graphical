@@ -74,7 +74,7 @@ class LabelChartRenderer:
         width_content = max(d.content_width for d in self.rows)
 
         yield Segment(" " * width_labels)
-        yield Segment(f"{self.title : ^{width_content + 2}}")
+        yield Segment(f"{self.title: ^{width_content + 2}}")
         yield Segment("\n")
 
         yield Segment(" " * width_labels)
@@ -84,9 +84,9 @@ class LabelChartRenderer:
         yield Segment("\n")
 
         for row in self.rows:
-            yield Segment(f"{row.label : >{width_labels - 1}} ")
+            yield Segment(f"{row.label: >{width_labels - 1}} ")
             yield Segment(self.box.row_right)
-            yield Segment(row.content) if type(row.content) == str else row.content
+            yield Segment(row.content) if type(row.content) is str else row.content
             yield Segment(" " * (width_content - row.content_width))
             yield Segment(self.box.mid_right)
             yield Segment("\n")
@@ -99,6 +99,6 @@ class LabelChartRenderer:
 
         if self.ticks:
             yield Segment(" " * (width_labels + 1))
-            yield Segment(f"{self.ticks[0] : <{width_content // 2}}")
-            yield Segment(f"{self.ticks[1] : >{width_content - width_content // 2}}")
+            yield Segment(f"{self.ticks[0]: <{width_content // 2}}")
+            yield Segment(f"{self.ticks[1]: >{width_content - width_content // 2}}")
             yield Segment("\n")
