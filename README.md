@@ -1,3 +1,6 @@
+[![Test graphical](https://github.com/mtkalms/graphical/actions/workflows/python-package.yml/badge.svg)](https://github.com/mtkalms/graphical/actions/workflows/python-package.yml)
+![OS support](https://img.shields.io/badge/OS-macOS%20Linux%20Windows-blue)
+
 # Graphical
 
 Graphical is a Python library that adds graphs and visuals to [rich][rich] and [textual][textual].
