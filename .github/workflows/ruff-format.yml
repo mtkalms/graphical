@@ -1,0 +1,25 @@
+name: Ruff format check
+
+on:
+  push:
+    paths:
+      - ".github/workflows/ruff-format.yml"
+      - "**.py"
+  pull_request:
+    paths:
+      - ".github/workflows/ruff-format.yml"
+      - "**.py"
+
+jobs:
+  ruff-format-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Set up Python 3.14
+        uses: actions/setup-python@v6
+        with:
+          python-version: 3.14
+      - name: Install ruff
+        run: python -m pip install ruff==0.14.1
+      - name: Run ruff
+        run: ruff check src
