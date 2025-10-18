@@ -28,6 +28,14 @@ class Test_Bar:
             (5.2, BarStyle.LIGHT, "──────────╴         "),
             (5.2, BarStyle.SHADE, "██████████▒         "),
         ],
+        ids=[
+            "BLOCK_none",
+            "BLOCK_full",
+            "BLOCK_partial",
+            "HEAVY_partial",
+            "LIGHT_partial",
+            "SHADE_partial",
+        ],
     )
     def test_render(self, value: float, bar_style: BarStyle, expected: str):
         chart = Bar(
@@ -56,6 +64,19 @@ class Test_DivergingBar:
             (+5.3, BarStyle.SHADE, "          █████░    "),
             (-5.3, BarStyle.SHADE, "    ░█████          "),
         ],
+        ids=[
+            "BLOCK_none",
+            "BLOCK_positive",
+            "BLOCK_negative",
+            "BLOCK_positive_partial",
+            "BLOCK_negative_partial",
+            "HEAVY_positive_partial",
+            "HEAVY_negative_partial",
+            "LIGHT_positive_partial",
+            "LIGHT_negative_partial",
+            "SHADE_positive_partial",
+            "SHADE_negative_partial",
+        ],
     )
     def test_render(self, value: float, bar_style: BarStyle, expected: str):
         chart = DivergingBar(
@@ -76,6 +97,7 @@ class Test_StackedBar:
             ([5.2, 4.5], BarStyle.BLOCK, "██████████▍████████▍"),
             ([5.2, 0.8], BarStyle.BLOCK, "██████████▍█        "),
         ],
+        ids=["short+medium", "medium+medium", "medium+short"],
     )
     def test_render(self, values: List[float], bar_style: BarStyle, expected: str):
         chart = StackedBar(
@@ -97,6 +119,7 @@ class Test_DoubleBar:
             ([5.2, 6.8], BarStyle.BLOCK, "▀▀▀▀▀▀▀▀▀▀▀▄▄▄      "),
             ([6.8, 5.2], BarStyle.BLOCK, "▀▀▀▀▀▀▀▀▀▀▀▀▀▀      "),
         ],
+        ids=["short+medium", "medium+long", "medium+medium", "long+medium"],
     )
     def test_render(self, values: List[float], bar_style: BarStyle, expected: str):
         chart = DoubleBar(

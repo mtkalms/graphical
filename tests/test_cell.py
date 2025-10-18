@@ -9,6 +9,7 @@ class Test_PlotCellRenderer:
     @pytest.mark.parametrize(
         "cell_style, num_values, expected_values",
         [(s, len(s.chars), s.chars) for s in PlotCellStyle],
+        ids=[s.name for s in PlotCellStyle],
     )
     def test_render_range(
         self, cell_style: PlotCellStyle, num_values: int, expected_values: List[str]
@@ -23,7 +24,9 @@ class Test_PlotCellRenderer:
             assert result == expected, message
 
     @pytest.mark.parametrize(
-        "cell_style, expected", [(s, s.over) for s in PlotCellStyle]
+        "cell_style, expected",
+        [(s, s.over) for s in PlotCellStyle],
+        ids=[s.name for s in PlotCellStyle],
     )
     def test_render_over(self, cell_style: PlotCellStyle, expected: str):
         value = 8
@@ -35,7 +38,9 @@ class Test_PlotCellRenderer:
         assert result == expected, message
 
     @pytest.mark.parametrize(
-        "cell_style, expected", [(s, s.under) for s in PlotCellStyle]
+        "cell_style, expected",
+        [(s, s.under) for s in PlotCellStyle],
+        ids=[s.name for s in PlotCellStyle],
     )
     def test_render_under(self, cell_style: PlotCellStyle, expected: str):
         value = 0

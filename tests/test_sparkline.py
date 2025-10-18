@@ -13,9 +13,9 @@ class Test_Sparkline:
             (OneLinePlotStyle.AREA, 9, "  ▁▂▃▄▅▆▇██"),
             (OneLinePlotStyle.HORIZON, 18, "  ▁▂▃▄▅▆▇█ ▁▂▃▄▅▆▇██"),
             (OneLinePlotStyle.SHADE, 5, "  ░▒▓██"),
-        ],
+        ], ids=["LINE", "AREA", "HORIZON", "SHADE"],
     )
-    def test_ascending_pattern(
+    def test_ascending(
         self, plot_style: OneLinePlotStyle, width: int, expected: str
     ):
         chart = Sparkline(
@@ -33,9 +33,9 @@ class Test_Sparkline:
             (OneLinePlotStyle.AREA, 9, "███▇▆▅▄▃▂▁ "),
             (OneLinePlotStyle.HORIZON, 18, "███▇▆▅▄▃▂▁ █▇▆▅▄▃▂▁ "),
             (OneLinePlotStyle.SHADE, 5, "███▓▒░ "),
-        ],
+        ], ids=["LINE", "AREA", "HORIZON", "SHADE"]
     )
-    def test_descending_pattern(
+    def test_descending(
         self, plot_style: OneLinePlotStyle, width: int, expected: str
     ):
         chart = Sparkline(
