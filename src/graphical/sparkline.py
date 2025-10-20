@@ -37,15 +37,15 @@ class OneLinePlotStyle(Enum):
 
 
 class Sparkline:
-    """A console renderable to draw a Sparkline.
+    """A console renderable to draw a sparkline.
 
     Args:
-        values (List[float]): Values displayed in the Sparkline.
-        value_range (Tuple[float, float], optional): Range of values displayed in the Sparkline.
-        color (Union[Color, str]): Color of the Sparkline.
-        bgcolor (Union[Color, str]): Background color of the Sparkline.
-        plot_style (OneLinePlotStyle): One of the plot styles defined in OneLinePlotStyle.
-        end (str): End character. Defaults to "\n".
+        values (List[float]): Values displayed in the sparkline.
+        value_range (Tuple[float, float], optional): Range of values. Defaults to None
+        color (Union[Color, str]): Color of the sparkline. Defaults to "default".
+        bgcolor (Union[Color, str]): Background color of the sparkline. Defaults to "default".
+        plot_style (OneLinePlotStyle): Data representation syle. Defaults to OneLinePlotStyle.AREA.
+        end (str): End character. Defaults to newline.
     """
 
     def __init__(

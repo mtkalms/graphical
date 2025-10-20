@@ -24,6 +24,13 @@ def _stacked(values: List[float]) -> List[float]:
 
 
 class BarStyle(Enum):
+    """Bar styles for bar charts.
+
+    Args:
+        horizontal (PlotCellStyle): Data visualization style for horizontal bars.
+        vertical (PlotCellStyle): Data visualization style for vertical bars.
+    """
+
     LIGHT = PlotCellStyle.BAR_LIGHT_H, PlotCellStyle.BAR_LIGHT_V
     HEAVY = PlotCellStyle.BAR_HEAVY_H, PlotCellStyle.BAR_HEAVY_V
     BLOCK = PlotCellStyle.BLOCK_H, PlotCellStyle.BLOCK_V
@@ -41,6 +48,18 @@ class BarStyle(Enum):
 
 
 class Bar:
+    """A console renderable to draw a horizontal bar.
+
+    Args:
+        value (float): Value of the bar.
+        value_range (Tuple[float, float]): Range of values of the bar.
+        color (Union[Color, str], optional): Color of the bar. Defaults to "default".
+        bgcolor (Union[Color, str]): Background color of the bar. Defaults to "default".
+        width (int, optional): Width representing the full value range. Defaults to 50.
+        bar_style (BarStyle, optional): Data representation syle. Defaults to BarStyle.BLOCK.
+        end (str, optional): End character of bar string. Defaults to newline.
+    """
+
     def __init__(
         self,
         value: float,
@@ -79,6 +98,19 @@ class Bar:
 
 
 class DivergingBar:
+    """A console renderable to draw a diverging horizontal bar.
+
+    Args:
+        value (float): Value of the bar.
+        value_range (Tuple[float, float]): Range of values of the bar.
+        color (Union[Color, str], optional): Color of the bar. Defaults to "default".
+        color_negative (Optional[Union[Color, str]], optional): Color of the bar for negative values. Defaults to None.
+        bgcolor (Union[Color, str]): Background color of the bar. Defaults to "default".
+        width (int, optional): Width representing the full value range. Defaults to 50.
+        bar_style (BarStyle, optional): Data representation syle. Defaults to BarStyle.BLOCK.
+        end (str, optional): End character of bar string. Defaults to newline.
+    """
+
     def __init__(
         self,
         value: float,
@@ -127,6 +159,17 @@ class DivergingBar:
 
 
 class StackedBar:
+    """A console renderable to draw stacked horizontal bars.
+
+    Args:
+        values (List[float]): Values of the bars.
+        value_range (Tuple[float, float]): Range of values of the bar.
+        colors (List[Union[Color, str]], optional): Colors of the bars. Defaults to "default".
+        bgcolor (Union[Color, str]): Background color of the bar. Defaults to "default".
+        width (int, optional): Width representing the full value range. Defaults to 50.
+        end (str, optional): End character of bar string. Defaults to newline.
+    """
+
     def __init__(
         self,
         values: List[float],
@@ -171,6 +214,17 @@ class StackedBar:
 
 
 class DoubleBar:
+    """A console renderable to draw two horizontal bars.
+
+    Args:
+        values (List[float]): Values of the bars.
+        value_range (Tuple[float, float]): Range of values of the bar.
+        colors (List[Union[Color, str]]): Colors of the bars. Defaults to "default".
+        bgcolor (Union[Color, str]): Background color of the bars. Defaults to "default".
+        width (int, optional): Width representing the full value range. Defaults to 50.
+        end (str, optional): End character of bar string. Defaults to newline.
+    """
+
     def __init__(
         self,
         values: List[float],
@@ -223,6 +277,8 @@ class DoubleBar:
 
 @dataclass
 class BarChartRow:
+    """Row of a bar chart."""
+
     label: str
     value: float
     color: Union[Color, str] = "default"
@@ -232,6 +288,8 @@ class BarChartRow:
 
 @dataclass
 class MultiBarChartRow:
+    """Row of a multi-bar chart."""
+
     label: str
     values: List[float]
     colors: List[Union[Color, str]] = None
@@ -240,6 +298,18 @@ class MultiBarChartRow:
 
 
 class BarChart:
+    """A console renderable to draw a bar chart.
+
+    Args:
+        title (str): Ttile of the bar chart. Appears at the top.
+        value_range (Tuple[float, float]): Range of values of the bar chart.
+        color (Union[Color, str], optional): Color of the bars in the chart. Defaults to "default".
+        bgcolor (Union[Color, str]): Background color of the bar chart. Defaults to "default".
+        width (int, optional): Width of the chart. Defaults to 50.
+        bar_style (BarStyle, optional): Data representation syle. Defaults to BarStyle.BLOCK.
+        box (Box, optional): Style of the containing box. Defaults to HEAVY.
+    """
+
     def __init__(
         self,
         title: str,
@@ -267,6 +337,17 @@ class BarChart:
         bgcolor: Optional[Union[Color, str]] = None,
         bar_style: Optional[BarStyle] = None,
     ) -> BarChartRow:
+        """Add a row to the bar chart.
+
+        Args:
+            label (str): Label for the bar chart row.
+            value (float): Data value for the bar chart row.
+            bgcolor (Union[Color, str], optional): Background color of the row. Defaults to "default".
+            bar_style (Optional[BarStyle], optional): Data representation. Defaults to bar_style of chart.
+
+        Returns:
+            BarChartRow: The added row.
+        """
         row = BarChartRow(
             label=label,
             value=value,
@@ -307,6 +388,19 @@ class BarChart:
 
 
 class DivergingBarChart:
+    """A console renderable to draw a diverging bar chart.
+
+    Args:
+        title (str): Ttile of the bar chart. Appears at the top.
+        value_range (Tuple[float, float]): Range of values of the bar chart.
+        color (Union[Color, str], optional): Color of the bars in the chart. Defaults to "default".
+        color_negative (Optional[Union[Color, str]], optional): Color of the bars for negative values. Defaults to None.
+        bgcolor (Union[Color, str]): Background color of the bar chart. Defaults to "default".
+        width (int, optional): Width of the chart. Defaults to 50.
+        bar_style (BarStyle, optional): Data representation syle. Defaults to BarStyle.BLOCK.
+        box (Box, optional): Style of the containing box. Defaults to HEAVY.
+    """
+
     def __init__(
         self,
         title: str,
@@ -335,6 +429,17 @@ class DivergingBarChart:
         bgcolor: Optional[Union[Color, str]] = None,
         bar_style: Optional[BarStyle] = None,
     ) -> BarChartRow:
+        """Add a row to the bar chart.
+
+        Args:
+            label (str): Label for the bar chart row.
+            value (float): Data value for the bar chart row.
+            bgcolor (Union[Color, str], optional): Background color of the row. Defaults to "default".
+            bar_style (Optional[BarStyle], optional): Data representation. Defaults to bar_style of chart.
+
+        Returns:
+            BarChartRow: The added row.
+        """
         row = BarChartRow(
             label=label,
             value=value,
@@ -379,6 +484,17 @@ class DivergingBarChart:
 
 
 class StackedBarChart:
+    """A console renderable to draw a stacked bar chart.
+
+    Args:
+        title (str): Ttile of the bar chart. Appears at the top.
+        value_range (Tuple[float, float]): Range of values of the bar chart.
+        colors (Union[Color, str], optional): Color of the bars in the chart. Defaults to "default".
+        bgcolor (Union[Color, str]): Background color of the bar chart. Defaults to "default".
+        width (int, optional): Width of the chart. Defaults to 50.
+        box (Box, optional): Style of the containing box. Defaults to HEAVY.
+    """
+
     def __init__(
         self,
         title: str,
@@ -402,6 +518,16 @@ class StackedBarChart:
         values: List[float],
         bgcolor: Optional[Union[Color, str]] = None,
     ) -> MultiBarChartRow:
+        """Add a row to the bar chart.
+
+        Args:
+            label (str): Label for the bar chart row.
+            values (List[float]): Data valuse for the bars in the row.
+            bgcolor (Union[Color, str], optional): Background color of the row. Defaults to "default".
+
+        Returns:
+            MultiBarChartRow: The added row.
+        """
         row = MultiBarChartRow(
             label=label,
             values=values,
@@ -439,6 +565,17 @@ class StackedBarChart:
 
 
 class DoubleBarChart:
+    """A console renderable to draw a double bar chart.
+
+    Args:
+        title (str): Ttile of the bar chart. Appears at the top.
+        value_range (Tuple[float, float]): Range of values of the bar chart.
+        colors (Union[Color, str], optional): Color of the bars in the chart. Defaults to "default".
+        bgcolor (Union[Color, str]): Background color of the bar chart. Defaults to "default".
+        width (int, optional): Width of the chart. Defaults to 50.
+        box (Box, optional): Style of the containing box. Defaults to HEAVY.
+    """
+
     def __init__(
         self,
         title: str,
@@ -462,6 +599,16 @@ class DoubleBarChart:
         values: List[float],
         bgcolor: Optional[Union[Color, str]] = None,
     ) -> MultiBarChartRow:
+        """Add a row to the bar chart.
+
+        Args:
+            label (str): Label for the bar chart row.
+            values (List[float]): Data valuse for the bars in the row.
+            bgcolor (Union[Color, str], optional): Background color of the row. Defaults to "default".
+
+        Returns:
+            MultiChartRow: The added row.
+        """
         row = MultiBarChartRow(
             label=label,
             values=values,

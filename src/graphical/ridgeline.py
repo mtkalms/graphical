@@ -23,6 +23,17 @@ class RidgelineRow:
 
 
 class RidgelineChart:
+    """A console renderable to draw a ridgeline chart.
+
+    Args:
+        title (str): Ttile of the ridgeline chart. Appears at the top.
+        value_range (Optional[Tuple[float, float]], optional): Range of values. Defaults to None.
+        color (Union[Color, str], optional): Color of the ridgelines. Defaults to "default".
+        ticks (Optional[Tuple[float, float]], optional): Max and min ticks on y-axis. Defaults to None.
+        plot_style (OneLinePlotStyle, optional): Data representation syle. Defaults to OneLinePlotStyle.AREA.
+        box (Box, optional): Style of the containing box. Defaults to HEAVY.
+    """
+
     def __init__(
         self,
         title: str,
@@ -47,6 +58,17 @@ class RidgelineChart:
         color: Union[Color, str] = "default",
         plot_style: Optional[OneLinePlotStyle] = None,
     ) -> RidgelineRow:
+        """Add a ridgeline to the chart.
+
+        Args:
+            label (str): Label for the ridgeline row.
+            values (List[float]): Data values for ridgeline row.
+            color (Union[Color, str], optional): Color of the rigeline row. Defaults to "default".
+            plot_style (Optional[OneLinePlotStyle], optional): Data representation syle. Defaults to None.
+
+        Returns:
+            RidgelineRow: The added row.
+        """
         row = RidgelineRow(label, values, color, plot_style)
         self.rows.append(row)
         return row

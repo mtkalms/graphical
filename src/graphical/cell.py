@@ -70,9 +70,9 @@ class PlotCellRenderer:
         """Render plot cell.
 
         Args:
-            value (float): Value represented in the plot.
+            value (float): Value of the cell.
             value_range (Tuple[float, float], optional): Value range of the cell.
-            cell_style (PlotCellStyle): One of the plot styles defined in PlotCellStyle.
+            cell_style (PlotCellStyle): Data representation syle..
             invert (bool): Invert cell direction. Defaults to False.
             match_inverted (bool): Use limited resolution to match inverted cells. Defaults to False.
 
