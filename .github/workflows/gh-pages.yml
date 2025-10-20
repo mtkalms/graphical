@@ -1,0 +1,43 @@
+name: Deploy documentation
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/gh-pages.yml"
+      - "mkdocs.yml"
+      - "docs/**"
+      - "src/**"
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Install Poetry
+        run: pipx install poetry==2.2.1
+      - name: Set up Python 3.14
+        uses: actions/setup-python@v6
+        with:
+          python-version: 3.14
+          cache: "poetry"
+      - name: Install dependencies
+        run: poetry install --no-interaction
+      - name: Build documentation
+        run: mkdocs build --clean
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
