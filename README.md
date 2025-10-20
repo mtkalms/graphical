@@ -52,7 +52,7 @@ Graphical is a Python library that adds graphs and visuals to [rich][rich] and [
 - [termplotlib][termplotlib]: line plots and histograms with a matplotlib feel
 - [termgraph][termgraph]: bar and calendar graphs
 - [plotille][plotille]: plots, histograms and images
-- [termplot][termplot]: simple plots that can be used in Rich
+- [termplot][termplot]: simple plots
 - [terminalplot][terminalplot]: minimalistic plots
 - [drawille][drawille]: drawing in Braille characters
 - [gantt][gantt]: gantt charts
@@ -61,56 +61,11 @@ Graphical is a Python library that adds graphs and visuals to [rich][rich] and [
 
 - [netext][netext]: network graphs
 - [termcharts][termcharts]: bar, pie and doughnut charts
+- [rich-pixels][rich-pixels]: images
 
 ### textual ready
 
 - [plotext][plotext] + [textual-plotext][textual-plotext]: plots and images
-
-## More Graph Ideas
-
-This is a list of textual sketches of different graph types that are also candidates for future implementation.
-
-### Row-based Graphs
-
-#### Boxplot
-
-<img src="img/boxplot.png" alt="Boxplot Sketch" style="height:300px;"/>
-
-#### Gantt Chart
-
-<img src="img/ganttchart.png" alt="Gantt Chart Sketch" style="height:300px;"/>
-
-#### Candlestick Chart
-
-> Candlestick charts might be part of future versions of Textual (see [Textual roadmap][roadmap]).
-
-<img src="img/candlestickchart.png" alt="Candlestick Chart Sketch" style="height:300px;"/>
-
-#### Contour Plot
-
-<img src="img/contourplot.png" alt="Contour Plot Sketch" style="height:300px;"/>
-
-### Complex Graphs
-
-#### Histogram
-
-<img src="img/histogram.png" alt="Histogram Sketch" style="height:300px;"/>
-
-#### Dendogram
-
-<img src="img/dendogram.png" alt="Dendogram Sketch" style="height:300px;"/>
-
-#### Icicle Chart
-
-<img src="img/iciclechart.png" alt="Icicle Chart Sketch" style="height:300px;"/>
-
-#### Heatmap
-
-<img src="img/heatmap.png" alt="Heatmap Sketch" style="height:400px;"/>
-
-#### Calendar
-
-<img src="img/calendar.png" alt="Calendar Sketch"/>
 
 [asciichart]: https://github.com/kroitor/asciichart
 [drawille]: https://github.com/asciimoo/drawille
@@ -127,3 +82,4 @@ This is a list of textual sketches of different graph types that are also candid
 [termplotlib]: https://github.com/nschloe/termplotlib
 [textual-plotext]: https://github.com/Textualize/textual-plotext
 [textual]: https://github.com/Textualize/textual
+[rich-pixels]: https://github.com/darrenburns/rich-pixels
