@@ -1,4 +1,4 @@
-name: Test graphical
+name: Test
 
 on:
   push:
