@@ -33,7 +33,7 @@ jobs:
       - name: Install dependencies
         run: poetry install --no-interaction
       - name: Build documentation
-        run: mkdocs build --clean
+        run: poetry run mkdocs build --clean
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
