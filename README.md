@@ -1,17 +1,18 @@
-[![Test graphical](https://github.com/mtkalms/graphical/actions/workflows/python-package.yml/badge.svg)](https://github.com/mtkalms/graphical/actions/workflows/python-package.yml)
+[![Test](https://github.com/mtkalms/graphical/actions/workflows/python-package.yml/badge.svg)](https://github.com/mtkalms/graphical/actions/workflows/python-package.yml)
+[![Ruff](https://github.com/mtkalms/graphical/actions/workflows/ruff-format.yml/badge.svg)](https://github.com/mtkalms/graphical/actions/workflows/ruff-format.yml)
 ![OS support](https://img.shields.io/badge/OS-macOS%20Linux%20Windows-blue)
 
 # Graphical
 
-Graphical is a Python library that adds graphs and visuals to [rich][rich] and [textual][textual].
+Graphical is a modular visualization library for the terminal. It is based on the console protocol of [Rich][rich] and is fully compatible with [Textual][textual].
 
-> **NOTE:** Future versions of textual might include a limited number of graphs and charts (see [roadmap][roadmap]).
+> **NOTE:** Future versions of Textual might include a limited number of graphs and charts (see [Textual Roadmap][roadmap]).
 
 ## Graphical Library
 
 ### Sparkline
 
-> Sparklines are included in textual since version 0.27.0 (June 2023)
+> Sparklines are included in Textual since version 0.27.0 (June 2023)
 
 <img src="img/sparkline.svg" alt="Sparkline Table Example" style="width:720px;"/>
 
@@ -30,7 +31,7 @@ Graphical is a Python library that adds graphs and visuals to [rich][rich] and [
 
 #### Bar Chart
 
-> Bar charts might be part of future versions of Textual (see [Textual roadmap][roadmap]).
+> Bar charts might be part of future versions of Textual (see [Textual Roadmap][roadmap]).
 
 <img src="img/bar.svg" alt="BarChart Example" style="width:720px;"/>
 
@@ -48,22 +49,22 @@ Graphical is a Python library that adds graphs and visuals to [rich][rich] and [
 
 ## Similar Projects
 
-- [asciichart][asciichart]: beautiful line plots
-- [termplotlib][termplotlib]: line plots and histograms with a matplotlib feel
-- [termgraph][termgraph]: bar and calendar graphs
-- [plotille][plotille]: plots, histograms and images
-- [termplot][termplot]: simple plots
-- [terminalplot][terminalplot]: minimalistic plots
+- [asciichart][asciichart]: line plots
 - [drawille][drawille]: drawing in Braille characters
 - [gantt][gantt]: gantt charts
+- [plotille][plotille]: plots, histograms and images
+- [termgraph][termgraph]: bar and calendar graphs
+- [terminalplot][terminalplot]: minimalistic plots
+- [termplot][termplot]: simple plots
+- [termplotlib][termplotlib]: line plots and histograms with a matplotlib feel
 
-### rich ready
+### Rich ready
 
 - [netext][netext]: network graphs
-- [termcharts][termcharts]: bar, pie and doughnut charts
 - [rich-pixels][rich-pixels]: images
+- [termcharts][termcharts]: bar, pie and doughnut charts
 
-### textual ready
+### Textual ready
 
 - [plotext][plotext] + [textual-plotext][textual-plotext]: plots and images
 
@@ -73,6 +74,7 @@ Graphical is a Python library that adds graphs and visuals to [rich][rich] and [
 [netext]: https://github.com/mahrz24/netext/
 [plotext]: https://github.com/piccolomo/plotext
 [plotille]: https://github.com/tammoippen/plotille
+[rich-pixels]: https://github.com/darrenburns/rich-pixels
 [rich]: https://github.com/Textualize/rich
 [roadmap]: https://textual.textualize.io/roadmap/
 [termcharts]: https://github.com/Abdur-rahmaanJ/termcharts
@@ -82,4 +84,3 @@ Graphical is a Python library that adds graphs and visuals to [rich][rich] and [
 [termplotlib]: https://github.com/nschloe/termplotlib
 [textual-plotext]: https://github.com/Textualize/textual-plotext
 [textual]: https://github.com/Textualize/textual
-[rich-pixels]: https://github.com/darrenburns/rich-pixels
