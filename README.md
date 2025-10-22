@@ -61,12 +61,14 @@ Graphical is a modular visualization library for the terminal. It is based on th
 ### Rich ready
 
 - [netext][netext]: network graphs
+- [plotext][plotext]: plots and images
 - [rich-pixels][rich-pixels]: images
 - [termcharts][termcharts]: bar, pie and doughnut charts
 
 ### Textual ready
 
-- [plotext][plotext] + [textual-plotext][textual-plotext]: plots and images
+- [textual-plotext][textual-plotext]: textual wrapper for plotext
+- [textual-plot][textual-plot]: plots with panning and zooming
 
 [asciichart]: https://github.com/kroitor/asciichart
 [drawille]: https://github.com/asciimoo/drawille
@@ -82,5 +84,6 @@ Graphical is a modular visualization library for the terminal. It is based on th
 [terminalplot]: https://github.com/kressi/terminalplot
 [termplot]: https://github.com/justnoise/termplot
 [termplotlib]: https://github.com/nschloe/termplotlib
+[textual-plot]: https://github.com/davidfokkema/textual-plot
 [textual-plotext]: https://github.com/Textualize/textual-plotext
 [textual]: https://github.com/Textualize/textual
