@@ -2,45 +2,82 @@ from typing import Generator, Union
 
 
 class Section(tuple):
-    def __new__(cls, left: float, right: float) -> Section:
-        return super().__new__(cls, (left, right))
+    """Represents a one dimensional section along an axis,
+       defined by its lower and upper boundary positions.
+
+    Args:
+        tuple (_type_): Boundary positions.
+    """
+
+    def __new__(cls, lower: float, upper: float) -> Section:
+        if lower > upper:
+            print(lower, upper)
+            raise ValueError("Upper boundary must be higher that lower boundary.")
+        return super().__new__(cls, (lower, upper))
 
     @property
-    def left(self) -> float:
+    def lower(self) -> float:
+        """Get position of lower boundary.
+
+        Returns:
+            float: Position of lower boundary.
+        """
         return self[0]
 
     @property
-    def right(self) -> float:
+    def upper(self) -> float:
+        """Get position of upper boundary.
+
+        Returns:
+            float: Position of upper boundary.
+        """
         return self[1]
 
     @property
     def middle(self) -> float:
-        return (self.left + self.right) / 2.0
+        """Get middle position of section.
+
+        Returns:
+            float: Middle position.
+        """
+        return (self.lower + self.upper) / 2.0
 
     @property
-    def width(self) -> float:
-        return abs(self.right - self.left)
+    def length(self) -> float:
+        """Get length of section.
 
-    def __contains__(self, item: Union[float, Section]) -> bool:
-        if isinstance(item, tuple):
-            return self[0] <= item[0] and item[1] <= self[1]
-        return self[0] <= item <= self[1]
+        Returns:
+            float: Length of section.
+        """
+        return abs(self.upper - self.lower)
 
-    def segments(self, count: int) -> Generator[Section]:
-        """Breaks this section into a given number of new sections of equal size.
+    def __contains__(self, other: Union[float, Section]) -> bool:
+        if isinstance(other, tuple):
+            return self.lower <= other[0] and other[1] <= self.upper
+        if isinstance(other, (int, float)):
+            return self.lower <= other <= self.upper
+        raise ValueError()
+
+    def __eq__(self, other: tuple) -> Section:
+        if isinstance(other, tuple):
+            return self.lower == other[0] and self.upper == other[1]
+        raise ValueError()
+
+    def segment(self, count: int) -> Generator[Section]:
+        """Segments the section into a given number of new sections of equal size.
 
         Args:
             count (int): Number of segments.
 
         Yields:
-            Generator[Section]: Generator for segment sections.
+            Generator[Section]: Generator for resulting sections.
         """
-        step = self.width / count
+        step = self.length / count
         for n in range(count):
-            yield Section(self.left + n * step, self.left + (n + 1) * step)
+            yield Section(self.lower + n * step, self.lower + (n + 1) * step)
 
     def overlaps(self, other: Section) -> bool:
-        """Returns if the given section has any overlap with this section.
+        """Returns if this section has any overlap with another.
 
         Args:
             other (Section): Other section.
@@ -49,34 +86,34 @@ class Section(tuple):
             bool: Sections overlap.
         """
         return (
-            other.left in self
-            or other.right in self
-            or self.left in other
-            or self.right in other
+            other.lower in self
+            or other.upper in self
+            or self.lower in other
+            or self.upper in other
         )
 
-    def overlap(self, other: Section, normalize: bool = True) -> float:
-        """Returns the signed width of the overlap between the given section and this one.
-        The result is positive if the other section mainly overlaps the left half of this section, negative otherwise.
-        If normalize is set to True, it will return the width of the overlap relative to the width of this section.
+    def merge(self, other: Section) -> Section | None:
+        """Merges this section with another one and returns the resulting section.
 
         Args:
             other (Section): Other section.
-            normalize (bool, optional): Return width as fraction of this section. Defaults to True.
 
         Returns:
-            float: Signed width of overlap
+            Section | None: Merged section.
         """
         if not self.overlaps(other):
-            return 0.0
-        if self in other:
-            return 1.0
-        overlap = Section(max((self.left, other.left)), min((self.right, other.right)))
-        left_overlap = max(
-            (0.0, min((self.middle, overlap.right)) - max((self.left, overlap.left)))
-        )
-        right_overlap = max(
-            (0.0, min((self.right, overlap.right)) - max((self.middle, overlap.left)))
-        )
-        sign = 1.0 if left_overlap >= right_overlap else -1.0
-        return sign * overlap.width / self.width if normalize else sign * overlap.width
+            return None
+        return Section(min((self.lower, other.lower)), max((self.upper, other.upper)))
+
+    def intersect(self, other: Section) -> Section | None:
+        """Returns the intersection of this and another section.
+
+        Args:
+            other (Section): Other section.
+
+        Returns:
+            Section | None: Intersection with given section.
+        """
+        if not self.overlaps(other):
+            return None
+        return Section(max((self.lower, other.lower)), min((self.upper, other.upper)))
