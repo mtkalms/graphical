@@ -1,45 +1,40 @@
 import pytest
 
-from graphical.sparkline import OneLinePlotStyle, Sparkline
+from graphical.sparkline import Sparkline
+from graphical.mark import *
 
 from .util import render
 
 
 class Test_Sparkline:
     @pytest.mark.parametrize(
-        "plot_style, width, expected",
+        "cells, width, expected",
         [
-            (OneLinePlotStyle.LINE, 8, "  ▁⎽⎼─⎻⎺▔ "),
-            (OneLinePlotStyle.AREA, 9, "  ▁▂▃▄▅▆▇██"),
-            (OneLinePlotStyle.HORIZON, 18, "  ▁▂▃▄▅▆▇█ ▁▂▃▄▅▆▇██"),
-            (OneLinePlotStyle.SHADE, 5, "  ░▒▓██"),
+            (BAR_BLOCK_V, 9, "  ▁▂▃▄▅▆▇██"),
+            (BAR_SHADE, 5, "  ░▒▓██"),
         ],
-        ids=["LINE", "AREA", "HORIZON", "SHADE"],
+        ids=["AREA", "SHADE"],
     )
-    def test_ascending(self, plot_style: OneLinePlotStyle, width: int, expected: str):
+    def test_ascending(self, cells: Mark, width: int, expected: str):
         chart = Sparkline(
             values=[-1 + d for d in range(width + 2)],
             value_range=(0, width - 1),
-            plot_style=plot_style,
-            end="",
+            cells=cells,
         )
         assert render(chart) == expected
 
     @pytest.mark.parametrize(
-        "plot_style, width, expected",
+        "cells, width, expected",
         [
-            (OneLinePlotStyle.LINE, 8, "  ▔⎺⎻─⎼⎽▁ "),
-            (OneLinePlotStyle.AREA, 9, "███▇▆▅▄▃▂▁ "),
-            (OneLinePlotStyle.HORIZON, 18, "███▇▆▅▄▃▂▁ █▇▆▅▄▃▂▁ "),
-            (OneLinePlotStyle.SHADE, 5, "███▓▒░ "),
+            (BAR_BLOCK_V, 9, "███▇▆▅▄▃▂▁ "),
+            (BAR_SHADE, 5, "███▓▒░ "),
         ],
-        ids=["LINE", "AREA", "HORIZON", "SHADE"],
+        ids=["AREA", "SHADE"],
     )
-    def test_descending(self, plot_style: OneLinePlotStyle, width: int, expected: str):
+    def test_descending(self, cells: Mark, width: int, expected: str):
         chart = Sparkline(
             values=[width + 1 - d for d in range(width + 2)],
             value_range=(0, width - 1),
-            plot_style=plot_style,
-            end="",
+            cells=cells,
         )
         assert render(chart) == expected
