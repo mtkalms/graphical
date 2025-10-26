@@ -12,15 +12,15 @@ from rich.style import Style
 from graphical.mark import *
 from graphical.section import Section
 
-T = TypeVar("T", int, float)
+Numeric = TypeVar("T", int, float)
 
 
 class Bar:
 
     def __init__(
         self,
-        value: T,
-        value_range: Tuple[T, T],
+        value: Numeric,
+        value_range: Tuple[Numeric, Numeric],
         width: int,
         cells: Optional[Mark] = BAR_BLOCK_H,
         color: Optional[Color] = None,
