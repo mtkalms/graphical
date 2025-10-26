@@ -59,7 +59,7 @@ class Mark:
 
 
 BAR_BLOCK_H = Mark(" ▏▎▍▌▋▊▉█", " ▕▐█", invertible=True)
-BAR_BLOCK_V = Mark(" ▁▂▃▄▅▆▇█" " ▔▀█", invertible=True)
+BAR_BLOCK_V = Mark(" ▁▂▃▄▅▆▇█", " ▔▀█", invertible=True)
 BAR_LIGHT_H = Mark(" ╴─", " ╶─")
 BAR_LIGHT_V = Mark(" ╷│", " ╵│")
 BAR_HEAVY_H = Mark(" ╸━", " ╺━")
