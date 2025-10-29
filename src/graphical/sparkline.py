@@ -1,7 +1,5 @@
-from collections.abc import Generator
-from typing import Callable, Sequence, TypeVar, Tuple
+from typing import Sequence, TypeVar, Tuple
 
-from click import Tuple
 from rich.color import Color
 from rich.console import ConsoleOptions, RenderResult, Console
 from rich.measure import Measurement
@@ -10,7 +8,7 @@ from rich.style import Style
 
 from graphical._buckets import buckets, SummaryFunction
 from graphical._normalize import normalize
-from graphical.mark import *
+from graphical.mark import Mark, BAR_BLOCK_V
 
 Numeric = TypeVar("T", int, float)
 

@@ -9,14 +9,13 @@ from rich.measure import Measurement
 from rich.style import Style
 
 
-from graphical.mark import *
+from graphical.mark import Mark, BAR_BLOCK_H
 from graphical.section import Section
 
 Numeric = TypeVar("T", int, float)
 
 
 class Bar:
-
     def __init__(
         self,
         value: Numeric,
@@ -82,6 +81,18 @@ class Bar:
 
 if __name__ == "__main__":
     from rich.console import Console
+    from graphical.mark import (
+        BAR_HEAVY_H,
+        BAR_LIGHT_H,
+        BAR_SHADE,
+        WHISKER_HEAVY_H,
+        WHISKER_LIGHT_H,
+        WHISKER_DOUBLE_H,
+        LOLLIPOP_FILLED_HEAVY_H,
+        LOLLIPOP_FILLED_LIGHT_H,
+        LOLLIPOP_OUTLINE_HEAVY_H,
+        LOLLIPOP_OUTLINE_LIGHT_H,
+    )
 
     console = Console()
 
