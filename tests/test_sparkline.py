@@ -19,7 +19,7 @@ class Test_Sparkline:
         chart = Sparkline(
             values=[-1 + d for d in range(width + 2)],
             value_range=(0, width - 1),
-            cells=cells,
+            marks=cells,
         )
         assert render(chart) == expected
 
@@ -35,6 +35,6 @@ class Test_Sparkline:
         chart = Sparkline(
             values=[width + 1 - d for d in range(width + 2)],
             value_range=(0, width - 1),
-            cells=cells,
+            marks=cells,
         )
         assert render(chart) == expected

@@ -21,7 +21,7 @@ class Bar:
         value: Numeric,
         value_range: Tuple[Numeric, Numeric],
         width: int,
-        cells: Optional[Mark] = BAR_BLOCK_H,
+        marks: Optional[Mark] = BAR_BLOCK_H,
         color: Optional[Color] = None,
         bgcolor: Optional[Color] = None,
         invert_negative: bool = False,
@@ -29,7 +29,7 @@ class Bar:
         self.value = value
         self.value_range = value_range
         self.width = width
-        self.cells = cells
+        self.marks = marks
         self.color = color
         self.bgcolor = bgcolor
         self.invert_negative = invert_negative
@@ -64,13 +64,13 @@ class Bar:
                 and self.invert_negative
                 and self.color not in [None, "default"]
                 and self.bgcolor not in [None, "default"]
-                and self.cells.invertible
+                and self.marks.invertible
             )
             cell_style = inverse_style if invert else style
             if self.value in segment and self.value != segment.lower:
-                cell_char = self.cells.cap(cell_value, invert)
+                cell_char = self.marks.cap(cell_value, invert)
             else:
-                cell_char = self.cells.get(cell_value, invert)
+                cell_char = self.marks.get(cell_value, invert)
             yield Segment(cell_char, style=cell_style)
 
     def __rich_measure__(
@@ -115,7 +115,7 @@ if __name__ == "__main__":
                     value=row_value / 4.3,
                     value_range=(-5.1, 5.1),
                     width=10,
-                    cells=markers,
+                    marks=markers,
                     # color="red",
                     # bgcolor="black",
                     invert_negative=True,

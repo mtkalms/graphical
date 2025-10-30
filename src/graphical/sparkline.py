@@ -19,7 +19,7 @@ class Sparkline:
         values: Sequence[Numeric],
         value_range: Tuple[Numeric, Numeric],
         width: int = None,
-        cells: Mark = BAR_BLOCK_V,
+        marks: Mark = BAR_BLOCK_V,
         color: Color = None,
         bgcolor: Color = None,
         summary_function: SummaryFunction = max,
@@ -27,7 +27,7 @@ class Sparkline:
         self.values = values
         self.value_range = value_range
         self.width = width or len(values)
-        self.cells = cells
+        self.marks = marks
         self.color = color
         self.bgcolor = bgcolor
         self.summary_function = summary_function
@@ -38,7 +38,7 @@ class Sparkline:
         style = Style(color=self.color, bgcolor=self.bgcolor)
         for cell_value in buckets(self.values, self.width, self.summary_function):
             normalized = normalize(cell_value, self.value_range)
-            cell_char = self.cells.get(normalized)
+            cell_char = self.marks.get(normalized)
             yield Segment(cell_char, style=style)
 
     def __rich_measure__(
