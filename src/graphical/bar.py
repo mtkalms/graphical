@@ -9,6 +9,7 @@ from rich.measure import Measurement
 from rich.style import Style
 
 
+from graphical._invert_style import invert_style
 from graphical.mark import Mark, BAR_BLOCK_H
 from graphical.section import Section
 
@@ -45,11 +46,18 @@ class Bar:
             sign = 1.0 if intersection.middle < segment.middle else -1.0
             return sign * intersection.length / segment.length
 
+    def _invertible(self) -> bool:
+        return (
+            self.invert_negative
+            and self.color not in [None, "default"]
+            and self.bgcolor not in [None, "default"]
+            and self.marks.invertible
+        )
+
     def __rich_console__(
         self, console: Console, options: ConsoleOptions
     ) -> RenderResult:
         style = Style(color=self.color, bgcolor=self.bgcolor)
-        inverse_style = Style(color=self.bgcolor, bgcolor=self.color)
         bar = Section(min(0, self.value), max(0, self.value))
         for segment in Section(*self.value_range).segment(self.width):
             cell_value = self._cell_value(bar, segment)
@@ -59,15 +67,10 @@ class Bar:
                     cell_value = 0.0
                 else:
                     cell_value = math.copysign(0.5, cell_value)
-            invert = (
-                cell_value < 0
-                and self.invert_negative
-                and self.color not in [None, "default"]
-                and self.bgcolor not in [None, "default"]
-                and self.marks.invertible
-            )
-            cell_style = inverse_style if invert else style
+            invert = cell_value < 0 and self._invertible()
+            cell_style = invert_style(style) if invert else style
             if self.value in segment and self.value != segment.lower:
+                # Use cap character for the upper boundary of the bar
                 cell_char = self.marks.cap(cell_value, invert)
             else:
                 cell_char = self.marks.get(cell_value, invert)
