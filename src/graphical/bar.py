@@ -41,7 +41,7 @@ class Bar:
         if not intersection:
             return 0.0
         elif segment == intersection:
-            return 1.0
+            return -1.0 if bar.lower < 0 else 1.0
         else:
             sign = 1.0 if intersection.middle < segment.middle else -1.0
             return sign * intersection.length / segment.length
@@ -101,7 +101,6 @@ if __name__ == "__main__":
 
     for row_value in range(-20, 21):
         for markers in [
-            BAR_BLOCK_H,
             BAR_HEAVY_H,
             BAR_LIGHT_H,
             BAR_SHADE,
@@ -112,16 +111,17 @@ if __name__ == "__main__":
             LOLLIPOP_FILLED_LIGHT_H,
             LOLLIPOP_OUTLINE_HEAVY_H,
             LOLLIPOP_OUTLINE_LIGHT_H,
+            Mark(" +", " -"),
         ]:
             console.print(
                 Bar(
                     value=row_value / 4.3,
                     value_range=(-5.1, 5.1),
-                    width=10,
+                    width=15,
                     marks=markers,
                     # color="red",
                     # bgcolor="black",
-                    invert_negative=True,
+                    # invert_negative=True,
                 )
             )
         print(f"\t{row_value / 4.3}")
