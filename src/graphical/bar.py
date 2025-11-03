@@ -94,6 +94,7 @@ class StackedBar:
         marks: Optional[Mark] = BAR_BLOCK_H,
         colors: Sequence[Color] = ["red", "green", "blue", "yellow"],
         bgcolor: Optional[Color] = None,
+        invert_negative: bool = False,
     ) -> None:
         self.values = values
         self.value_range = value_range
@@ -101,6 +102,7 @@ class StackedBar:
         self.marks = marks
         self.colors = colors
         self.bgcolor = bgcolor
+        self.invert_negative = invert_negative
 
     def _stacked_colors(self) -> Sequence[Color]:
         colors = []
@@ -123,6 +125,13 @@ class StackedBar:
         for boundaries in zip(values[:-1], values[1:]):
             bars.append(Section(*boundaries))
         return bars
+
+    def _invertible(self) -> bool:
+        return (
+            self.invert_negative
+            and self.bgcolor not in [None, "default"]
+            and self.marks.invertible
+        )
 
     def __rich_console__(
         self, console: Console, options: ConsoleOptions
@@ -159,8 +168,13 @@ class StackedBar:
                                 char = self.marks.get(-1.0)
                                 color = colors[idx]
                     else:
-                        char = self.marks.get(cell_value)
-                        color = colors[idx]
+                        if self._invertible():
+                            char = self.marks.get(cell_value, invert=True)
+                            bgcolor = colors[idx]
+                            color = self.bgcolor
+                        else:
+                            char = self.marks.get(cell_value)
+                            color = colors[idx]
                     break
             yield Segment(char, style=Style(color=color, bgcolor=bgcolor))
 
@@ -215,20 +229,41 @@ if __name__ == "__main__":
             )
         print(f"\t{row_value / 4.3}")
 
-    for values in [
-        [20, 25, 30, 1, 35],
-        [15, 20, 10, 25],
-        [10, 15, 12, 18],
-        [12, 10, 15, 11],
-        [-20, -25, -30, -35],
-        [-15, -20, -10, -25],
-        [-10, -15, -12, -18],
-        [-12, -10, -15, -11],
-        [20, -25, 30, -35],
-        [15, -20, 10, 25],
-        [10, 15, -12, 18],
-        [12, 10, 15, -11],
-    ]:
+    for idx, values in enumerate(
+        [
+            [20, 25, 30, 1, 35],
+            [15, 20, 10, 25],
+            [10, 15, 12, 18],
+            [12, 10, 15, 11],
+            [-20, -25, -30, -35],
+            [-15, -20, -10, -25],
+            [-10, -15, -12, -18],
+            [-12, -10, -15, -11],
+            [20, -25, 30, -35],
+            [15, -20, 10, 25],
+            [10, 15, -12, 18],
+            [12, 10, 15, -11],
+            [20, 25, 30, 1, 35],
+            [20, 25, 30, 1, 34],
+            [20, 25, 30, 1, 33],
+            [20, 25, 30, 1, 32],
+            [20, 25, 30, 1, 31],
+            [20, 25, 30, 1, 30],
+            [20, 25, 30, 1, 29],
+            [20, 25, 30, 1, 28],
+            [20, 25, 30, 1, 27],
+            [20, 25, 30, 1, 26],
+            [-20, -25, -30, -1, -35],
+            [-20, -25, -30, -1, -34],
+            [-20, -25, -30, -1, -33],
+            [-20, -25, -30, -1, -32],
+            [-20, -25, -30, -1, -31],
+            [-20, -25, -30, -1, -29],
+            [-20, -25, -30, -1, -28],
+            [-20, -25, -30, -1, -27],
+            [-20, -25, -30, -1, -26],
+        ]
+    ):
         for markers in [
             BAR_BLOCK_H,
             BAR_HEAVY_H,
@@ -242,6 +277,7 @@ if __name__ == "__main__":
                     marks=markers,
                     colors=["green", "blue", "purple", "magenta", "yellow"],
                     bgcolor="black",
+                    invert_negative=True,
                 )
             )
         console.print()
