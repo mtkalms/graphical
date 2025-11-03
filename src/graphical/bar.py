@@ -1,5 +1,3 @@
-import math
-
 from typing import Sequence, Tuple, Optional, TypeVar
 
 from rich.color import Color
