@@ -157,57 +157,42 @@ class StackedBar:
             segments = list(segments)[::-1]
         for segment in segments:
             cell_values = [_cell_value(bar, segment) for bar in bars]
-            trailing, leading = None, None
-            char = self.marks.get(0.0)
-            color = None
-            bgcolor = self.bgcolor
-            for idx, cell_value in enumerate(cell_values):
-                # Full intersection
-                if abs(cell_value) == 1.0:
-                    char = self.marks.get(cell_value)
-                    color = colors[idx]
-                # Trailing intersection
-                elif cell_value > 0.0:
-                    trailing = idx
-                    if leading is not None:
-                        if self.marks.invertible:
-                            bgcolor = colors[leading]
-                            char = self.marks.get(cell_value)
-                            color = colors[idx]
-                        else:
-                            if abs(cell_values[idx]) > abs(cell_values[leading]):
-                                char = self.marks.get(1.0)
-                                color = colors[idx]
-                            else:
-                                char = self.marks.get(-1.0)
-                                color = colors[leading]
-                        break
+            cell_ids = [idx for idx, v in enumerate(cell_values) if v != 0.0]
+            if not cell_ids:
+                yield Segment(" ", style=Style(bgcolor=self.bgcolor))
+            elif len(cell_ids) == 1:
+                cell_idx = cell_ids[0]
+                cell_value = cell_values[cell_idx]
+                invert = cell_value < 0 and self._invertible()
+                cell_style = Style(color=colors[cell_idx], bgcolor=self.bgcolor)
+                if invert:
+                    cell_style = invert_style(cell_style)
+                yield Segment(
+                    self.marks.get(cell_value, invert),
+                    style=cell_style,
+                )
+            else:
+                leading = max(cell_ids, key=lambda i: cell_values[i])
+                trailing = min(cell_ids, key=lambda i: cell_values[i])
+                if self.marks.invertible:
+                    yield Segment(
+                        self.marks.get(cell_values[trailing]),
+                        style=Style(color=colors[trailing], bgcolor=colors[leading]),
+                    )
+                else:
+                    if abs(cell_values[trailing]) > abs(cell_values[leading]):
+                        cell_char = self.marks.get(1.0)
+                        color = colors[trailing]
+                        bgcolor = colors[leading]
                     else:
-                        char = self.marks.get(cell_value)
-                        color = colors[idx]
-                # Leading intersection
-                elif cell_value < 0.0:
-                    leading = idx
-                    if trailing is not None:
-                        if self.marks.invertible:
-                            bgcolor = colors[idx]
-                        else:
-                            if abs(cell_values[trailing]) > abs(cell_values[idx]):
-                                char = self.marks.get(1.0)
-                                color = colors[trailing]
-                            else:
-                                char = self.marks.get(-1.0)
-                                color = colors[idx]
-                        break
-                    else:
-                        if self._invertible():
-                            char = self.marks.get(cell_value, invert=True)
-                            bgcolor = colors[idx]
-                            color = self.bgcolor
-                        else:
-                            char = self.marks.get(cell_value)
-                            color = colors[idx]
-            yield Segment(char, style=Style(color=color, bgcolor=bgcolor))
+                        cell_char = self.marks.get(-1.0)
+                        color = colors[leading]
+                        bgcolor = colors[trailing]
+                    cell_style = Style(
+                        color=color,
+                        bgcolor=bgcolor if self.marks.invertible else self.bgcolor,
+                    )
+                    yield Segment(cell_char, style=cell_style)
 
     def __rich_console__(
         self, console: Console, options: ConsoleOptions
@@ -266,7 +251,7 @@ if __name__ == "__main__":
         console.print(Segments([list(bar)[d] for bar in bars]))
         console.print()
 
-    width = 25
+    width = 60
     bars = []
     for markers in [
         BAR_BLOCK_V,
@@ -311,7 +296,7 @@ if __name__ == "__main__":
             bars.append(
                 StackedBar(
                     values=values,
-                    value_range=(-130, 120),
+                    value_range=(-120, 120),
                     width=width,
                     marks=markers,
                     colors=["green", "blue", "purple", "magenta", "yellow"],
