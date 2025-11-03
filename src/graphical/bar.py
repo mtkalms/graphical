@@ -124,64 +124,45 @@ class StackedBar:
             bars.append(Section(*boundaries))
         return bars
 
-    def _overlapping_segment(
-        self, bars: Sequence[Section], colors: Sequence[Color], segment: Section
-    ) -> Optional[Section]:
-        cell_values = [_cell_value(bar, segment) for bar in bars]
-        trailing = None
-        char = self.marks.get(0.0)
-        color = None
-        bgcolor = self.bgcolor
-        for idx, cell_value in enumerate(cell_values):
-            # Full intersection
-            if abs(cell_value) == 1.0:
-                char = self.marks.get(cell_value)
-                color = colors[idx]
-                break
-            # Trailing intersection
-            elif cell_value > 0.0:
-                trailing = idx
-                char = self.marks.get(cell_values[idx])
-                color = colors[idx]
-            # Leading intersection
-            elif cell_value < 0.0:
-                if trailing is not None:
-                    bgcolor = colors[idx]
-                else:
-                    char = self.marks.get(cell_values[idx])
-                    color = colors[idx]
-                break
-        return Segment(char, style=Style(color=color, bgcolor=bgcolor))
-
-    def _non_overlaping_segment(
-        self, bars: Sequence[Section], colors: Sequence[Color], segment: Section
-    ) -> Optional[Section]:
-        cell_values = [_cell_value(bar, segment) for bar in bars]
-        leading = min(cell_values)
-        trailing = max(cell_values)
-        if trailing == 0.0 and leading == 0.0:
-            cell_value = 0.0
-            color = None
-        elif trailing > leading:
-            cell_value = trailing if leading == 0.0 else 1.0
-            color = colors[cell_values.index(trailing)]
-        elif leading > trailing:
-            cell_value = leading if trailing == 0.0 else -1.0
-            color = colors[cell_values.index(leading)]
-        return Segment(
-            self.marks.get(cell_value), Style(color=color, bgcolor=self.bgcolor)
-        )
-
     def __rich_console__(
         self, console: Console, options: ConsoleOptions
     ) -> RenderResult:
         colors = self._stacked_colors()
         bars = self._stacked_bars()
         for segment in Section(*self.value_range).segment(self.width):
-            if self.marks.invertible:
-                yield self._overlapping_segment(bars, colors, segment)
-            else:
-                yield self._non_overlaping_segment(bars, colors, segment)
+            cell_values = [_cell_value(bar, segment) for bar in bars]
+            trailing = None
+            char = self.marks.get(0.0)
+            color = None
+            bgcolor = self.bgcolor
+            for idx, cell_value in enumerate(cell_values):
+                # Full intersection
+                if abs(cell_value) == 1.0:
+                    char = self.marks.get(cell_value)
+                    color = colors[idx]
+                    break
+                # Trailing intersection
+                elif cell_value > 0.0:
+                    trailing = idx
+                    char = self.marks.get(cell_value)
+                    color = colors[idx]
+                # Leading intersection
+                elif cell_value < 0.0:
+                    if trailing is not None:
+                        if self.marks.invertible:
+                            bgcolor = colors[idx]
+                        else:
+                            if abs(cell_values[trailing]) > abs(cell_values[idx]):
+                                char = self.marks.get(1.0)
+                                color = colors[trailing]
+                            else:
+                                char = self.marks.get(-1.0)
+                                color = colors[idx]
+                    else:
+                        char = self.marks.get(cell_value)
+                        color = colors[idx]
+                    break
+            yield Segment(char, style=Style(color=color, bgcolor=bgcolor))
 
     def __rich_measure__(
         self, console: Console, options: ConsoleOptions
@@ -239,34 +220,25 @@ if __name__ == "__main__":
         [15, 20, 10, 25],
         [10, 15, 12, 18],
         [12, 10, 15, 11],
-        [20, -25, 30, -35],
-        [15, -20, 10, 25],
-        [10, 15, -12, 18],
-        [12, 10, 15, -11],
         [-20, -25, -30, -35],
         [-15, -20, -10, -25],
         [-10, -15, -12, -18],
         [-12, -10, -15, -11],
+        [20, -25, 30, -35],
+        [15, -20, 10, 25],
+        [10, 15, -12, 18],
+        [12, 10, 15, -11],
     ]:
         for markers in [
             BAR_BLOCK_H,
             BAR_HEAVY_H,
             BAR_LIGHT_H,
-            BAR_SHADE,
-            WHISKER_HEAVY_H,
-            WHISKER_LIGHT_H,
-            WHISKER_DOUBLE_H,
-            LOLLIPOP_FILLED_HEAVY_H,
-            LOLLIPOP_FILLED_LIGHT_H,
-            LOLLIPOP_OUTLINE_HEAVY_H,
-            LOLLIPOP_OUTLINE_LIGHT_H,
-            Mark(" +", " -"),
         ]:
             console.print(
                 StackedBar(
                     values=values,
                     value_range=(-130, 120),
-                    width=20,
+                    width=80,
                     marks=markers,
                     colors=["green", "blue", "purple", "magenta", "yellow"],
                     bgcolor="black",
