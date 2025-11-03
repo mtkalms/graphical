@@ -41,7 +41,7 @@ class Bar:
         value: Numeric,
         value_range: Tuple[Numeric, Numeric],
         width: int,
-        marks: Optional[Mark] = BAR_BLOCK_H,
+        marks: Optional[Mark] = None,
         color: Optional[Color] = None,
         bgcolor: Optional[Color] = None,
         invert_negative: bool = False,
@@ -50,7 +50,9 @@ class Bar:
         self.value = value
         self.value_range = value_range
         self.width = width
-        self.marks = marks
+        self.marks = marks or (
+            BAR_BLOCK_H if orientation == "horizontal" else BAR_BLOCK_V
+        )
         self.color = color
         self.bgcolor = bgcolor
         self.invert_negative = invert_negative
@@ -101,7 +103,7 @@ class StackedBar:
         values: Sequence[Numeric],
         value_range: Tuple[Numeric, Numeric],
         width: int,
-        marks: Optional[Mark] = BAR_BLOCK_H,
+        marks: Optional[Mark] = None,
         colors: Sequence[Color] = ["red", "green", "blue", "yellow"],
         bgcolor: Optional[Color] = None,
         invert_negative: bool = False,
@@ -110,7 +112,9 @@ class StackedBar:
         self.values = values
         self.value_range = value_range
         self.width = width
-        self.marks = marks
+        self.marks = marks or (
+            BAR_BLOCK_H if orientation == "horizontal" else BAR_BLOCK_V
+        )
         self.colors = colors
         self.bgcolor = bgcolor
         self.orientation = orientation
@@ -153,7 +157,7 @@ class StackedBar:
             segments = list(segments)[::-1]
         for segment in segments:
             cell_values = [_cell_value(bar, segment) for bar in bars]
-            trailing = None
+            trailing, leading = None, None
             char = self.marks.get(0.0)
             color = None
             bgcolor = self.bgcolor
@@ -162,14 +166,28 @@ class StackedBar:
                 if abs(cell_value) == 1.0:
                     char = self.marks.get(cell_value)
                     color = colors[idx]
-                    break
                 # Trailing intersection
                 elif cell_value > 0.0:
                     trailing = idx
-                    char = self.marks.get(cell_value)
-                    color = colors[idx]
+                    if leading is not None:
+                        if self.marks.invertible:
+                            bgcolor = colors[leading]
+                            char = self.marks.get(cell_value)
+                            color = colors[idx]
+                        else:
+                            if abs(cell_values[idx]) > abs(cell_values[leading]):
+                                char = self.marks.get(1.0)
+                                color = colors[idx]
+                            else:
+                                char = self.marks.get(-1.0)
+                                color = colors[leading]
+                        break
+                    else:
+                        char = self.marks.get(cell_value)
+                        color = colors[idx]
                 # Leading intersection
                 elif cell_value < 0.0:
+                    leading = idx
                     if trailing is not None:
                         if self.marks.invertible:
                             bgcolor = colors[idx]
@@ -180,6 +198,7 @@ class StackedBar:
                             else:
                                 char = self.marks.get(-1.0)
                                 color = colors[idx]
+                        break
                     else:
                         if self._invertible():
                             char = self.marks.get(cell_value, invert=True)
@@ -188,7 +207,6 @@ class StackedBar:
                         else:
                             char = self.marks.get(cell_value)
                             color = colors[idx]
-                    break
             yield Segment(char, style=Style(color=color, bgcolor=bgcolor))
 
     def __rich_console__(
