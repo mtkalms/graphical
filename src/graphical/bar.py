@@ -1,8 +1,8 @@
-from typing import Sequence, Tuple, Optional, TypeVar
+from typing import Literal, Sequence, Tuple, Optional, TypeVar
 
 from rich.color import Color
 from rich.console import ConsoleOptions, Console, RenderResult
-from rich.segment import Segment
+from rich.segment import Segment, Segments
 from rich.measure import Measurement
 from rich.style import Style
 
@@ -12,6 +12,7 @@ from graphical.mark import Mark, BAR_BLOCK_H
 from graphical.section import Section
 
 Numeric = TypeVar("T", int, float)
+Orientation = Literal["horizontal", "vertical"]
 
 
 def _cell_value(bar: Section, segment: Section) -> float:
@@ -44,6 +45,7 @@ class Bar:
         color: Optional[Color] = None,
         bgcolor: Optional[Color] = None,
         invert_negative: bool = False,
+        orientation: Orientation = "horizontal",
     ) -> None:
         self.value = value
         self.value_range = value_range
@@ -52,6 +54,7 @@ class Bar:
         self.color = color
         self.bgcolor = bgcolor
         self.invert_negative = invert_negative
+        self.orientation = orientation
 
     def _invertible(self) -> bool:
         return (
@@ -61,12 +64,13 @@ class Bar:
             and self.marks.invertible
         )
 
-    def __rich_console__(
-        self, console: Console, options: ConsoleOptions
-    ) -> RenderResult:
+    def __iter__(self):
         style = Style(color=self.color, bgcolor=self.bgcolor)
         bar = Section(min(0, self.value), max(0, self.value))
-        for segment in Section(*self.value_range).segment(self.width):
+        segments = Section(*self.value_range).segment(self.width)
+        if self.orientation == "vertical":
+            segments = list(segments)[::-1]
+        for segment in segments:
             cell_value = _cell_value(bar, segment)
             invert = cell_value < 0 and self._invertible()
             cell_style = invert_style(style) if invert else style
@@ -76,6 +80,14 @@ class Bar:
             else:
                 cell_char = self.marks.get(cell_value, invert)
             yield Segment(cell_char, style=cell_style)
+
+    def __rich_console__(
+        self, console: Console, options: ConsoleOptions
+    ) -> RenderResult:
+        for segment in self:
+            yield segment
+            if self.orientation == "vertical":
+                yield Segment.line()
 
     def __rich_measure__(
         self, console: Console, options: ConsoleOptions
@@ -93,6 +105,7 @@ class StackedBar:
         colors: Sequence[Color] = ["red", "green", "blue", "yellow"],
         bgcolor: Optional[Color] = None,
         invert_negative: bool = False,
+        orientation: Orientation = "horizontal",
     ) -> None:
         self.values = values
         self.value_range = value_range
@@ -100,6 +113,7 @@ class StackedBar:
         self.marks = marks
         self.colors = colors
         self.bgcolor = bgcolor
+        self.orientation = orientation
         self.invert_negative = invert_negative
 
     def _stacked_colors(self) -> Sequence[Color]:
@@ -131,12 +145,13 @@ class StackedBar:
             and self.marks.invertible
         )
 
-    def __rich_console__(
-        self, console: Console, options: ConsoleOptions
-    ) -> RenderResult:
+    def __iter__(self):
         colors = self._stacked_colors()
         bars = self._stacked_bars()
-        for segment in Section(*self.value_range).segment(self.width):
+        segments = Section(*self.value_range).segment(self.width)
+        if self.orientation == "vertical":
+            segments = list(segments)[::-1]
+        for segment in segments:
             cell_values = [_cell_value(bar, segment) for bar in bars]
             trailing = None
             char = self.marks.get(0.0)
@@ -176,6 +191,12 @@ class StackedBar:
                     break
             yield Segment(char, style=Style(color=color, bgcolor=bgcolor))
 
+    def __rich_console__(
+        self, console: Console, options: ConsoleOptions
+    ) -> RenderResult:
+        for segment in self:
+            yield segment
+
     def __rich_measure__(
         self, console: Console, options: ConsoleOptions
     ) -> Measurement:
@@ -195,87 +216,93 @@ if __name__ == "__main__":
         LOLLIPOP_FILLED_LIGHT_H,
         LOLLIPOP_OUTLINE_HEAVY_H,
         LOLLIPOP_OUTLINE_LIGHT_H,
+        BAR_BLOCK_V,
+        BAR_HEAVY_V,
+        BAR_LIGHT_V,
     )
 
     console = Console()
 
-    for row_value in range(-20, 21):
-        for markers in [
-            BAR_BLOCK_H,
-            BAR_HEAVY_H,
-            BAR_LIGHT_H,
-            BAR_SHADE,
-            WHISKER_HEAVY_H,
-            WHISKER_LIGHT_H,
-            WHISKER_DOUBLE_H,
-            LOLLIPOP_FILLED_HEAVY_H,
-            LOLLIPOP_FILLED_LIGHT_H,
-            LOLLIPOP_OUTLINE_HEAVY_H,
-            LOLLIPOP_OUTLINE_LIGHT_H,
-            Mark(" +", " -"),
-        ]:
-            console.print(
+    width = 15
+
+    bars = []
+    for markers in [
+        BAR_BLOCK_V,
+        BAR_HEAVY_V,
+        BAR_LIGHT_V,
+    ]:
+        for row_value in range(-20, 21):
+            bars.append(
                 Bar(
                     value=row_value / 4.3,
                     value_range=(-5.1, 5.1),
-                    width=15,
+                    width=width,
                     marks=markers,
                     color="red",
                     bgcolor="black",
                     invert_negative=True,
+                    orientation="vertical",
                 )
             )
-        print(f"\t{row_value / 4.3}")
+    for d in range(width):
+        console.print(Segments([list(bar)[d] for bar in bars]))
+        console.print()
 
-    for idx, values in enumerate(
-        [
-            [20, 25, 30, 1, 35],
-            [15, 20, 10, 25],
-            [10, 15, 12, 18],
-            [12, 10, 15, 11],
-            [-20, -25, -30, -35],
-            [-15, -20, -10, -25],
-            [-10, -15, -12, -18],
-            [-12, -10, -15, -11],
-            [20, -25, 30, -35],
-            [15, -20, 10, 25],
-            [10, 15, -12, 18],
-            [12, 10, 15, -11],
-            [20, 25, 30, 1, 35],
-            [20, 25, 30, 1, 34],
-            [20, 25, 30, 1, 33],
-            [20, 25, 30, 1, 32],
-            [20, 25, 30, 1, 31],
-            [20, 25, 30, 1, 30],
-            [20, 25, 30, 1, 29],
-            [20, 25, 30, 1, 28],
-            [20, 25, 30, 1, 27],
-            [20, 25, 30, 1, 26],
-            [-20, -25, -30, -1, -35],
-            [-20, -25, -30, -1, -34],
-            [-20, -25, -30, -1, -33],
-            [-20, -25, -30, -1, -32],
-            [-20, -25, -30, -1, -31],
-            [-20, -25, -30, -1, -29],
-            [-20, -25, -30, -1, -28],
-            [-20, -25, -30, -1, -27],
-            [-20, -25, -30, -1, -26],
-        ]
-    ):
-        for markers in [
-            BAR_BLOCK_H,
-            BAR_HEAVY_H,
-            BAR_LIGHT_H,
-        ]:
-            console.print(
+    width = 25
+    bars = []
+    for markers in [
+        BAR_BLOCK_V,
+        BAR_HEAVY_V,
+        BAR_LIGHT_V,
+    ]:
+        for idx, values in enumerate(
+            [
+                [20, 25, 30, 1, 35],
+                [15, 20, 10, 25],
+                [10, 15, 12, 18],
+                [12, 10, 15, 11],
+                [-20, -25, -30, -35],
+                [-15, -20, -10, -25],
+                [-10, -15, -12, -18],
+                [-12, -10, -15, -11],
+                [20, -25, 30, -35],
+                [15, -20, 10, 25],
+                [10, 15, -12, 18],
+                [12, 10, 15, -11],
+                [20, 25, 30, 1, 35],
+                [20, 25, 30, 1, 34],
+                [20, 25, 30, 1, 33],
+                [20, 25, 30, 1, 32],
+                [20, 25, 30, 1, 31],
+                [20, 25, 30, 1, 30],
+                [20, 25, 30, 1, 29],
+                [20, 25, 30, 1, 28],
+                [20, 25, 30, 1, 27],
+                [20, 25, 30, 1, 26],
+                [-20, -25, -30, -1, -35],
+                [-20, -25, -30, -1, -34],
+                [-20, -25, -30, -1, -33],
+                [-20, -25, -30, -1, -32],
+                [-20, -25, -30, -1, -31],
+                [-20, -25, -30, -1, -29],
+                [-20, -25, -30, -1, -28],
+                [-20, -25, -30, -1, -27],
+                [-20, -25, -30, -1, -26],
+            ]
+        ):
+            bars.append(
                 StackedBar(
                     values=values,
                     value_range=(-130, 120),
-                    width=80,
+                    width=width,
                     marks=markers,
                     colors=["green", "blue", "purple", "magenta", "yellow"],
                     bgcolor="black",
                     invert_negative=True,
+                    orientation="vertical",
                 )
             )
+
+    for d in range(width):
+        console.print(Segments([list(bar)[d] for bar in bars]))
         console.print()
