@@ -16,6 +16,26 @@ from graphical.section import Section
 Numeric = TypeVar("T", int, float)
 
 
+def _cell_value(bar: Section, segment: Section) -> float:
+    intersection = segment.intersect(bar)
+    # No intersection
+    if not intersection:
+        cell_value = 0.0
+    # Full intersection
+    elif segment == intersection:
+        sign = -1.0 if bar.lower < 0 else 1.0
+        cell_value = sign * 1.0
+    # Partial intersection
+    else:
+        sign = 1.0 if intersection.middle < segment.middle else -1.0
+        # Handle origin that falls between segment boundaries
+        if segment.lower < 0.0 < segment.upper:
+            cell_value = 0.0 if bar in segment else sign * 0.5
+        else:
+            cell_value = sign * intersection.length / segment.length
+    return cell_value
+
+
 class Bar:
     def __init__(
         self,
@@ -35,17 +55,6 @@ class Bar:
         self.bgcolor = bgcolor
         self.invert_negative = invert_negative
 
-    @classmethod
-    def _cell_value(cls, bar: Section, segment: Section) -> float:
-        intersection = segment.intersect(bar)
-        if not intersection:
-            return 0.0
-        elif segment == intersection:
-            return -1.0 if bar.lower < 0 else 1.0
-        else:
-            sign = 1.0 if intersection.middle < segment.middle else -1.0
-            return sign * intersection.length / segment.length
-
     def _invertible(self) -> bool:
         return (
             self.invert_negative
@@ -60,13 +69,7 @@ class Bar:
         style = Style(color=self.color, bgcolor=self.bgcolor)
         bar = Section(min(0, self.value), max(0, self.value))
         for segment in Section(*self.value_range).segment(self.width):
-            cell_value = self._cell_value(bar, segment)
-            # Handle origin that falls between segment boundaries
-            if segment.lower < 0.0 < segment.upper:
-                if self.value in segment:
-                    cell_value = 0.0
-                else:
-                    cell_value = math.copysign(0.5, cell_value)
+            cell_value = _cell_value(bar, segment)
             invert = cell_value < 0 and self._invertible()
             cell_style = invert_style(style) if invert else style
             if self.value in segment and self.value != segment.lower:
@@ -99,22 +102,6 @@ class StackedBar:
         self.colors = colors
         self.bgcolor = bgcolor
 
-    @classmethod
-    def _cell_value(cls, bar: Section, segment: Section) -> float:
-        intersection = segment.intersect(bar)
-        if not intersection:
-            cell_value = 0.0
-        elif segment == intersection:
-            sign = -1.0 if bar.lower < 0 else 1.0
-            cell_value = sign * 1.0
-        else:
-            sign = 1.0 if intersection.middle < segment.middle else -1.0
-            if segment.lower < 0.0 < segment.upper:
-                cell_value = 0.0 if bar in segment else sign * 0.5
-            else:
-                cell_value = sign * intersection.length / segment.length
-        return cell_value
-
     def stacked_colors(self) -> Sequence[Color]:
         colors = []
         for idx, value in enumerate(self.values):
@@ -143,8 +130,7 @@ class StackedBar:
         colors = self.stacked_colors()
         bars = self.stacked_bars()
         for segment in Section(*self.value_range).segment(self.width):
-            cell_values = [self._cell_value(bar, segment) for bar in bars]
-            # Handle origin that falls between segment boundaries
+            cell_values = [_cell_value(bar, segment) for bar in bars]
             end_idx = None
             cell_char = self.marks.get(0.0)
             cell_color = None
@@ -191,6 +177,33 @@ if __name__ == "__main__":
     )
 
     console = Console()
+
+    for row_value in range(-20, 21):
+        for markers in [
+            BAR_HEAVY_H,
+            BAR_LIGHT_H,
+            BAR_SHADE,
+            WHISKER_HEAVY_H,
+            WHISKER_LIGHT_H,
+            WHISKER_DOUBLE_H,
+            LOLLIPOP_FILLED_HEAVY_H,
+            LOLLIPOP_FILLED_LIGHT_H,
+            LOLLIPOP_OUTLINE_HEAVY_H,
+            LOLLIPOP_OUTLINE_LIGHT_H,
+            Mark(" +", " -"),
+        ]:
+            console.print(
+                Bar(
+                    value=row_value / 4.3,
+                    value_range=(-5.1, 5.1),
+                    width=15,
+                    marks=markers,
+                    # color="red",
+                    # bgcolor="black",
+                    # invert_negative=True,
+                )
+            )
+        print(f"\t{row_value / 4.3}")
 
     for values in [
         [20, 25, 30, 35],
