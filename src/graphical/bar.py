@@ -30,7 +30,7 @@ def _cell_value(bar: Section, segment: Section) -> float:
         sign = 1.0 if intersection.middle < segment.middle else -1.0
         # Handle origin that falls between segment boundaries
         if segment.lower < 0.0 < segment.upper:
-            cell_value = 0.0 if bar in segment else sign * 0.5
+            cell_value = sign * -0.0 if bar in segment else sign * 0.5
         else:
             cell_value = sign * intersection.length / segment.length
     return cell_value
@@ -180,6 +180,7 @@ if __name__ == "__main__":
 
     for row_value in range(-20, 21):
         for markers in [
+            BAR_BLOCK_H,
             BAR_HEAVY_H,
             BAR_LIGHT_H,
             BAR_SHADE,
@@ -198,9 +199,9 @@ if __name__ == "__main__":
                     value_range=(-5.1, 5.1),
                     width=15,
                     marks=markers,
-                    # color="red",
-                    # bgcolor="black",
-                    # invert_negative=True,
+                    color="red",
+                    bgcolor="black",
+                    invert_negative=True,
                 )
             )
         print(f"\t{row_value / 4.3}")

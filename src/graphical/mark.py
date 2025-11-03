@@ -1,3 +1,4 @@
+import math
 from click import Tuple
 
 
@@ -32,7 +33,7 @@ class Mark:
 
     def cap(self, value: float, invert: bool = False) -> str:
         if self._caps:
-            return self._caps[0] if value > 0 else self._caps[1]
+            return self._caps[0] if math.copysign(1.0, value) > 0 else self._caps[1]
         else:
             return self.get(value, invert)
 
@@ -64,7 +65,7 @@ BAR_LIGHT_H = Mark(" ╴─", " ╶─")
 BAR_LIGHT_V = Mark(" ╷│", " ╵│")
 BAR_HEAVY_H = Mark(" ╸━", " ╺━")
 BAR_HEAVY_V = Mark(" ╻┃", " ╹┃")
-BAR_SHADE = Mark(" ░▒▓█")
+BAR_SHADE = Mark(" ░▒▓█", invertible=True)
 
 WHISKER_LIGHT_H = Mark(" ─", caps=("┤", "├"))
 WHISKER_HEAVY_H = Mark(" ━", caps=("┫", "┣"))
