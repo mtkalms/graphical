@@ -199,6 +199,8 @@ class StackedBar:
     ) -> RenderResult:
         for segment in self:
             yield segment
+            if self.orientation in "vertical":
+                yield Segment.line()
 
     def __rich_measure__(
         self, console: Console, options: ConsoleOptions
