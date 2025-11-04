@@ -88,7 +88,7 @@ class Bar:
     ) -> RenderResult:
         for segment in self:
             yield segment
-            if self.orientation == "vertical":
+            if self.orientation in "vertical":
                 yield Segment.line()
 
     def __rich_measure__(
@@ -172,8 +172,8 @@ class StackedBar:
                     style=cell_style,
                 )
             else:
-                leading = max(cell_ids, key=lambda i: cell_values[i])
-                trailing = min(cell_ids, key=lambda i: cell_values[i])
+                trailing = max(cell_ids, key=lambda i: cell_values[i])
+                leading = min(cell_ids, key=lambda i: cell_values[i])
                 if self.marks.invertible:
                     yield Segment(
                         self.marks.get(cell_values[trailing]),
