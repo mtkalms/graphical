@@ -67,10 +67,23 @@ class Bar:
         )
 
     def __iter__(self):
+        vertical = self.orientation == "vertical"
         style = Style(color=self.color, bgcolor=self.bgcolor)
         bar = Section(min(0, self.value), max(0, self.value))
-        segments = Section(*self.value_range).segment(self.width)
-        if self.orientation == "vertical":
+        
+        lower, upper = self.value_range
+        step = abs(upper - lower) / self.width
+        inset = max(int((bar.lower - lower) // step), 0)
+        trail = max(int((upper - bar.upper) // step), 0)
+        width = self.width - (inset + trail)
+
+        # Handle Whitespace
+        base_style = Style(bgcolor=self.bgcolor)
+        for _ in range(trail if vertical else inset):
+            yield Segment(" ", style=base_style)
+
+        segments = Section(lower + inset * step, upper - trail * step).segment(width)
+        if vertical:
             segments = list(segments)[::-1]
         for segment in segments:
             cell_value = _cell_value(bar, segment)
@@ -82,6 +95,10 @@ class Bar:
             else:
                 cell_char = self.marks.get(cell_value, invert)
             yield Segment(cell_char, style=cell_style)
+            
+        # Handle whitespace
+        for _ in range(inset if vertical else trail):
+            yield Segment(" ", style=base_style)
 
     def __rich_console__(
         self, console: Console, options: ConsoleOptions
@@ -170,7 +187,7 @@ class StackedBar:
 
         # Handle Segments that overlap with bars
         segments = Section(lower + inset * step, upper - trail * step).segment(width)
-        if self.orientation == "vertical":
+        if vertical:
             segments = list(segments)[::-1]
         for segment in segments:
             cell_ids = [idx for idx, bar in enumerate(bars) if bar.overlaps(segment)]
