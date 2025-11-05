@@ -129,14 +129,17 @@ class StackedBar:
                 colors.insert(0, self.colors[idx % len(self.colors)])
         return colors
 
-    def _stacked_bars(self) -> Sequence[Numeric]:
+    def _stacked_values(self) -> Sequence[Numeric]:
         pos = []
         neg = []
         for value in self.values:
             stack = pos if value >= 0 else neg
             cummulative = stack[-1] if stack else 0.0
             stack.append(cummulative + value)
-        values = neg[::-1] + [0.0] + pos
+        return neg[::-1] + [0.0] + pos
+
+    def _stacked_bars(self) -> Sequence[Section]:
+        values = self._stacked_values()
         bars = []
         for boundaries in zip(values[:-1], values[1:]):
             bars.append(Section(*boundaries))
@@ -150,9 +153,25 @@ class StackedBar:
         )
 
     def __iter__(self):
+        boundaries = self._stacked_values()
+        lower, upper = self.value_range
+        bar_lower = boundaries[0]
+        bar_upper = boundaries[-1]
+        step = abs(upper - lower) / self.width
+        inset = max(int((bar_lower - lower) // step), 0)
+        trail = max(int((upper - bar_upper) // step), 0)
+        width = self.width - (inset + trail)
+        vertical = self.orientation == "vertical"
+
+        base_style = Style(bgcolor=self.bgcolor)
+        for _ in range(trail if vertical else inset):
+            yield Segment(" ", style=base_style)
+
         colors = self._stacked_colors()
         bars = self._stacked_bars()
-        segments = Section(*self.value_range).segment(self.width)
+        segments = Section(
+            self.value_range[0] + inset * step, self.value_range[1] - trail * step
+        ).segment(width)
         if self.orientation == "vertical":
             segments = list(segments)[::-1]
         for segment in segments:
@@ -193,6 +212,9 @@ class StackedBar:
                         bgcolor=bgcolor if self.marks.invertible else self.bgcolor,
                     )
                     yield Segment(cell_char, style=cell_style)
+
+        for _ in range(inset if vertical else trail):
+            yield Segment(" ", style=base_style)
 
     def __rich_console__(
         self, console: Console, options: ConsoleOptions
