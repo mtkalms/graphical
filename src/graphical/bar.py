@@ -70,7 +70,7 @@ class Bar:
         vertical = self.orientation == "vertical"
         style = Style(color=self.color, bgcolor=self.bgcolor)
         bar = Section(min(0, self.value), max(0, self.value))
-        
+
         lower, upper = self.value_range
         step = abs(upper - lower) / self.width
         inset = max(int((bar.lower - lower) // step), 0)
@@ -95,7 +95,7 @@ class Bar:
             else:
                 cell_char = self.marks.get(cell_value, invert)
             yield Segment(cell_char, style=cell_style)
-            
+
         # Handle whitespace
         for _ in range(inset if vertical else trail):
             yield Segment(" ", style=base_style)
