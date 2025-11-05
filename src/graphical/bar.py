@@ -8,7 +8,7 @@ from rich.style import Style
 
 
 from graphical._invert_style import invert_style
-from graphical.mark import Mark, BAR_BLOCK_H
+from graphical.mark import Mark, BAR_BLOCK_H, BAR_BLOCK_V
 from graphical.section import Section
 
 Numeric = TypeVar("T", int, float)
@@ -239,14 +239,6 @@ def main():
     from graphical.mark import (
         BAR_HEAVY_H,
         BAR_LIGHT_H,
-        BAR_SHADE,
-        WHISKER_HEAVY_H,
-        WHISKER_LIGHT_H,
-        WHISKER_DOUBLE_H,
-        LOLLIPOP_FILLED_HEAVY_H,
-        LOLLIPOP_FILLED_LIGHT_H,
-        LOLLIPOP_OUTLINE_HEAVY_H,
-        LOLLIPOP_OUTLINE_LIGHT_H,
         BAR_BLOCK_V,
         BAR_HEAVY_V,
         BAR_LIGHT_V,
