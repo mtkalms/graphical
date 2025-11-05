@@ -106,7 +106,7 @@ class StackedBar:
         marks: Optional[Mark] = None,
         colors: Sequence[Color] = ["red", "green", "blue", "yellow"],
         bgcolor: Optional[Color] = None,
-        invert_negative: bool = False,
+        invert_negative: bool = True,
         orientation: Orientation = "horizontal",
     ) -> None:
         self.values = values
@@ -138,12 +138,8 @@ class StackedBar:
             stack.append(cummulative + value)
         return neg[::-1] + [0.0] + pos
 
-    def _stacked_bars(self) -> Sequence[Section]:
-        values = self._stacked_values()
-        bars = []
-        for boundaries in zip(values[:-1], values[1:]):
-            bars.append(Section(*boundaries))
-        return bars
+    def _stacked_bars(self, values: Sequence[Numeric]) -> Sequence[Section]:
+        return [Section(*bounds) for bounds in zip(values[:-1], values[1:])]
 
     def _invertible(self) -> bool:
         return (
@@ -153,66 +149,74 @@ class StackedBar:
         )
 
     def __iter__(self):
-        boundaries = self._stacked_values()
+        vertical = self.orientation == "vertical"
+
+        colors = self._stacked_colors()
+        bounds = self._stacked_values()
+        bars = self._stacked_bars(bounds)
+
         lower, upper = self.value_range
-        bar_lower = boundaries[0]
-        bar_upper = boundaries[-1]
+        bar_lower = bounds[0]
+        bar_upper = bounds[-1]
         step = abs(upper - lower) / self.width
         inset = max(int((bar_lower - lower) // step), 0)
         trail = max(int((upper - bar_upper) // step), 0)
         width = self.width - (inset + trail)
-        vertical = self.orientation == "vertical"
 
+        # Handle Whitespace
         base_style = Style(bgcolor=self.bgcolor)
         for _ in range(trail if vertical else inset):
             yield Segment(" ", style=base_style)
 
-        colors = self._stacked_colors()
-        bars = self._stacked_bars()
-        segments = Section(
-            self.value_range[0] + inset * step, self.value_range[1] - trail * step
-        ).segment(width)
+        # Handle Segments that overlap with bars
+        segments = Section(lower + inset * step, upper - trail * step).segment(width)
         if self.orientation == "vertical":
             segments = list(segments)[::-1]
         for segment in segments:
-            cell_values = [_cell_value(bar, segment) for bar in bars]
-            cell_ids = [idx for idx, v in enumerate(cell_values) if v != 0.0]
+            cell_ids = [idx for idx, bar in enumerate(bars) if bar.overlaps(segment)]
+            cell_values = [_cell_value(bars[idx], segment) for idx in cell_ids]
+            # No bar in segment
             if not cell_ids:
-                yield Segment(" ", style=Style(bgcolor=self.bgcolor))
+                yield Segment(" ", style=base_style)
+            # One bar in segment
             elif len(cell_ids) == 1:
-                cell_idx = cell_ids[0]
-                cell_value = cell_values[cell_idx]
+                cell_value = cell_values[0]
                 invert = cell_value < 0 and self._invertible()
-                cell_style = Style(color=colors[cell_idx], bgcolor=self.bgcolor)
                 if invert:
-                    cell_style = invert_style(cell_style)
+                    cell_style = Style(color=self.bgcolor, bgcolor=colors[cell_ids[0]])
+                else:
+                    cell_style = Style(color=colors[cell_ids[0]], bgcolor=self.bgcolor)
                 yield Segment(
                     self.marks.get(cell_value, invert),
                     style=cell_style,
                 )
+            # Multiple bars in segment
             else:
-                trailing = max(cell_ids, key=lambda i: cell_values[i])
-                leading = min(cell_ids, key=lambda i: cell_values[i])
+                id_values = list(zip(cell_ids, cell_values))
+                trailing_id, trailing_val = max(id_values, key=lambda x: x[1])
+                trailing_color = colors[trailing_id]
+                leading_id, leading_val = min(id_values, key=lambda x: x[1])
+                leading_color = colors[leading_id]
                 if self.marks.invertible:
+                    # Always use the trailing bar fragment for better resolution
                     yield Segment(
-                        self.marks.get(cell_values[trailing]),
-                        style=Style(color=colors[trailing], bgcolor=colors[leading]),
+                        self.marks.get(trailing_val),
+                        style=Style(color=trailing_color, bgcolor=leading_color),
                     )
                 else:
-                    if abs(cell_values[trailing]) > abs(cell_values[leading]):
+                    # Use bar with more overlap to fill whole segment
+                    if abs(trailing_val) > abs(leading_val):
                         cell_char = self.marks.get(1.0)
-                        color = colors[trailing]
-                        bgcolor = colors[leading]
+                        color = trailing_color
                     else:
                         cell_char = self.marks.get(-1.0)
-                        color = colors[leading]
-                        bgcolor = colors[trailing]
-                    cell_style = Style(
-                        color=color,
-                        bgcolor=bgcolor if self.marks.invertible else self.bgcolor,
+                        color = leading_color
+                    yield Segment(
+                        cell_char,
+                        style=Style(color=color, bgcolor=self.bgcolor),
                     )
-                    yield Segment(cell_char, style=cell_style)
 
+        # Handle whitespace
         for _ in range(inset if vertical else trail):
             yield Segment(" ", style=base_style)
 
@@ -230,7 +234,7 @@ class StackedBar:
         return Measurement(self.width, 1)
 
 
-if __name__ == "__main__":
+def main():
     from rich.console import Console
     from graphical.mark import (
         BAR_HEAVY_H,
@@ -278,9 +282,9 @@ if __name__ == "__main__":
     width = 60
     bars = []
     for markers in [
-        BAR_BLOCK_V,
-        BAR_HEAVY_V,
-        BAR_LIGHT_V,
+        (BAR_BLOCK_V, BAR_BLOCK_H),
+        (BAR_HEAVY_V, BAR_HEAVY_H),
+        (BAR_LIGHT_V, BAR_LIGHT_H),
     ]:
         for idx, values in enumerate(
             [
@@ -317,19 +321,35 @@ if __name__ == "__main__":
                 [-20, -25, -30, -1, -26],
             ]
         ):
-            bars.append(
+            console.print(
                 StackedBar(
                     values=values,
                     value_range=(-120, 120),
                     width=width,
-                    marks=markers,
+                    marks=markers[1],
                     colors=["green", "blue", "purple", "magenta", "yellow"],
                     bgcolor="black",
-                    invert_negative=True,
-                    orientation="vertical",
+                )
+            )
+            console.print()
+            bars.append(
+                list(
+                    StackedBar(
+                        values=values,
+                        value_range=(-120, 120),
+                        width=width,
+                        marks=markers[0],
+                        colors=["green", "blue", "purple", "magenta", "yellow"],
+                        bgcolor="black",
+                        orientation="vertical",
+                    )
                 )
             )
 
     for d in range(width):
-        console.print(Segments([list(bar)[d] for bar in bars]))
+        console.print(Segments([bar[d] for bar in bars]))
         console.print()
+
+
+if __name__ == "__main__":
+    main()
