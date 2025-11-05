@@ -86,12 +86,7 @@ class Section(tuple):
         Returns:
             bool: Sections overlap.
         """
-        return (
-            other.lower in self
-            or other.upper in self
-            or self.lower in other
-            or self.upper in other
-        )
+        return (self.lower <= other[1]) and (self.upper >= other[0])
 
     def merge(self, other: Section) -> Section | None:
         """Merges this section with another one and returns the resulting section.
