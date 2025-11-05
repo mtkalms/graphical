@@ -1,5 +1,5 @@
 import math
-from click import Tuple
+from typing import Optional, Tuple
 
 
 class Mark:
@@ -8,8 +8,8 @@ class Mark:
     def __init__(
         self,
         positive: str,
-        negative: str = None,
-        caps: str | Tuple[str, str] = None,
+        negative: Optional[str] = None,
+        caps: Optional[str | Tuple[str, str]] = None,
         invertible: bool = False,
     ):
         """Initialize mark chars.

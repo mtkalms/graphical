@@ -1,6 +1,6 @@
-from typing import Callable, Generator, Sequence, TypeVar
+from typing import Callable, Generator, Sequence, Union
 
-Numeric = TypeVar("T", int, float)
+Numeric = Union[int, float]
 SummaryFunction = Callable[[Sequence[Numeric]], float]
 
 

@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import Generator, Union
+from typing import Any, Generator, Union
 
 
 class Section(tuple):
@@ -52,14 +52,14 @@ class Section(tuple):
         """
         return abs(self.upper - self.lower)
 
-    def __contains__(self, other: Union[float, Section]) -> bool:
+    def __contains__(self, other: Any) -> bool:
         if isinstance(other, tuple):
             return self.lower <= other[0] and other[1] <= self.upper
         if isinstance(other, (int, float)):
             return self.lower <= other <= self.upper
         raise ValueError()
 
-    def __eq__(self, other: tuple) -> Section:
+    def __eq__(self, other: Any) -> bool:
         if isinstance(other, tuple):
             return self.lower == other[0] and self.upper == other[1]
         raise ValueError()

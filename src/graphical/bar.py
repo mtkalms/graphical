@@ -1,4 +1,4 @@
-from typing import Literal, Sequence, Tuple, Optional, TypeVar
+from typing import Literal, Sequence, Tuple, Optional, Union
 
 from rich.color import Color
 from rich.console import ConsoleOptions, Console, RenderResult
@@ -11,7 +11,7 @@ from graphical._invert_style import invert_style
 from graphical.mark import Mark, BAR_BLOCK_H, BAR_BLOCK_V
 from graphical.section import Section
 
-Numeric = TypeVar("T", int, float)
+Numeric = Union[int, float]
 Orientation = Literal["horizontal", "vertical"]
 
 
@@ -42,8 +42,8 @@ class Bar:
         value_range: Tuple[Numeric, Numeric],
         width: int,
         marks: Optional[Mark] = None,
-        color: Optional[Color] = None,
-        bgcolor: Optional[Color] = None,
+        color: Optional[Color | str] = None,
+        bgcolor: Optional[Color | str] = None,
         invert_negative: bool = False,
         orientation: Orientation = "horizontal",
     ) -> None:
@@ -104,8 +104,8 @@ class StackedBar:
         value_range: Tuple[Numeric, Numeric],
         width: int,
         marks: Optional[Mark] = None,
-        colors: Sequence[Color] = ["red", "green", "blue", "yellow"],
-        bgcolor: Optional[Color] = None,
+        colors: Sequence[Color | str] = ["red", "green", "blue", "yellow"],
+        bgcolor: Optional[Color | str] = None,
         invert_negative: bool = True,
         orientation: Orientation = "horizontal",
     ) -> None:

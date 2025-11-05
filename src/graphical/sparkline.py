@@ -1,4 +1,4 @@
-from typing import Sequence, TypeVar, Tuple
+from typing import Optional, Sequence, Tuple, Union
 
 from rich.color import Color
 from rich.console import ConsoleOptions, RenderResult, Console
@@ -10,7 +10,7 @@ from graphical._buckets import buckets, SummaryFunction
 from graphical._normalize import normalize
 from graphical.mark import Mark, BAR_BLOCK_V
 
-Numeric = TypeVar("T", int, float)
+Numeric = Union[int, float]
 
 
 class Sparkline:
@@ -18,10 +18,10 @@ class Sparkline:
         self,
         values: Sequence[Numeric],
         value_range: Tuple[Numeric, Numeric],
-        width: int = None,
+        width: Optional[int] = None,
         marks: Mark = BAR_BLOCK_V,
-        color: Color = None,
-        bgcolor: Color = None,
+        color: Optional[Color | str] = None,
+        bgcolor: Optional[Color | str] = None,
         summary_function: SummaryFunction = max,
     ):
         self.values = values

@@ -1,6 +1,6 @@
-from typing import Tuple, TypeVar
+from typing import Tuple, Union
 
-Numeric = TypeVar("T", int, float)
+Numeric = Union[int, float]
 
 
 def normalize(value: Numeric, value_range: Tuple[Numeric, Numeric]) -> float:
