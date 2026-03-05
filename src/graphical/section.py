@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import Any, Generator
+from typing import Any, Iterable
 
 
 class Section(tuple):
@@ -64,7 +64,7 @@ class Section(tuple):
             return self.lower == other[0] and self.upper == other[1]
         raise ValueError()
 
-    def segment(self, count: int) -> Generator[Section]:
+    def segment(self, count: int) -> Iterable[Section]:
         """Segments the section into a given number of new sections of equal size.
 
         Args:
@@ -73,6 +73,8 @@ class Section(tuple):
         Yields:
             Generator[Section]: Generator for resulting sections.
         """
+        if count == 0:
+            return []
         step = self.length / count
         for n in range(count):
             yield Section(self.lower + n * step, self.lower + (n + 1) * step)
