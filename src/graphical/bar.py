@@ -42,8 +42,8 @@ class Bar:
         value_range: Tuple[Numeric, Numeric],
         width: int,
         marks: Optional[Mark] = None,
-        color: Optional[Color | str] = None,
-        bgcolor: Optional[Color | str] = None,
+        color: Optional[Union[Color, str]] = None,
+        bgcolor: Optional[Union[Color, str]] = None,
         invert_negative: bool = False,
         orientation: Orientation = "horizontal",
     ) -> None:
@@ -121,8 +121,8 @@ class StackedBar:
         value_range: Tuple[Numeric, Numeric],
         width: int,
         marks: Optional[Mark] = None,
-        colors: Sequence[Color | str] = ["red", "green", "blue", "yellow"],
-        bgcolor: Optional[Color | str] = None,
+        colors: Sequence[Union[Color, str]] = ["red", "green", "blue", "yellow"],
+        bgcolor: Optional[Union[Color, str]] = None,
         invert_negative: bool = True,
         orientation: Orientation = "horizontal",
     ) -> None:

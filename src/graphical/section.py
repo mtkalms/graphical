@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import Any, Iterable
+from typing import Any, Iterable, Union
 
 
 class Section(tuple):
@@ -90,27 +90,27 @@ class Section(tuple):
         """
         return (self.lower <= other[1]) and (self.upper >= other[0])
 
-    def merge(self, other: Section) -> Section | None:
+    def merge(self, other: Section) -> Union[Section, None]:
         """Merges this section with another one and returns the resulting section.
 
         Args:
             other (Section): Other section.
 
         Returns:
-            Section | None: Merged section.
+            Union[Section, None]: Merged section.
         """
         if not self.overlaps(other):
             return None
         return Section(min((self.lower, other.lower)), max((self.upper, other.upper)))
 
-    def intersect(self, other: Section) -> Section | None:
+    def intersect(self, other: Section) -> Union[Section, None]:
         """Returns the intersection of this and another section.
 
         Args:
             other (Section): Other section.
 
         Returns:
-            Section | None: Intersection with given section.
+            Union[Section, None]: Intersection with given section.
         """
         if not self.overlaps(other):
             return None

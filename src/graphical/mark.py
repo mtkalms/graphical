@@ -1,5 +1,5 @@
 import math
-from typing import Optional, Tuple
+from typing import Optional, Tuple, Union
 
 
 class Mark:
@@ -9,7 +9,7 @@ class Mark:
         self,
         positive: str,
         negative: Optional[str] = None,
-        caps: Optional[str | Tuple[str, str]] = None,
+        caps: Optional[Union[str, Tuple[str, str]]] = None,
         invertible: bool = False,
     ):
         """Initialize mark chars.
