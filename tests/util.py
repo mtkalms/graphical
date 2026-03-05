@@ -1,4 +1,5 @@
 import io
+from typing import cast
 
 from rich.console import Console, RenderableType
 
@@ -6,4 +7,4 @@ from rich.console import Console, RenderableType
 def render(renderable: RenderableType) -> str:
     console = Console(file=io.StringIO(), legacy_windows=False, width=256)
     console.print(renderable, no_wrap=True)
-    return console.file.getvalue()
+    return cast(io.StringIO, console.file).getvalue()

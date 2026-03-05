@@ -1,4 +1,4 @@
-from typing import Callable, Iterable, Sequence, Union
+from typing import Callable, Generator, Sequence, Union
 
 Numeric = Union[int, float]
 SummaryFunction = Callable[[Sequence[Numeric]], float]
@@ -9,7 +9,7 @@ def buckets(
     count: int,
     summary_function: SummaryFunction,
     stretch: bool = True,
-) -> Iterable[Sequence[Numeric]]:
+) -> Generator[float, None, None]:
     step = len(values) / count
     for d in range(count):
         lower = int(d * step)

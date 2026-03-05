@@ -151,8 +151,8 @@ class StackedBar:
         neg = []
         for value in self.values:
             stack = pos if value >= 0 else neg
-            cummulative = stack[-1] if stack else 0.0
-            stack.append(cummulative + value)
+            cumulative = stack[-1] if stack else 0.0
+            stack.append(cumulative + value)
         return neg[::-1] + [0.0] + pos
 
     def _stacked_bars(self, values: Sequence[Numeric]) -> Sequence[Section]:
