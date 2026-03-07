@@ -7,9 +7,9 @@ from rich.measure import Measurement
 from rich.style import Style
 
 
-from graphical._invert_style import invert_style
-from graphical.mark import Mark, BAR_BLOCK_H, BAR_BLOCK_V
-from graphical.section import Section
+from .utils import invert_style
+from .mark import Mark, BAR_BLOCK_H, BAR_BLOCK_V
+from .section import Section
 
 Numeric = Union[int, float]
 Orientation = Literal["horizontal", "vertical"]
