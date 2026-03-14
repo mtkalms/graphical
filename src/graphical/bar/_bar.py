@@ -1,0 +1,94 @@
+from typing import Literal, Tuple, Optional, Union
+
+from rich.color import Color
+from rich.console import ConsoleOptions, Console, RenderResult
+from rich.segment import Segment
+from rich.measure import Measurement
+from rich.style import Style
+
+from ._cell_value import _cell_value
+from graphical.utils import invert_style
+from graphical.mark import Mark, BAR_BLOCK_H, BAR_BLOCK_V
+from graphical.section import Section
+
+Numeric = Union[int, float]
+Orientation = Literal["horizontal", "vertical"]
+
+
+class Bar:
+    def __init__(
+        self,
+        value: Numeric,
+        value_range: Tuple[Numeric, Numeric],
+        width: int,
+        marks: Optional[Mark] = None,
+        color: Optional[Union[Color, str]] = None,
+        bgcolor: Optional[Union[Color, str]] = None,
+        invert_negative: bool = False,
+        orientation: Orientation = "horizontal",
+    ) -> None:
+        self.value = value
+        self.value_range = value_range
+        self.width = width
+        self.marks = marks or (
+            BAR_BLOCK_H if orientation == "horizontal" else BAR_BLOCK_V
+        )
+        self.color = color
+        self.bgcolor = bgcolor
+        self.invert_negative = invert_negative
+        self.orientation = orientation
+
+    def _invertible(self) -> bool:
+        return (
+            self.invert_negative
+            and self.color not in [None, "default"]
+            and self.bgcolor not in [None, "default"]
+            and self.marks.invertible
+        )
+
+    def __iter__(self):
+        vertical = self.orientation == "vertical"
+        style = Style(color=self.color, bgcolor=self.bgcolor)
+        bar = Section(min(0, self.value), max(0, self.value))
+
+        lower, upper = self.value_range
+        step = abs(upper - lower) / self.width
+        inset = max(int((bar.lower - lower) // step), 0)
+        trail = max(int((upper - bar.upper) // step), 0)
+        width = self.width - (inset + trail)
+
+        # Handle Whitespace
+        base_style = Style(bgcolor=self.bgcolor)
+        for _ in range(trail if vertical else inset):
+            yield Segment(" ", style=base_style)
+
+        segments = Section(lower + inset * step, upper - trail * step).segment(width)
+        if vertical:
+            segments = list(segments)[::-1]
+        for segment in segments:
+            cell_value = _cell_value(bar, segment)
+            invert = cell_value < 0 and self._invertible()
+            cell_style = invert_style(style) if invert else style
+            if self.value in segment and self.value != segment.lower:
+                # Use cap character for the upper boundary of the bar
+                cell_char = self.marks.cap(cell_value, invert)
+            else:
+                cell_char = self.marks.get(cell_value, invert)
+            yield Segment(cell_char, style=cell_style)
+
+        # Handle whitespace
+        for _ in range(inset if vertical else trail):
+            yield Segment(" ", style=base_style)
+
+    def __rich_console__(
+        self, console: Console, options: ConsoleOptions
+    ) -> RenderResult:
+        for segment in self:
+            yield segment
+            if self.orientation in "vertical":
+                yield Segment.line()
+
+    def __rich_measure__(
+        self, console: Console, options: ConsoleOptions
+    ) -> Measurement:
+        return Measurement(self.width, 1)

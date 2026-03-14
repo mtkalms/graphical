@@ -2,7 +2,7 @@ from typing import List
 
 import pytest
 from graphical.bar import Bar
-from graphical.mark import *
+from graphical.mark import BAR_BLOCK_H, BAR_HEAVY_H, BAR_LIGHT_H, BAR_SHADE, Mark
 from tests.util import render
 
 
