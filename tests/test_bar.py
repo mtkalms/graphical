@@ -30,7 +30,7 @@ class Test_Bar:
         chart = Bar(
             value=value,
             value_range=(0, 10),
-            width=20,
+            length=20,
             marks=cells,
         )
         assert render(chart) == expected
@@ -70,7 +70,7 @@ class Test_DivergingBar:
         chart = Bar(
             value=value,
             value_range=(-10, 10),
-            width=20,
+            length=20,
             marks=cells,
         )
         assert render(chart) == expected

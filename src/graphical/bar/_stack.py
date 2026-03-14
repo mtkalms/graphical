@@ -19,7 +19,8 @@ class Stack:
         self,
         values: Sequence[Numeric],
         value_range: Tuple[Numeric, Numeric],
-        width: int,
+        *,
+        length: Optional[int] = None,
         marks: Optional[Mark] = None,
         colors: Sequence[Union[Color, str]] = ["red", "green", "blue", "yellow"],
         bgcolor: Optional[Union[Color, str]] = None,
@@ -28,7 +29,7 @@ class Stack:
     ) -> None:
         self.values = values
         self.value_range = value_range
-        self.width = width
+        self.length = length or 100
         self.marks = marks or (
             BAR_BLOCK_H if orientation == "horizontal" else BAR_BLOCK_V
         )
@@ -65,7 +66,8 @@ class Stack:
             and self.marks.invertible
         )
 
-    def __iter__(self):
+    def segments(self, length: Optional[int] = None):
+        length = length or self.length
         vertical = self.orientation == "vertical"
 
         colors = self._stacked_colors()
@@ -75,10 +77,10 @@ class Stack:
         lower, upper = self.value_range
         bar_lower = bounds[0]
         bar_upper = bounds[-1]
-        step = abs(upper - lower) / self.width
+        step = abs(upper - lower) / length
         inset = max(int((bar_lower - lower) // step), 0)
         trail = max(int((upper - bar_upper) // step), 0)
-        width = self.width - (inset + trail)
+        length = length - (inset + trail)
 
         # Handle Whitespace
         base_style = Style(bgcolor=self.bgcolor)
@@ -86,7 +88,7 @@ class Stack:
             yield Segment(" ", style=base_style)
 
         # Handle Segments that overlap with bars
-        segments = Section(lower + inset * step, upper - trail * step).segment(width)
+        segments = Section(lower + inset * step, upper - trail * step).segment(length)
         if vertical:
             segments = list(segments)[::-1]
         for segment in segments:
@@ -137,15 +139,22 @@ class Stack:
         for _ in range(inset if vertical else trail):
             yield Segment(" ", style=base_style)
 
+    def __iter__(self):
+        return self.segments()
+
     def __rich_console__(
         self, console: Console, options: ConsoleOptions
     ) -> RenderResult:
-        for segment in self:
-            yield segment
-            if self.orientation in "vertical":
+        if self.orientation in "horizontal":
+            width = min(self.length, options.max_width)
+            yield from Segment.simplify(self.segments(width))
+        else:
+            height = min(self.length, options.max_height)
+            for segment in self.segments(height):
+                yield segment
                 yield Segment.line()
 
     def __rich_measure__(
         self, console: Console, options: ConsoleOptions
     ) -> Measurement:
-        return Measurement(self.width, 1)
+        return Measurement(5, options.max_width)
