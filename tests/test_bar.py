@@ -78,6 +78,24 @@ def test_diverging(value: float, cells: Mark, expected: str):
     assert_markup(chart, expected)
 
 
+def test_diverging_off_grid_origin():
+    chart = Bar(
+        value=180,
+        value_range=(-192, 196),
+        length=20,
+        marks=BAR_BLOCK_H,
+    )
+    assert_markup(chart, "         ▐█████████▏", preview=True)
+
+    chart = Bar(
+        value=-180,
+        value_range=(-192, 196),
+        length=20,
+        marks=BAR_BLOCK_H,
+    )
+    assert_markup(chart, "▕████████▌          ", preview=True)
+
+
 @pytest.mark.parametrize(
     "color,bgcolor,expected",
     [
