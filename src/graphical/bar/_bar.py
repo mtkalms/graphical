@@ -40,11 +40,11 @@ class Bar:
         self.orientation = orientation
 
     def _invertible(self) -> bool:
-        if self.marks.invertible or self.invert_negative is None:
+        if not self.marks.invertible or self.invert_negative is None:
             return False
         if self.invert_negative == "swap":
             return all(d not in [None, "default"] for d in [self.color, self.bgcolor])
-        elif self.marks.invertible == "reverse":
+        elif self.invert_negative == "reverse":
             return True
         else:
             return False
@@ -72,12 +72,13 @@ class Bar:
         for segment in segments:
             cell_value = _cell_value(bar, segment)
             invert = cell_value < 0 and self._invertible()
+            invert_mark = invert and self.invert_negative == "swap"
             cell_style = invert_style(style, self.invert_negative) if invert else style
             if self.value in segment and self.value != segment.lower:
                 # Use cap character for the upper boundary of the bar
-                cell_char = self.marks.cap(cell_value, invert)
+                cell_char = self.marks.cap(cell_value, invert_mark)
             else:
-                cell_char = self.marks.get(cell_value, invert)
+                cell_char = self.marks.get(cell_value, invert_mark)
             yield Segment(cell_char, style=cell_style)
 
         # Handle whitespace

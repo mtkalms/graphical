@@ -62,11 +62,11 @@ class Stack:
         return [Section(*bounds) for bounds in zip(values[:-1], values[1:])]
 
     def _invertible(self, color: Union[Color, str]) -> bool:
-        if self.marks.invertible or self.invert_negative is None:
+        if not self.marks.invertible or self.invert_negative is None:
             return False
         if self.invert_negative == "swap":
             return all(d not in [None, "default"] for d in [color, self.bgcolor])
-        elif self.marks.invertible == "reverse":
+        elif self.invert_negative == "reverse":
             return True
         else:
             return False
@@ -108,10 +108,11 @@ class Stack:
                 cell_color = colors[cell_ids[0]]
                 cell_style = Style(color=cell_color, bgcolor=self.bgcolor)
                 invert = cell_value < 0 and self._invertible(cell_color)
+                invert_mark = invert and self.invert_negative == "swap"
                 if invert:
                     cell_style = invert_style(cell_style, self.invert_negative)
                 yield Segment(
-                    self.marks.get(cell_value, invert),
+                    self.marks.get(cell_value, invert_mark),
                     style=cell_style,
                 )
             # Multiple bars in segment
