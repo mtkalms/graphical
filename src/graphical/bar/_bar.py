@@ -7,7 +7,7 @@ from rich.measure import Measurement
 from rich.style import Style
 
 from ._cell_value import _cell_value
-from graphical.utils import invert_style
+from graphical.utils import invert_style, InversionStrategy
 from graphical.mark import Mark, BAR_BLOCK_H, BAR_BLOCK_V
 from graphical.section import Section
 
@@ -25,7 +25,7 @@ class Bar:
         marks: Optional[Mark] = None,
         color: Optional[Union[Color, str]] = None,
         bgcolor: Optional[Union[Color, str]] = None,
-        invert_negative: bool = False,
+        invert_negative: Optional[InversionStrategy] = None,
         orientation: Orientation = "horizontal",
     ) -> None:
         self.value = value
@@ -36,16 +36,18 @@ class Bar:
         )
         self.color = color
         self.bgcolor = bgcolor
-        self.invert_negative = invert_negative
+        self.invert_negative: Optional[InversionStrategy] = invert_negative
         self.orientation = orientation
 
     def _invertible(self) -> bool:
-        return (
-            self.invert_negative
-            and self.color not in [None, "default"]
-            and self.bgcolor not in [None, "default"]
-            and self.marks.invertible
-        )
+        if self.marks.invertible or self.invert_negative is None:
+            return False
+        if self.invert_negative == "swap":
+            return all(d not in [None, "default"] for d in [self.color, self.bgcolor])
+        elif self.marks.invertible == "reverse":
+            return True
+        else:
+            return False
 
     def segments(self, length: Optional[int] = None):
         length = length or self.length
@@ -70,7 +72,7 @@ class Bar:
         for segment in segments:
             cell_value = _cell_value(bar, segment)
             invert = cell_value < 0 and self._invertible()
-            cell_style = invert_style(style) if invert else style
+            cell_style = invert_style(style, self.invert_negative) if invert else style
             if self.value in segment and self.value != segment.lower:
                 # Use cap character for the upper boundary of the bar
                 cell_char = self.marks.cap(cell_value, invert)

@@ -6,6 +6,8 @@ from rich.segment import Segment
 from rich.measure import Measurement
 from rich.style import Style
 
+from graphical.utils import invert_style, InversionStrategy
+
 from ._cell_value import _cell_value
 from graphical.mark import Mark, BAR_BLOCK_H, BAR_BLOCK_V
 from graphical.section import Section
@@ -24,7 +26,7 @@ class Stack:
         marks: Optional[Mark] = None,
         colors: Sequence[Union[Color, str]] = ["red", "green", "blue", "yellow"],
         bgcolor: Optional[Union[Color, str]] = None,
-        invert_negative: bool = True,
+        invert_negative: Optional[InversionStrategy] = None,
         orientation: Orientation = "horizontal",
     ) -> None:
         self.values = values
@@ -36,7 +38,7 @@ class Stack:
         self.colors = colors
         self.bgcolor = bgcolor
         self.orientation = orientation
-        self.invert_negative = invert_negative
+        self.invert_negative: Optional[InversionStrategy] = invert_negative
 
     def _stacked_colors(self) -> Sequence[Color]:
         colors = []
@@ -59,12 +61,15 @@ class Stack:
     def _stacked_bars(self, values: Sequence[Numeric]) -> Sequence[Section]:
         return [Section(*bounds) for bounds in zip(values[:-1], values[1:])]
 
-    def _invertible(self) -> bool:
-        return (
-            self.invert_negative
-            and self.bgcolor not in [None, "default"]
-            and self.marks.invertible
-        )
+    def _invertible(self, color: Union[Color, str]) -> bool:
+        if self.marks.invertible or self.invert_negative is None:
+            return False
+        if self.invert_negative == "swap":
+            return all(d not in [None, "default"] for d in [color, self.bgcolor])
+        elif self.marks.invertible == "reverse":
+            return True
+        else:
+            return False
 
     def segments(self, length: Optional[int] = None):
         length = length or self.length
@@ -100,11 +105,11 @@ class Stack:
             # One bar in segment
             elif len(cell_ids) == 1:
                 cell_value = cell_values[0]
-                invert = cell_value < 0 and self._invertible()
+                cell_color = colors[cell_ids[0]]
+                cell_style = Style(color=cell_color, bgcolor=self.bgcolor)
+                invert = cell_value < 0 and self._invertible(cell_color)
                 if invert:
-                    cell_style = Style(color=self.bgcolor, bgcolor=colors[cell_ids[0]])
-                else:
-                    cell_style = Style(color=colors[cell_ids[0]], bgcolor=self.bgcolor)
+                    cell_style = invert_style(cell_style, self.invert_negative)
                 yield Segment(
                     self.marks.get(cell_value, invert),
                     style=cell_style,
