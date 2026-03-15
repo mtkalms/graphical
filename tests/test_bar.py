@@ -151,12 +151,12 @@ def test_positive_with_colors(color: str | None, bgcolor: str | None, expected: 
         ),
     ],
     ids=[
+        "swap",
+        "reverse",
         "swap-non-invertible-mark",
         "reverse-non-invertible-mark",
         "swap-without-bgcolor",
         "swap-without-color",
-        "swap",
-        "reverse",
     ],
 )
 def test_diverging_styled_inversion_markup(
