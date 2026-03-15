@@ -1,9 +1,7 @@
-from typing import List
-
 import pytest
 from graphical.bar import Bar
 from graphical.mark import BAR_BLOCK_H, BAR_HEAVY_H, BAR_LIGHT_H, BAR_SHADE, Mark
-from tests.util import render
+from tests.utilities.asserts import assert_markup
 
 
 class Test_Bar:
@@ -33,7 +31,7 @@ class Test_Bar:
             length=20,
             marks=cells,
         )
-        assert render(chart) == expected
+        assert_markup(chart, expected)
 
 
 class Test_DivergingBar:
@@ -73,47 +71,4 @@ class Test_DivergingBar:
             length=20,
             marks=cells,
         )
-        assert render(chart) == expected
-
-
-# class Test_StackedBar:
-#     @pytest.mark.parametrize(
-#         "values, bar_style, expected",
-#         [
-#             ([0.0, 5.2], BarStyle.BLOCK, " █████████▍         "),
-#             ([5.2, 4.5], BarStyle.BLOCK, "██████████▍████████▍"),
-#             ([5.2, 0.8], BarStyle.BLOCK, "██████████▍█        "),
-#         ],
-#         ids=["short+medium", "medium+medium", "medium+short"],
-#     )
-#     def test_render(self, values: List[float], bar_style: BarStyle, expected: str):
-#         chart = StackedBar(
-#             values=values,
-#             value_range=(0, 10),
-#             width=20,
-#             end="",
-#             colors=["purple", "blue"],
-#         )
-#         assert render(chart) == expected
-
-
-# class Test_DoubleBar:
-#     @pytest.mark.parametrize(
-#         "values, bar_style, expected",
-#         [
-#             ([0.0, 5.2], BarStyle.BLOCK, "▄▄▄▄▄▄▄▄▄▄▄         "),
-#             ([5.2, 9.5], BarStyle.BLOCK, "▀▀▀▀▀▀▀▀▀▀▀▄▄▄▄▄▄▄  "),
-#             ([5.2, 6.8], BarStyle.BLOCK, "▀▀▀▀▀▀▀▀▀▀▀▄▄▄      "),
-#             ([6.8, 5.2], BarStyle.BLOCK, "▀▀▀▀▀▀▀▀▀▀▀▀▀▀      "),
-#         ],
-#         ids=["short+medium", "medium+long", "medium+medium", "long+medium"],
-#     )
-#     def test_render(self, values: List[float], bar_style: BarStyle, expected: str):
-#         chart = DoubleBar(
-#             values=values,
-#             value_range=(0, 10),
-#             width=20,
-#             end="",
-#             colors=["purple", "blue"],
-#         )
-#         assert render(chart) == expected
+        assert_markup(chart, expected)
