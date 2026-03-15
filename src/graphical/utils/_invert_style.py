@@ -16,10 +16,8 @@ def invert_style(style: Style, strategy: Optional[InversionStrategy] = "swap") -
     Returns:
         Style: The inverted style.
     """
-    match strategy:
-        case "swap":
-            return style + Style(color=style.bgcolor, bgcolor=style.color)
-        case "reverse":
-            return style + Style(reverse=True)
-        case _:
-            return style
+    if strategy == "swap":
+        return style + Style(color=style.bgcolor, bgcolor=style.color)
+    if strategy == "reverse":
+        return style + Style(reverse=True)
+    return style
