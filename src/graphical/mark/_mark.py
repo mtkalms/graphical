@@ -57,21 +57,3 @@ class Mark:
         mark_chars = self._positive if value >= 0 else self._negative
         mark_index = int(round(abs(value) * (len(mark_chars) - 1)))
         return mark_chars[mark_index]
-
-
-BAR_BLOCK_H = Mark(" ▏▎▍▌▋▊▉█", " ▕▐█", invertible=True)
-BAR_BLOCK_V = Mark(" ▁▂▃▄▅▆▇█", " ▔▀█", invertible=True)
-BAR_LIGHT_H = Mark(" ╴─", " ╶─")
-BAR_LIGHT_V = Mark(" ╷│", " ╵│")
-BAR_HEAVY_H = Mark(" ╸━", " ╺━")
-BAR_HEAVY_V = Mark(" ╻┃", " ╹┃")
-BAR_SHADE = Mark(" ░▒▓█", invertible=True)
-
-WHISKER_LIGHT_H = Mark(" ─", caps=("┤", "├"))
-WHISKER_HEAVY_H = Mark(" ━", caps=("┫", "┣"))
-WHISKER_DOUBLE_H = Mark(" ═", caps=("╣", "╠"))
-
-LOLLIPOP_OUTLINE_LIGHT_H = Mark(" ─", caps="◯")
-LOLLIPOP_OUTLINE_HEAVY_H = Mark(" ━", caps="◯")
-LOLLIPOP_FILLED_LIGHT_H = Mark(" ─", caps="●")
-LOLLIPOP_FILLED_HEAVY_H = Mark(" ━", caps="●")

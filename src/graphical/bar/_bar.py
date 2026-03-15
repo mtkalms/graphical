@@ -8,7 +8,9 @@ from rich.style import Style
 
 from ._cell_value import _cell_value
 from graphical.utils import invert_style, InversionStrategy
-from graphical.mark import Mark, BAR_BLOCK_H, BAR_BLOCK_V
+from graphical.mark import Mark
+from graphical.mark.horizontal import BAR_BLOCK_H
+from graphical.mark.vertical import BAR_BLOCK_V
 from graphical.section import Section
 
 Numeric = Union[int, float]
