@@ -17,6 +17,19 @@ Orientation = Literal["horizontal", "vertical"]
 
 
 class Stack:
+    """Stacked bar graph.
+
+    Args:
+        values (Sequence[Numeric]): The values in order of stacking.
+        value_range: Lower and upper boundary. Defaults to range of data.
+        width (int): The width of the graph. Defaults to 100.
+        marks (Union[BarMark, Mark]], optional): Marks used for the bars. Defaults to "block".
+        colors (Sequence[Union[Color, str]], optional): Colors of the bars.
+        bgcolor (Union[Color, str], optional): Background color. Defaults to "default".
+        invert_negative (Literal["reverse",  "swap"], optional): Use positive marks and invert cell colors for negative number. If None or not supported by marks, the cell is not inverted.
+        orientation: (Literal["horizontal", "vertical"], optional): The orientation of the bar. Defaults to "horizontal".
+    """
+
     def __init__(
         self,
         values: Sequence[Numeric],
@@ -72,6 +85,13 @@ class Stack:
             return False
 
     def segments(self, length: Optional[int] = None):
+        """Returns rendered bar segments.
+
+        Args:
+            length (Optional[int], optional): Override bar graph length.
+        Yields:
+            _type_:Rendered bar segments.
+        """
         length = length or self.length
         vertical = self.orientation == "vertical"
 
