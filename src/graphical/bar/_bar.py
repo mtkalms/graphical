@@ -92,7 +92,7 @@ class Bar:
         if vertical:
             segments = list(segments)[::-1]
         for segment in segments:
-            cell_value = _cell_value(bar, segment)
+            cell_value = _cell_value(bar, segment, True)
             invert = cell_value < 0 and self._invertible()
             invert_mark = invert and self.invert_negative == "swap"
             cell_style = invert_style(style, self.invert_negative) if invert else style

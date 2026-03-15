@@ -1,7 +1,13 @@
+from typing import Optional
+
 from graphical.section import Section
 
 
-def _cell_value(bar: Section, cell: Section) -> float:
+def _cell_value(
+    bar: Section,
+    cell: Section,
+    force_origin: Optional[bool] = False,
+) -> float:
     """Calculates in percentage the directional overlap between a bar and a cell.
     It considers two case: the bar overlaps the cell from the left (positive number),
     and the bar overlaps the cell from the right (negative number).
@@ -11,6 +17,7 @@ def _cell_value(bar: Section, cell: Section) -> float:
     Args:
         bar (Section): Value range of the bar.
         cell (Section): Value range of the cell.
+        force_origin (bool, optional): Force origin to half cell grid. Defaults to False
 
     Returns:
         float: Directional overlap in percentage [-1.0, 1.0]
@@ -27,7 +34,8 @@ def _cell_value(bar: Section, cell: Section) -> float:
     else:
         sign = 1.0 if intersection.middle < cell.middle else -1.0
         # Handle origin that falls between cell boundaries
-        if cell.lower < 0.0 < cell.upper:
+        if force_origin and cell.lower < 0.0 < cell.upper:
+            # Force origin to middle of cell
             cell_value = sign * -0.0 if bar in cell else sign * 0.5
         else:
             cell_value = sign * intersection.length / cell.length
