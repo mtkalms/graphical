@@ -178,4 +178,4 @@ def test_diverging_styled_inversion_markup(
         invert_negative=invert_negative,
     )
 
-    assert_markup(chart, expected, preview=True)
+    assert_markup(chart, expected)
