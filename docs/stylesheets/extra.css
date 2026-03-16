@@ -1,0 +1,17 @@
+@font-face {
+    font-family: 'Cascadia Code';
+    src: url('./fonts/CascadiaCodeNF-Regular.woff2'), format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Cascadia Code';
+    src: url('./fonts/CascadiaCodeNF-Bold.woff2'), format('woff2');
+    font-weight: bold;
+    font-style: normal;
+}
+.md-typeset pre {
+    line-height: 1.15; /* Adds space between lines of code */
+    font-size: 0.8em;
+}
