@@ -13,40 +13,25 @@ from tests.utilities.asserts import assert_markup
 @pytest.mark.parametrize(
     "value, cells, expected",
     [
-        (0.0, BAR_BLOCK_H, "                    "),
-        (9.5, BAR_BLOCK_H, "███████████████████ "),
-        (5.2, BAR_BLOCK_H, "██████████▍         "),
-        (5.2, BAR_HEAVY_H, "━━━━━━━━━━╸         "),
-        (5.2, BAR_LIGHT_H, "──────────╴         "),
-        (5.2, BAR_SHADE, "██████████▒         "),
-    ],
-    ids=[
-        "BLOCK_none",
-        "BLOCK_full",
-        "BLOCK_partial",
-        "HEAVY_partial",
-        "LIGHT_partial",
-        "SHADE_partial",
-    ],
-)
-def test_positive(value: float, cells: Mark, expected: str):
-    chart = Bar(
-        value=value,
-        value_range=(0, 10),
-        length=20,
-        marks=cells,
-    )
-    assert_markup(chart, expected)
-
-
-@pytest.mark.parametrize(
-    "value, cells, expected",
-    [
         (+0.0, BAR_BLOCK_H, "                    "),
-        (+9.5, BAR_BLOCK_H, "          █████████▌"),
-        (-9.5, BAR_BLOCK_H, "▐█████████          "),
-        (+5.3, BAR_BLOCK_H, "          █████▎    "),
-        (-5.3, BAR_BLOCK_H, "    ▕█████          "),
+        (+9.0, BAR_BLOCK_H, "          █████████ "),
+        (-9.0, BAR_BLOCK_H, " █████████          "),
+        (+8.0, BAR_BLOCK_H, "          ████████  "),
+        (-8.0, BAR_BLOCK_H, "  ████████          "),
+        (+6.7, BAR_BLOCK_H, "          ██████▊   "),
+        (-6.7, BAR_BLOCK_H, "   ▐██████          "),
+        (+5.6, BAR_BLOCK_H, "          █████▋    "),
+        (-5.6, BAR_BLOCK_H, "    ▐█████          "),
+        (+4.5, BAR_BLOCK_H, "          ████▌     "),
+        (-4.5, BAR_BLOCK_H, "     ▐████          "),
+        (+3.4, BAR_BLOCK_H, "          ███▍      "),
+        (-3.4, BAR_BLOCK_H, "      ▐███          "),
+        (+2.3, BAR_BLOCK_H, "          ██▎       "),
+        (-2.3, BAR_BLOCK_H, "       ▕██          "),
+        (+1.2, BAR_BLOCK_H, "          █▎        "),
+        (-1.2, BAR_BLOCK_H, "        ▕█          "),
+        (+0.1, BAR_BLOCK_H, "          ▏         "),
+        (-0.1, BAR_BLOCK_H, "         ▕          "),
         (+5.3, BAR_HEAVY_H, "          ━━━━━╸    "),
         (-5.3, BAR_HEAVY_H, "    ╺━━━━━          "),
         (+5.3, BAR_LIGHT_H, "          ─────╴    "),
@@ -58,8 +43,22 @@ def test_positive(value: float, cells: Mark, expected: str):
         "BLOCK_none",
         "BLOCK_positive",
         "BLOCK_negative",
-        "BLOCK_positive_partial",
-        "BLOCK_negative_partial",
+        "BLOCK_positive_partial_8",
+        "BLOCK_negative_partial_8",
+        "BLOCK_positive_partial_7",
+        "BLOCK_negative_partial_7",
+        "BLOCK_positive_partial_6",
+        "BLOCK_negative_partial_6",
+        "BLOCK_positive_partial_5",
+        "BLOCK_negative_partial_5",
+        "BLOCK_positive_partial_4",
+        "BLOCK_negative_partial_4",
+        "BLOCK_positive_partial_3",
+        "BLOCK_negative_partial_3",
+        "BLOCK_positive_partial_2",
+        "BLOCK_negative_partial_2",
+        "BLOCK_positive_partial_1",
+        "BLOCK_negative_partial_1",
         "HEAVY_positive_partial",
         "HEAVY_negative_partial",
         "LIGHT_positive_partial",
@@ -68,7 +67,7 @@ def test_positive(value: float, cells: Mark, expected: str):
         "SHADE_negative_partial",
     ],
 )
-def test_diverging(value: float, cells: Mark, expected: str):
+def test_marks(value: float, cells: Mark, expected: str):
     chart = Bar(
         value=value,
         value_range=(-10, 10),
@@ -78,22 +77,39 @@ def test_diverging(value: float, cells: Mark, expected: str):
     assert_markup(chart, expected)
 
 
-def test_diverging_off_grid_origin():
+@pytest.mark.parametrize(
+    "origin, force_origin, positive, negative",
+    [
+        (0.0, None, "         ▐█████████▏", "▕████████▌          "),
+        (0.0, True, "         ▐█████████▏", "▕████████▌          "),
+        (0.0, False, "         ▕█████████▏", "▕████████▉          "),
+    ],
+    ids=[
+        "default",
+        "force_origin",
+        "leave_origin",
+    ],
+)
+def test_origin(origin: float, force_origin: bool, positive: str, negative: str):
     chart = Bar(
         value=180,
         value_range=(-192, 196),
         length=20,
         marks=BAR_BLOCK_H,
+        origin=origin,
+        force_origin=force_origin,
     )
-    assert_markup(chart, "         ▐█████████▏")
+    assert_markup(chart, positive)
 
     chart = Bar(
         value=-180,
         value_range=(-192, 196),
         length=20,
         marks=BAR_BLOCK_H,
+        origin=origin,
+        force_origin=force_origin,
     )
-    assert_markup(chart, "▕████████▌          ")
+    assert_markup(chart, negative)
 
 
 @pytest.mark.parametrize(
@@ -113,9 +129,7 @@ def test_diverging_off_grid_origin():
         "color-and-bgcolor",
     ],
 )
-def test_positive_with_colors(
-    color: Optional[str], bgcolor: Optional[str], expected: str
-):
+def test_style(color: Optional[str], bgcolor: Optional[str], expected: str):
     chart = Bar(
         value=5.2,
         value_range=(0, 10),
@@ -181,7 +195,7 @@ def test_positive_with_colors(
         "swap-without-color",
     ],
 )
-def test_diverging_styled_inversion_markup(
+def test_style_inversion(
     marks: Mark,
     color: Optional[str],
     bgcolor: Optional[str],
