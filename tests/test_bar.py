@@ -85,7 +85,7 @@ def test_diverging_off_grid_origin():
         length=20,
         marks=BAR_BLOCK_H,
     )
-    assert_markup(chart, "         ▐█████████▏", preview=True)
+    assert_markup(chart, "         ▐█████████▏")
 
     chart = Bar(
         value=-180,
@@ -93,7 +93,7 @@ def test_diverging_off_grid_origin():
         length=20,
         marks=BAR_BLOCK_H,
     )
-    assert_markup(chart, "▕████████▌          ", preview=True)
+    assert_markup(chart, "▕████████▌          ")
 
 
 @pytest.mark.parametrize(
