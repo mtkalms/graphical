@@ -1,7 +1,5 @@
-from typing import Union
 from graphical.section import Section
-
-Numeric = Union[int, float]
+from ._types import Numeric
 
 
 def _cell_value(

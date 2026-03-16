@@ -1,4 +1,4 @@
-from typing import Generator, Literal, Tuple, Optional, Union
+from typing import Generator, Tuple, Optional, Union
 
 from rich.color import Color
 from rich.console import ConsoleOptions, Console, RenderResult
@@ -7,14 +7,12 @@ from rich.measure import Measurement
 from rich.style import Style
 
 from ._cell_value import _cell_value
+from ._types import Orientation, Numeric
 from graphical.utils import invert_style, InversionStrategy
 from graphical.mark import Mark
 from graphical.mark.horizontal import BAR_BLOCK_H
 from graphical.mark.vertical import BAR_BLOCK_V
 from graphical.section import Section
-
-Numeric = Union[int, float]
-Orientation = Literal["horizontal", "vertical"]
 
 
 class Bar:
