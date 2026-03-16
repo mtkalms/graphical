@@ -1,4 +1,4 @@
-from typing import Sequence, Tuple, Optional, Union
+from typing import Iterable, Sequence, Tuple, Optional, Union
 
 from rich.color import Color
 from rich.console import ConsoleOptions, Console, RenderResult
@@ -90,7 +90,7 @@ class Stack:
         else:
             return False
 
-    def segments(self, length: Optional[int] = None):
+    def segments(self, length: Optional[int] = None) -> Iterable[Segment]:
         """Returns rendered bar segments.
 
         Args:

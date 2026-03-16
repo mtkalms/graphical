@@ -1,4 +1,4 @@
-from typing import Generator, Tuple, Optional, Union
+from typing import Iterable, Tuple, Optional, Union
 
 from rich.color import Color
 from rich.console import ConsoleOptions, Console, RenderResult
@@ -68,7 +68,7 @@ class Bar:
         else:
             return False
 
-    def segments(self, length: Optional[int] = None) -> Generator[Segment]:
+    def segments(self, length: Optional[int] = None) -> Iterable[Segment]:
         """Returns rendered bar segments.
 
         Args:
