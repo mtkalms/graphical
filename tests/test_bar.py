@@ -113,7 +113,9 @@ def test_diverging_off_grid_origin():
         "color-and-bgcolor",
     ],
 )
-def test_positive_with_colors(color: str | None, bgcolor: str | None, expected: str):
+def test_positive_with_colors(
+    color: Optional[str], bgcolor: Optional[str], expected: str
+):
     chart = Bar(
         value=5.2,
         value_range=(0, 10),
@@ -181,8 +183,8 @@ def test_positive_with_colors(color: str | None, bgcolor: str | None, expected: 
 )
 def test_diverging_styled_inversion_markup(
     marks: Mark,
-    color: str | None,
-    bgcolor: str | None,
+    color: Optional[str],
+    bgcolor: Optional[str],
     invert_negative: Optional[InversionStrategy],
     expected: str,
 ):
