@@ -2,7 +2,7 @@ from graphical.mark import Mark
 
 #  BAR
 
-BAR_BLOCK_H = Mark(" ▏▎▍▌▋▊▉█", " ▕▐█", invertible=True)
+BAR_BLOCK_H = Mark(" ▏▎▍▌▋▊▉█", " ▕▕▕▐▐▐███", invertible=True)
 BAR_LIGHT_H = Mark(" ╴─", " ╶─")
 BAR_HEAVY_H = Mark(" ╸━", " ╺━")
 
