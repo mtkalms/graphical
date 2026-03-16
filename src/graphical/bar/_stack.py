@@ -96,7 +96,7 @@ class Stack:
         Args:
             length (Optional[int], optional): Override bar graph length.
         Yields:
-            _type_:Rendered bar segments.
+            Segment: Next segment of rendered bar.
         """
         length = length or self.length
         vertical = self.orientation == "vertical"
