@@ -21,7 +21,7 @@ class Bar:
     """Bar graph.
 
     Args:
-        value (Numeric): The value.
+        data (Numeric): The value.
         value_range: Lower and upper boundary.
         length (int): The length of the graph. Defaults to 100.
         marks (Union[BarMark, Mark]], optional): Marks used for the bar. Defaults to "block".
@@ -29,6 +29,8 @@ class Bar:
         bgcolor (Union[Color, str], optional): Background color. Defaults to "default".
         invert_negative (Literal["reverse",  "swap"], optional): Use positive marks and invert cell colors for negative number. If None or not supported by marks, the cell is not inverted.
         orientation: (Literal["horizontal", "vertical"], optional): The orientation of the bar. Defaults to "horizontal".
+        origin (Numeric, optional): Origin point. Defaults to 0.0.
+        force_origin (bool, optional): Force origin to half cell grid. Defaults to False.
     """
 
     def __init__(
@@ -42,6 +44,8 @@ class Bar:
         bgcolor: Optional[Union[Color, str]] = None,
         invert_negative: Optional[InversionStrategy] = None,
         orientation: Orientation = "horizontal",
+        origin: Optional[Numeric] = None,
+        force_origin: Optional[bool] = None,
     ) -> None:
         self.value = value
         self.value_range = value_range
@@ -53,6 +57,8 @@ class Bar:
         self.bgcolor = bgcolor
         self.invert_negative: Optional[InversionStrategy] = invert_negative
         self.orientation = orientation
+        self.origin = origin or 0.0
+        self.force_origin = force_origin is not False
 
     def _invertible(self) -> bool:
         if not self.marks.invertible or self.invert_negative is None:
@@ -75,7 +81,7 @@ class Bar:
         length = length or self.length
         vertical = self.orientation == "vertical"
         style = Style(color=self.color, bgcolor=self.bgcolor)
-        bar = Section(min(0, self.value), max(0, self.value))
+        bar = Section(min(self.origin, self.value), max(self.origin, self.value))
 
         lower, upper = self.value_range
         step = abs(upper - lower) / length
@@ -92,7 +98,7 @@ class Bar:
         if vertical:
             segments = list(segments)[::-1]
         for segment in segments:
-            cell_value = _cell_value(bar, segment, True)
+            cell_value = _cell_value(bar, segment, force_origin=self.force_origin)
             invert = cell_value < 0 and self._invertible()
             invert_mark = invert and self.invert_negative == "swap"
             cell_style = invert_style(style, self.invert_negative) if invert else style

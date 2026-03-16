@@ -30,6 +30,8 @@ class Stack:
         bgcolor (Union[Color, str], optional): Background color. Defaults to "default".
         invert_negative (Literal["reverse",  "swap"], optional): Use positive marks and invert cell colors for negative number. If None or not supported by marks, the cell is not inverted.
         orientation: (Literal["horizontal", "vertical"], optional): The orientation of the bar. Defaults to "horizontal".
+        origin (Numeric, optional): Origin point. Defaults to 0.0.
+        force_origin (bool, optional): Force origin to half cell grid. Defaults to False.
     """
 
     def __init__(
@@ -43,6 +45,8 @@ class Stack:
         bgcolor: Optional[Union[Color, str]] = None,
         invert_negative: Optional[InversionStrategy] = None,
         orientation: Orientation = "horizontal",
+        origin: Optional[Numeric] = None,
+        force_origin: Optional[bool] = None,
     ) -> None:
         self.values = values
         self.value_range = value_range
@@ -54,11 +58,13 @@ class Stack:
         self.bgcolor = bgcolor
         self.orientation = orientation
         self.invert_negative: Optional[InversionStrategy] = invert_negative
+        self.origin = origin or 0.0
+        self.force_origin = force_origin is not False
 
     def _stacked_colors(self) -> Sequence[Color]:
         colors = []
         for idx, value in enumerate(self.values):
-            if value >= 0:
+            if value >= self.origin:
                 colors.append(self.colors[idx % len(self.colors)])
             else:
                 colors.insert(0, self.colors[idx % len(self.colors)])
@@ -68,10 +74,10 @@ class Stack:
         pos = []
         neg = []
         for value in self.values:
-            stack = pos if value >= 0 else neg
-            cumulative = stack[-1] if stack else 0.0
+            stack = pos if value >= self.origin else neg
+            cumulative = stack[-1] if stack else self.origin
             stack.append(cumulative + value)
-        return neg[::-1] + [0.0] + pos
+        return neg[::-1] + [self.origin] + pos
 
     def _stacked_bars(self, values: Sequence[Numeric]) -> Sequence[Section]:
         return [Section(*bounds) for bounds in zip(values[:-1], values[1:])]
@@ -120,7 +126,15 @@ class Stack:
             segments = list(segments)[::-1]
         for segment in segments:
             cell_ids = [idx for idx, bar in enumerate(bars) if bar.overlaps(segment)]
-            cell_values = [_cell_value(bars[idx], segment) for idx in cell_ids]
+            cell_values = [
+                _cell_value(
+                    bars[idx],
+                    segment,
+                    origin=self.origin,
+                    force_origin=self.force_origin,
+                )
+                for idx in cell_ids
+            ]
             # No bar in segment
             if not cell_ids:
                 yield Segment(" ", style=base_style)

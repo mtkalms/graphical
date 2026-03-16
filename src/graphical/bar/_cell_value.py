@@ -1,12 +1,15 @@
-from typing import Optional
-
+from typing import Union
 from graphical.section import Section
+
+Numeric = Union[int, float]
 
 
 def _cell_value(
     bar: Section,
     cell: Section,
-    force_origin: Optional[bool] = False,
+    *,
+    origin: Numeric = 0.0,
+    force_origin: bool = False,
 ) -> float:
     """Calculates in percentage the directional overlap between a bar and a cell.
     It considers two case: the bar overlaps the cell from the left (positive number),
@@ -17,7 +20,8 @@ def _cell_value(
     Args:
         bar (Section): Value range of the bar.
         cell (Section): Value range of the cell.
-        force_origin (bool, optional): Force origin to half cell grid. Defaults to False
+        origin (Numeric, optional): Origin point. Defaults to 0.0.
+        force_origin (bool, optional): Force origin to half cell grid. Defaults to False.
 
     Returns:
         float: Directional overlap in percentage [-1.0, 1.0]
@@ -28,13 +32,13 @@ def _cell_value(
         cell_value = 0.0
     # Full intersection
     elif cell == intersection:
-        sign = -1.0 if bar.lower < 0 else 1.0
+        sign = -1.0 if bar.lower < origin else 1.0
         cell_value = sign * 1.0
     # Partial intersection
     else:
         sign = 1.0 if intersection.middle < cell.middle else -1.0
         # Handle origin that falls between cell boundaries
-        if force_origin and cell.lower < 0.0 < cell.upper:
+        if force_origin and cell.lower < origin < cell.upper:
             # Force origin to middle of cell
             cell_value = sign * -0.0 if bar in cell else sign * 0.5
         else:
