@@ -38,7 +38,7 @@ class Mark:
             return self.get(value, invert)
 
     def get(self, value: float, invert: bool = False) -> str:
-        """Maps a value in the domain [-1, 1] to the correpsonding character.
+        """Maps a value in the domain [-1, 1] to the corresponding character.
 
         Args:
             value (float): Value in the domain [-1, 1].
