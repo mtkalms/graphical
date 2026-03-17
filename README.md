@@ -6,10 +6,6 @@
 
 Graphical is a low-level library for visualizing data in the terminal. It is based on [Rich][rich] and is fully compatible with [Textual][textual].
 
-
-# Examples
-
-
 ## Similar Projects
 
 - [asciichart][asciichart]: line plots
@@ -26,6 +22,7 @@ Graphical is a low-level library for visualizing data in the terminal. It is bas
 - [netext][netext]: network graphs
 - [rich-pixels][rich-pixels]: images
 - [termcharts][termcharts]: bar, pie and doughnut charts
+- [rich-illuminations][richilluminations]: micro visualizations based on Graphical
 
 ### Textual ready
 
@@ -47,3 +44,4 @@ Graphical is a low-level library for visualizing data in the terminal. It is bas
 [termplotlib]: https://github.com/nschloe/termplotlib
 [textual-plotext]: https://github.com/Textualize/textual-plotext
 [textual]: https://github.com/Textualize/textual
+[richilluminations]: https://github.com/mtkalms/rich-illuminations
