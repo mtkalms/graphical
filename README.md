@@ -4,48 +4,11 @@
 
 # Graphical
 
-Graphical is a modular visualization library for the terminal. It is based on the console protocol of [Rich][rich] and is fully compatible with [Textual][textual].
+Graphical is a low-level library for visualizing data in the terminal. It is based on [Rich][rich] and is fully compatible with [Textual][textual].
 
-> **NOTE:** Future versions of Textual might include a limited number of graphs and charts (see [Textual Roadmap][roadmap]).
 
-## Graphical Library
+# Examples
 
-### Sparkline
-
-> Sparklines are included in Textual since version 0.27.0 (June 2023)
-
-<img src="img/sparkline.svg" alt="Sparkline Table Example" style="width:720px;"/>
-
-### Ridgeline Chart
-
-<img src="img/ridgeline.svg" alt="Ridgeline Example" style="width:720px;"/>
-
-<details>
-  <summary>Variations</summary>
-  <img src="img/ridgeline-variations.svg" alt="Ridgeline variations" style="width:720px;"/>
-</details>
-
-### Bar
-
-<img src="img/bar-variations.svg" alt="Bar Table Example" style="width:720px;"/>
-
-#### Bar Chart
-
-> Bar charts might be part of future versions of Textual (see [Textual Roadmap][roadmap]).
-
-<img src="img/bar.svg" alt="BarChart Example" style="width:720px;"/>
-
-#### Diverging Bar Chart
-
-<img src="img/bar-diverging.svg" alt="DivergingBarChart Example" style="width:720px;"/>
-
-#### Stacked Bar Chart
-
-<img src="img/bar-stacked.svg" alt="StackedBarChart Example" style="width:720px;"/>
-
-#### Double Bar Chart
-
-<img src="img/bar-double.svg" alt="DoubleBarChart Example" style="width:720px;"/>
 
 ## Similar Projects
 
