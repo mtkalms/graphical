@@ -179,18 +179,22 @@ class Stack:
         for _ in range(inset if vertical else trail):
             yield Segment(" ", style=base_style)
 
-    def __iter__(self):
-        return self.segments()
+    def __vertical__(self, console: Console, options: ConsoleOptions) -> RenderResult:
+        height = min(self.length, options.max_height)
+        for segment in self.segments(height):
+            yield segment
+
+    def __horizontal__(self, console: Console, options: ConsoleOptions) -> RenderResult:
+        width = min(self.length, options.max_width)
+        yield from Segment.simplify(self.segments(width))
 
     def __rich_console__(
         self, console: Console, options: ConsoleOptions
     ) -> RenderResult:
         if self.orientation in "horizontal":
-            width = min(self.length, options.max_width)
-            yield from Segment.simplify(self.segments(width))
+            yield from self.__horizontal__(console, options)
         else:
-            height = min(self.length, options.max_height)
-            for segment in self.segments(height):
+            for segment in self.__vertical__(console, options):
                 yield segment
                 yield Segment.line()
 
