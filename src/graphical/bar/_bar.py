@@ -6,13 +6,14 @@ from rich.segment import Segment
 from rich.measure import Measurement
 from rich.style import Style
 
-from ._overlap import overlap
-from ._types import Orientation, Numeric
-from graphical.utils import invert_style, InversionStrategy
 from graphical.mark import Mark
 from graphical.mark.horizontal import BAR_BLOCK_H
 from graphical.mark.vertical import BAR_BLOCK_V
 from graphical.section import Section
+
+from ._invert_style import invert_style, InversionStrategy
+from ._overlap import overlap
+from ._types import Orientation, Numeric
 
 
 class Bar:

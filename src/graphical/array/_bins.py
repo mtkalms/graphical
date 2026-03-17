@@ -4,7 +4,7 @@ Numeric = Union[int, float]
 SummaryFunction = Callable[[Sequence[Numeric]], float]
 
 
-def buckets(
+def bins(
     values: Sequence[Numeric],
     count: int,
     summary_function: SummaryFunction,

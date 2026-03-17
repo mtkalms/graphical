@@ -2,11 +2,11 @@ from typing import Optional, Tuple, Union
 
 from rich.color import Color
 
-from ._bar import Bar
-from ._types import Orientation, Numeric
 from graphical.mark import Mark
-from graphical.utils import InversionStrategy
 
+from ._bar import Bar
+from ._invert_style import InversionStrategy
+from ._types import Orientation, Numeric
 
 class Range(Bar):
     """Range bar.

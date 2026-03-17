@@ -2,11 +2,10 @@ from typing import Optional
 
 import pytest
 
-from graphical.bar import Stack
+from graphical.bar import Stack, InversionStrategy
 from graphical.mark import Mark
 from graphical.mark.chromatic import BAR_SHADE
 from graphical.mark.vertical import BAR_BLOCK_V, BAR_HEAVY_V, BAR_LIGHT_V
-from graphical.utils import InversionStrategy
 from tests.utilities.asserts import assert_markup
 
 
