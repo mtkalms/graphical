@@ -8,7 +8,7 @@ from rich.style import Style
 
 from graphical.utils import invert_style, InversionStrategy
 
-from ._cell_value import _cell_value
+from ._overlap import overlap
 from ._types import Orientation, Numeric
 from graphical.mark import Mark
 from graphical.mark.horizontal import BAR_BLOCK_H
@@ -125,7 +125,7 @@ class Stack:
         for segment in segments:
             cell_ids = [idx for idx, bar in enumerate(bars) if bar.overlaps(segment)]
             cell_values = [
-                _cell_value(
+                overlap(
                     bars[idx],
                     segment,
                     origin=self.origin,

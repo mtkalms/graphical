@@ -6,7 +6,7 @@ from rich.segment import Segment
 from rich.measure import Measurement
 from rich.style import Style
 
-from ._cell_value import _cell_value
+from ._overlap import overlap
 from ._types import Orientation, Numeric
 from graphical.utils import invert_style, InversionStrategy
 from graphical.mark import Mark
@@ -96,7 +96,7 @@ class Bar:
         if vertical:
             segments = list(segments)[::-1]
         for segment in segments:
-            cell_value = _cell_value(bar, segment, force_origin=self.force_origin)
+            cell_value = overlap(bar, segment, force_origin=self.force_origin)
             invert = cell_value < 0 and self._invertible()
             invert_mark = invert and self.invert_negative == "swap"
             cell_style = invert_style(style, self.invert_negative) if invert else style

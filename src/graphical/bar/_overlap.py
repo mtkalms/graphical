@@ -2,7 +2,7 @@ from graphical.section import Section
 from ._types import Numeric
 
 
-def _cell_value(
+def overlap(
     bar: Section,
     cell: Section,
     *,
@@ -27,18 +27,18 @@ def _cell_value(
     intersection = cell.intersect(bar)
     # No intersection
     if not intersection:
-        cell_value = 0.0
+        result = 0.0
     # Full intersection
     elif cell == intersection:
         sign = -1.0 if bar.lower < origin else 1.0
-        cell_value = sign * 1.0
+        result = sign * 1.0
     # Partial intersection
     else:
         sign = 1.0 if intersection.middle < cell.middle else -1.0
         # Handle origin that falls between cell boundaries
         if force_origin and cell.lower < origin < cell.upper:
             # Force origin to middle of cell
-            cell_value = sign * -0.0 if bar in cell else sign * 0.5
+            result = sign * -0.0 if bar in cell else sign * 0.5
         else:
-            cell_value = sign * intersection.length / cell.length
-    return cell_value
+            result = sign * intersection.length / cell.length
+    return result
