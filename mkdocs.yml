@@ -50,7 +50,7 @@ plugins:
             modernize_annotations: false
             parameter_headings: true
             separate_signature: true
-            show_root_heading: true
+            show_root_heading: false
             show_signature_annotations: false
             show_source: false
             show_symbol_type_heading: true

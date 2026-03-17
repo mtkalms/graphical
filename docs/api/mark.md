@@ -2,4 +2,4 @@
 title: "graphical.mark"
 ---
 
-::: graphical.mark.Mark
+::: graphical.mark
