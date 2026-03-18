@@ -50,8 +50,10 @@ from tests.utilities.asserts import assert_markup
 )
 def test_marks(values: list[float], marks: Mark, expected: str):
     chart = Stack(
-        values=values,
-        value_range=(-10, 10) if values == [0.0] else ((0, 10) if values[0] >= 0 else (-10, 0)),
+        data=values,
+        value_range=(-10, 10)
+        if values == [0.0]
+        else ((0, 10) if values[0] >= 0 else (-10, 0)),
         length=20,
         marks=marks,
         colors=["red", "green"],
@@ -89,7 +91,7 @@ def test_marks(values: list[float], marks: Mark, expected: str):
 )
 def test_origin(origin: float, force_origin: bool, positive: str, negative: str):
     chart = Stack(
-        values=[120, 60],
+        data=[120, 60],
         value_range=(-192, 196),
         length=20,
         marks=BAR_BLOCK_H,
@@ -100,7 +102,7 @@ def test_origin(origin: float, force_origin: bool, positive: str, negative: str)
     assert_markup(chart, positive)
 
     chart = Stack(
-        values=[-120, -60],
+        data=[-120, -60],
         value_range=(-192, 196),
         length=20,
         marks=BAR_BLOCK_H,
@@ -132,7 +134,7 @@ def test_origin(origin: float, force_origin: bool, positive: str, negative: str)
 )
 def test_style(colors: list[str], bgcolor: Optional[str], expected: str):
     chart = Stack(
-        values=[2.7, 2.5],
+        data=[2.7, 2.5],
         value_range=(0, 10),
         length=20,
         colors=colors,
@@ -190,7 +192,7 @@ def test_style_inversion(
     expected: str,
 ):
     chart = Stack(
-        values=[-2.7, -2.5],
+        data=[-2.7, -2.5],
         value_range=(-10, 0),
         length=20,
         marks=marks,

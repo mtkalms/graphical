@@ -68,7 +68,7 @@ from tests.utilities.asserts import assert_markup
 )
 def test_marks(value: float, cells: Mark, expected: str):
     chart = Bar(
-        value=value,
+        data=value,
         value_range=(-10, 10),
         length=20,
         marks=cells,
@@ -91,7 +91,7 @@ def test_marks(value: float, cells: Mark, expected: str):
 )
 def test_origin(origin: float, force_origin: bool, positive: str, negative: str):
     chart = Bar(
-        value=180,
+        data=180,
         value_range=(-192, 196),
         length=20,
         marks=BAR_BLOCK_H,
@@ -101,7 +101,7 @@ def test_origin(origin: float, force_origin: bool, positive: str, negative: str)
     assert_markup(chart, positive)
 
     chart = Bar(
-        value=-180,
+        data=-180,
         value_range=(-192, 196),
         length=20,
         marks=BAR_BLOCK_H,
@@ -130,7 +130,7 @@ def test_origin(origin: float, force_origin: bool, positive: str, negative: str)
 )
 def test_style(color: Optional[str], bgcolor: Optional[str], expected: str):
     chart = Bar(
-        value=5.2,
+        data=5.2,
         value_range=(0, 10),
         length=20,
         color=color,
@@ -202,7 +202,7 @@ def test_style_inversion(
     expected: str,
 ):
     chart = Bar(
-        value=-5.3,
+        data=-5.3,
         value_range=(-10, 10),
         length=20,
         marks=marks,

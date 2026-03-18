@@ -20,9 +20,9 @@ class Stack:
     """Stacked bar graph.
 
     Args:
-        values (Sequence[Numeric]): The values in order of stacking.
+        data (Sequence[Numeric]): The values in order of stacking.
         value_range: Lower and upper boundary. Defaults to range of data.
-        width (int): The width of the graph. Defaults to 100.
+        length (int): The length of the graph. Defaults to 100.
         marks (Union[BarMark, Mark]], optional): Marks used for the bars. Defaults to "block".
         colors (Sequence[Union[Color, str]], optional): Colors of the bars.
         bgcolor (Union[Color, str], optional): Background color. Defaults to "default".
@@ -34,7 +34,7 @@ class Stack:
 
     def __init__(
         self,
-        values: Sequence[Numeric],
+        data: Sequence[Numeric],
         value_range: Tuple[Numeric, Numeric],
         *,
         length: Optional[int] = None,
@@ -46,7 +46,7 @@ class Stack:
         origin: Optional[Numeric] = None,
         force_origin: Optional[bool] = None,
     ) -> None:
-        self.values = values
+        self.values = data
         self.value_range = value_range
         self.length = length or 100
         self.marks = marks or (

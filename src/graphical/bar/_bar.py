@@ -34,7 +34,7 @@ class Bar:
 
     def __init__(
         self,
-        value: Numeric,
+        data: Numeric,
         value_range: Tuple[Numeric, Numeric],
         *,
         length: Optional[int] = None,
@@ -46,7 +46,7 @@ class Bar:
         origin: Optional[Numeric] = None,
         force_origin: Optional[bool] = None,
     ) -> None:
-        self.value = value
+        self.value = data
         self.value_range = value_range
         self.length = length or 100
         self.marks = marks or (

@@ -8,6 +8,7 @@ from ._bar import Bar
 from ._invert_style import InversionStrategy
 from ._types import Orientation, Numeric
 
+
 class Range(Bar):
     """Range bar.
 
@@ -24,7 +25,7 @@ class Range(Bar):
 
     def __init__(
         self,
-        values: Tuple[Numeric, Numeric],
+        data: Tuple[Numeric, Numeric],
         value_range: Tuple[Numeric, Numeric],
         *,
         length: Optional[int] = None,
@@ -35,7 +36,7 @@ class Range(Bar):
         orientation: Orientation = "horizontal",
     ) -> None:
         super().__init__(
-            max(values),
+            max(data),
             value_range,
             length=length,
             marks=marks,
@@ -43,6 +44,6 @@ class Range(Bar):
             bgcolor=bgcolor,
             invert_negative=invert_negative,
             orientation=orientation,
-            origin=min(values),
+            origin=min(data),
             force_origin=False,
         )
