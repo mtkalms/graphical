@@ -72,7 +72,7 @@ class Stack:
         pos = []
         neg = []
         for value in self.values:
-            stack = pos if value >= self.origin else neg
+            stack = pos if value >= 0.0 else neg
             cumulative = stack[-1] if stack else self.origin
             stack.append(cumulative + value)
         return neg[::-1] + [self.origin] + pos
