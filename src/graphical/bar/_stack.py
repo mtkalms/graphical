@@ -62,7 +62,7 @@ class Stack:
     def _stacked_colors(self) -> Sequence[Color]:
         colors = []
         for idx, value in enumerate(self.values):
-            if value >= self.origin:
+            if value >= 0.0:
                 colors.append(self.colors[idx % len(self.colors)])
             else:
                 colors.insert(0, self.colors[idx % len(self.colors)])
@@ -139,7 +139,7 @@ class Stack:
             # One bar in segment
             elif len(cell_ids) == 1:
                 cell_value = cell_values[0]
-                cell_color = colors[cell_ids[0]]
+                cell_color = colors[cell_ids[0] % len(colors)]
                 cell_style = Style(color=cell_color, bgcolor=self.bgcolor)
                 invert = cell_value < 0 and self._invertible(cell_color)
                 invert_mark = invert and self.invert_negative == "swap"
@@ -155,9 +155,9 @@ class Stack:
                 id_values = sorted(zip(cell_ids, cell_values), key=lambda x: x[1])
                 trailing, leading = sorted(id_values[-2:], key=lambda x: x[0])
                 trailing_id, trailing_val = trailing
-                trailing_color = colors[trailing_id]
+                trailing_color = colors[trailing_id % len(colors)]
                 leading_id, leading_val = leading
-                leading_color = colors[leading_id]
+                leading_color = colors[leading_id % len(colors)]
                 if self.marks.invertible:
                     # Always use the trailing bar fragment for better resolution
                     yield Segment(
