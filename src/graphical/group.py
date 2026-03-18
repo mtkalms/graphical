@@ -11,15 +11,15 @@ def _add_between(array: Iterable[Any], insert: Any) -> List[Any]:
     return [d for d in chain.from_iterable(gapped) if d]
 
 
-class VerticalRenderable(Protocol):
-    def __vertical__(
+class GraphicalGroupRenderable(Protocol):
+    def __graphical_group__(
         self, console: Console, options: ConsoleOptions
     ) -> RenderResult:  # pragma: no cover
         ...
 
 
-class VerticalGroup:
-    def __init__(self, *renderables: VerticalRenderable, gap: int = 0) -> None:
+class Horizontal:
+    def __init__(self, *renderables: GraphicalGroupRenderable, gap: int = 0) -> None:
         self._renderables = renderables
         self._gap = gap
 
@@ -31,7 +31,9 @@ class VerticalGroup:
     def render_columns(
         self, console: Console, options: ConsoleOptions
     ) -> List[List[Union[RenderableType, Segment]]]:
-        return [list(d.__vertical__(console, options)) for d in self._renderables]
+        return [
+            list(d.__graphical_group__(console, options)) for d in self._renderables
+        ]
 
     def __rich_console__(
         self, console: Console, options: ConsoleOptions

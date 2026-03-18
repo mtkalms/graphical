@@ -4,7 +4,7 @@
 
 ```rich
 from graphical.bar import Stack
-from graphical.vertical import VerticalGroup
+from graphical.group import Horizontal
 
 data = [
     [16.87, 28.75, 22.07, 7.66], [21.59, 27.04, 22.18, 6.46], [30.51, 31.93, 23.95, 5.9],
@@ -36,14 +36,14 @@ for d in data:
         orientation="vertical"
     ))
 
-output = VerticalGroup(*stacks, gap=1)
+output = Horizontal(*stacks, gap=1)
 ```
 
 ## Stacked Area
 
 ```rich
 from graphical.bar import Stack
-from graphical.vertical import VerticalGroup
+from graphical.group import Horizontal
 
 data = [
     [16.87, 28.75, 22.07, 7.66], [21.59, 27.04, 22.18, 6.46], [30.51, 31.93, 23.95, 5.9],
@@ -92,14 +92,14 @@ for d in data:
         orientation="vertical"
     ))
 
-output = VerticalGroup(*stacks)
+output = Horizontal(*stacks)
 ```
 
 ## Streamgraph
 
 ```rich
 from graphical.bar import Stack
-from graphical.vertical import VerticalGroup
+from graphical.group import Horizontal
 
 data = [
     [16.87, 28.75, 22.07, 7.66], [21.59, 27.04, 22.18, 6.46], [30.51, 31.93, 23.95, 5.9],
@@ -149,5 +149,5 @@ for d in data:
         orientation="vertical"
     ))
 
-output = VerticalGroup(*stacks)
+output = Horizontal(*stacks)
 ```

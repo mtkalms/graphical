@@ -2,7 +2,7 @@ from typing import Iterable, Tuple, Optional, Union
 
 from rich.color import Color
 from rich.console import ConsoleOptions, Console, RenderResult
-from rich.segment import Segment
+from rich.segment import Segment, Segments
 from rich.measure import Measurement
 from rich.style import Style
 
@@ -112,22 +112,24 @@ class Bar:
         for _ in range(inset if vertical else trail):
             yield Segment(" ", style=base_style)
 
-    def __vertical__(self, console: Console, options: ConsoleOptions) -> RenderResult:
-        height = min(self.length, options.max_height)
-        for segment in self.segments(height):
-            yield segment
-
-    def __horizontal__(self, console: Console, options: ConsoleOptions) -> RenderResult:
-        width = min(self.length, options.max_width)
-        yield from Segment.simplify(self.segments(width))
+    def __graphical_group__(
+        self, console: Console, options: ConsoleOptions
+    ) -> RenderResult:
+        if self.orientation in "horizontal":
+            width = min(self.length, options.max_width)
+            yield Segments(Segment.simplify(self.segments(width)))
+        else:
+            height = min(self.length, options.max_height)
+            yield from self.segments(height)
 
     def __rich_console__(
         self, console: Console, options: ConsoleOptions
     ) -> RenderResult:
+        line_segments = self.__graphical_group__(console, options)
         if self.orientation in "horizontal":
-            yield from self.__horizontal__(console, options)
+            yield from line_segments
         else:
-            for segment in self.__vertical__(console, options):
+            for segment in line_segments:
                 yield segment
                 yield Segment.line()
 
