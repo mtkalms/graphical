@@ -1,5 +1,34 @@
 # Examples
 
+## Gantt Chart
+
+```rich
+from graphical.bar import RangeStack
+from graphical.group import Vertical
+
+data = [
+    [0.01, 0.32, 1.0], [0.06, 0.19, 1.0], [0.07, 0.45, 1.0], [0.14, 0.43, 1.0], 
+    [0.17, 0.33, 1.0],  [0.22, 0.49, 1.0], [0.31, 0.47, 1.0], 
+    [0.43, 0.82, 0.25], [0.51, 0.65, 0.25], [0.54, 0.71, 0.03], [0.61, 0.76, 0.0], 
+    [0.64, 0.95, 0.0],
+]
+
+lanes = []
+for start, stop, progress in data:
+    length = stop - start
+    lanes.append(
+        RangeStack(
+            (start, length * progress, length * (1.0 - progress)),
+            (0, 1),
+            orientation="horizontal",
+            colors=["purple", "grey15"]
+        )
+    )
+
+output = Vertical(*lanes, gap=1)
+
+```
+
 ## Stacked Bar
 
 ```rich
