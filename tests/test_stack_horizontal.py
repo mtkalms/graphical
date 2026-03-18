@@ -16,12 +16,12 @@ from tests.utilities.asserts import assert_markup
         (
             [3.0, 2.6],
             BAR_BLOCK_H,
-            "[red]█████[/red][red on green]█[/red on green][green on red]█[/green on red][green]████▎[/green]        ",
+            "[red]█████[/red][red on green]█ [/red on green][green]████▎[/green]        ",
         ),
         (
             [-3.0, -2.6],
             BAR_BLOCK_H,
-            "        [green]▕████[/green][red on green] [/red on green][green on red] [/green on red][red]█████[/red]",
+            "        [green]▕████[/green][green on red]█ [/green on red][red]█████[/red]",
         ),
         (
             [2.5, 2.8],
@@ -36,7 +36,7 @@ from tests.utilities.asserts import assert_markup
         (
             [2.5, 2.8],
             BAR_SHADE,
-            "[red]████[/red][red on green]█[/red on green][green on red]█[/green on red][green]████▒[/green]         ",
+            "[red]████[/red][red on green]█ [/red on green][green]████▒[/green]         ",
         ),
     ],
     ids=[
