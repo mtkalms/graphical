@@ -3,7 +3,7 @@ CODE_FORMAT = """
     <!-- Generated with Rich https://www.textualize.io -->
     <style>
         .{unique_id}-matrix {{
-            font-family: Cascadia Code, monospace;
+            font-family: Fira Code, monospace;
             font-size: {char_height}px;
             line-height: {line_height}px;
             font-variant-east-asian: full-width;
