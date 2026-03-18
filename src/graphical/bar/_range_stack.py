@@ -1,23 +1,23 @@
-from typing import Optional, Tuple, Union
+from typing import Optional, Sequence, Tuple, Union
 
 from rich.color import Color
 
 from graphical.mark import Mark
 
-from ._bar import Bar
+from ._stack import Stack
 from ._invert_style import InversionStrategy
 from ._types import Orientation, Numeric
 
 
-class Range(Bar):
-    """Bar with an offset.
+class RangeStack(Stack):
+    """Stack with an offset.
 
     Args:
-        data (Tuple[Numeric, Numeric]): Start and end point of range.
-        value_range: Lower and upper boundary.
+        data (Sequence[Numeric]): The values in order of stacking. The first value is the stack offset.
+        value_range: Lower and upper boundary. Defaults to range of data.
         length (int): The length of the graph. Defaults to 100.
-        marks (Union[BarMark, Mark]], optional): Marks used for the bar. Defaults to "block".
-        color (Union[Color, str], optional): Color of the bar. Defaults to "default".
+        marks (Union[BarMark, Mark]], optional): Marks used for the bars. Defaults to "block".
+        colors (Sequence[Union[Color, str]], optional): Colors of the bars.
         bgcolor (Union[Color, str], optional): Background color. Defaults to "default".
         invert_negative (Literal["reverse",  "swap"], optional): Use positive marks and invert cell colors for negative number. If None or not supported by marks, the cell is not inverted.
         orientation: (Literal["horizontal", "vertical"], optional): The orientation of the bar. Defaults to "horizontal".
@@ -25,25 +25,25 @@ class Range(Bar):
 
     def __init__(
         self,
-        data: Tuple[Numeric, Numeric],
+        data: Sequence[Numeric],
         value_range: Tuple[Numeric, Numeric],
         *,
         length: Optional[int] = None,
         marks: Optional[Mark] = None,
-        color: Optional[Union[Color, str]] = None,
+        colors: Sequence[Union[Color, str]] = ["red", "green", "blue", "yellow"],
         bgcolor: Optional[Union[Color, str]] = None,
         invert_negative: Optional[InversionStrategy] = None,
         orientation: Orientation = "horizontal",
     ) -> None:
         super().__init__(
-            max(data),
+            data[1:],
             value_range,
             length=length,
             marks=marks,
-            color=color,
+            colors=colors,
             bgcolor=bgcolor,
             invert_negative=invert_negative,
             orientation=orientation,
-            origin=min(data),
+            origin=data[0],
             force_origin=False,
         )
