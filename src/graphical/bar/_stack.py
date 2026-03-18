@@ -151,10 +151,12 @@ class Stack:
                 )
             # Multiple bars in segment
             else:
-                id_values = list(zip(cell_ids, cell_values))
-                trailing_id, trailing_val = max(id_values, key=lambda x: x[1])
+                # Use the two largest sections in order
+                id_values = sorted(zip(cell_ids, cell_values), key=lambda x: x[1])
+                trailing, leading = sorted(id_values[-2:], key=lambda x: x[0])
+                trailing_id, trailing_val = trailing
                 trailing_color = colors[trailing_id]
-                leading_id, leading_val = min(id_values, key=lambda x: x[1])
+                leading_id, leading_val = leading
                 leading_color = colors[leading_id]
                 if self.marks.invertible:
                     # Always use the trailing bar fragment for better resolution
