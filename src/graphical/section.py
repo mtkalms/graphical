@@ -12,7 +12,6 @@ class Section(tuple):
 
     def __new__(cls, lower: float, upper: float) -> Section:
         if lower > upper:
-            print(lower, upper)
             raise ValueError("Upper boundary must be higher that lower boundary.")
         return super().__new__(cls, (lower, upper))
 
