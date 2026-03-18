@@ -16,6 +16,7 @@ class Range(Bar):
         data (Tuple[Numeric, Numeric]): Start and end point of range.
         value_range: Lower and upper boundary.
         length (int): The length of the graph. Defaults to 100.
+        width (int): The width of the bars. Defaults to 1.
         marks (Union[BarMark, Mark]], optional): Marks used for the bar. Defaults to "block".
         color (Union[Color, str], optional): Color of the bar. Defaults to "default".
         bgcolor (Union[Color, str], optional): Background color. Defaults to "default".
@@ -29,6 +30,7 @@ class Range(Bar):
         value_range: Tuple[Numeric, Numeric],
         *,
         length: Optional[int] = None,
+        width: Optional[int] = None,
         marks: Optional[Mark] = None,
         color: Optional[Union[Color, str]] = None,
         bgcolor: Optional[Union[Color, str]] = None,
@@ -39,6 +41,7 @@ class Range(Bar):
             max(data),
             value_range,
             length=length,
+            width=width,
             marks=marks,
             color=color,
             bgcolor=bgcolor,

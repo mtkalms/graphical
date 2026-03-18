@@ -23,6 +23,7 @@ class Bar:
         data (Numeric): The value.
         value_range: Lower and upper boundary.
         length (int): The length of the graph. Defaults to 100.
+        width (int): The width of the bars. Defaults to 1.
         marks (Union[BarMark, Mark]], optional): Marks used for the bar. Defaults to "block".
         color (Union[Color, str], optional): Color of the bar. Defaults to "default".
         bgcolor (Union[Color, str], optional): Background color. Defaults to "default".
@@ -38,6 +39,7 @@ class Bar:
         value_range: Tuple[Numeric, Numeric],
         *,
         length: Optional[int] = None,
+        width: Optional[int] = None,
         marks: Optional[Mark] = None,
         color: Optional[Union[Color, str]] = None,
         bgcolor: Optional[Union[Color, str]] = None,
@@ -49,6 +51,7 @@ class Bar:
         self.value = data
         self.value_range = value_range
         self.length = length or 100
+        self.width = width or 1
         self.marks = marks or (
             BAR_BLOCK_H if orientation == "horizontal" else BAR_BLOCK_V
         )
@@ -116,11 +119,17 @@ class Bar:
         self, console: Console, options: ConsoleOptions
     ) -> RenderResult:
         if self.orientation in "horizontal":
-            width = min(self.length, options.max_width)
-            yield Segments(Segment.simplify(self.segments(width)))
+            length = min(self.length, options.max_width)
+            yield Segments(Segment.simplify(self.segments(length)))
+            if self.width > 1:
+                yield Segments(
+                    [Segment.line(), *Segment.simplify(self.segments(length))]
+                    * (self.width - 1)
+                )
         else:
-            height = min(self.length, options.max_height)
-            yield from self.segments(height)
+            length = min(self.length, options.max_height)
+            for segment in self.segments(length):
+                yield Segments([segment] * self.width)
 
     def __rich_console__(
         self, console: Console, options: ConsoleOptions

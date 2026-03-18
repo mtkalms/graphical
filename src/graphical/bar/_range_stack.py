@@ -16,6 +16,7 @@ class RangeStack(Stack):
         data (Sequence[Numeric]): The values in order of stacking. The first value is the stack offset.
         value_range: Lower and upper boundary. Defaults to range of data.
         length (int): The length of the graph. Defaults to 100.
+        width (int): The width of the bars. Defaults to 1.
         marks (Union[BarMark, Mark]], optional): Marks used for the bars. Defaults to "block".
         colors (Sequence[Union[Color, str]], optional): Colors of the bars.
         bgcolor (Union[Color, str], optional): Background color. Defaults to "default".
@@ -29,6 +30,7 @@ class RangeStack(Stack):
         value_range: Tuple[Numeric, Numeric],
         *,
         length: Optional[int] = None,
+        width: Optional[int] = None,
         marks: Optional[Mark] = None,
         colors: Sequence[Union[Color, str]] = ["red", "green", "blue", "yellow"],
         bgcolor: Optional[Union[Color, str]] = None,
@@ -39,6 +41,7 @@ class RangeStack(Stack):
             data[1:],
             value_range,
             length=length,
+            width=width,
             marks=marks,
             colors=colors,
             bgcolor=bgcolor,
