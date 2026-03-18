@@ -143,7 +143,6 @@ max_sum = max(sum(d) for d in data)
 stacks = []
 for d in data:
     offset = (max_sum - sum(d))/2.0
-    print(offset)
     stacks.append(Stack(
         d,
         (-offset, -offset + max_sum),
