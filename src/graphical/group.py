@@ -23,7 +23,7 @@ class Horizontal:
     All renderables need to implement the `GroupRenderable` protocol.
 
     Args:
-        *renderables (GroupRenderable): Renderables to be arranged horizontally.
+        *renderables (GroupRenderable): Renderables to be arranged.
         gap (int, optional): Gap between renderables. Defaults to 0.
     """
 
@@ -46,4 +46,32 @@ class Horizontal:
             if self._gap > 0:
                 row = _add_between(row, Segment(" " * self._gap))
             yield from row
+            yield Segment.line()
+
+
+class Vertical:
+    """Arranges renderables vertically.
+    All renderables need to implement the `GroupRenderable` protocol.
+
+    Args:
+        *renderables (GroupRenderable): Renderables to be arranged.
+        gap (int, optional): Gap between renderables. Defaults to 0.
+    """
+
+    def __init__(self, *renderables: GroupRenderable, gap: int = 0) -> None:
+        self._renderables = renderables
+        self._gap = gap
+
+    def __rich_measure__(
+        self, console: Console, options: ConsoleOptions
+    ) -> Measurement:
+        return Measurement(options.max_width, options.max_width)
+
+    def __rich_console__(
+        self, console: Console, options: ConsoleOptions
+    ) -> RenderResult:
+        for renderable in self._renderables:
+            yield from renderable.__graphical_group__(console, options)
+            if self._gap > 0:
+                yield from [Segment.line()] * self._gap
             yield Segment.line()
