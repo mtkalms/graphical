@@ -1,9 +1,14 @@
-from itertools import zip_longest
-from typing import Iterable, List, Protocol, Union
+from itertools import zip_longest, chain
+from typing import Any, Iterable, List, Protocol, Union
 
 from rich.console import Console, ConsoleOptions, RenderResult, RenderableType
 from rich.measure import Measurement
 from rich.segment import Segment
+
+
+def _add_between(array: Iterable[Any], insert: Any) -> List[Any]:
+    gapped = zip_longest(array, [insert] * (len(list(array)) - 1))
+    return [d for d in chain.from_iterable(gapped) if d]
 
 
 class VerticalRenderable(Protocol):
@@ -14,8 +19,9 @@ class VerticalRenderable(Protocol):
 
 
 class VerticalGroup:
-    def __init__(self, *renderables: VerticalRenderable) -> None:
-        self._renderables: Iterable[VerticalRenderable] = renderables
+    def __init__(self, *renderables: VerticalRenderable, gap: int = 0) -> None:
+        self._renderables = renderables
+        self._gap = gap
 
     def __rich_measure__(
         self, console: Console, options: ConsoleOptions
@@ -31,6 +37,8 @@ class VerticalGroup:
         self, console: Console, options: ConsoleOptions
     ) -> RenderResult:
         rendered = self.render_columns(console, options)
-        for line in zip_longest(*rendered):
-            yield from line
+        for row in zip_longest(*rendered):
+            if self._gap > 0:
+                row = _add_between(row, Segment(" " * self._gap))
+            yield from row
             yield Segment.line()
