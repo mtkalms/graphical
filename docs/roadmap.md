@@ -7,8 +7,9 @@ Graphical is still in its early stages of development. The following is a list o
     - [x] Bar
     - [x] Range
     - [x] Stack
+    - [x] Range Stack
     - [ ] Double
-    - [ ] Gantt
+    - [ ] Multi Range
     - [ ] Timeseries
     - [ ] Box
     - [ ] Candelestick
@@ -31,3 +32,5 @@ Graphical is still in its early stages of development. The following is a list o
     - [ ] Linear
     - [ ] Log
     - [ ] Time
+- [ ] Group
+    - [x] Horizontal
