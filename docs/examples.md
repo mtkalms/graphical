@@ -2,49 +2,105 @@
 
 # Horizon Chart
 
-```rich
-from graphical.bar import Bar
-from graphical.group import Horizontal
+=== "Output"
 
-data = [
-    -0.14, 0.64, 1.34, 2.02, 2.05, 2.06, 2.7, 2.76, 2.71, 2.68, 2.97, 2.39, 3.39, 2.46, 2.2, 2.32, 2.13, 
-    1.99, 1.74, 1.66, 2.17, 1.49, 1.38, 1.23, 1.41, 0.66, 0.18, -0.81, -1.08, -1.72, -1.89, -2.62, -3.35, 
-    -3.35, -3.74, -3.46, -3.79, -3.44, -3.42, -3.07, -2.66, -2.3, -1.37, -1.92, -0.99, -0.59, -0.61, -0.42, 
-    -0.52, 0.47, 0.28, 0.09, -0.08, 0.59, 0.91, 1.18, 1.21, 2.17, 2.02, 2.71, 3.38, 3.83, 4.02, 3.4, 3.42, 
-    3.35, 3.39, 3.01, 2.42, 1.89, 1.25, 0.76, -0.02, -0.15, -0.61, -0.58, -0.93, -1.6, -1.85, -2.68, -1.67, 
-    -1.55, -1.78, -2.14, -1.53, -2.63, -2.22, -2.3, -2.31, -2.88, -3.16, -3.17, -2.79, -3.25, -2.66, -2.66, 
-    -1.74, -1.56, -0.77, -0.24
-]
+    ```{.rich}
+    from rich.console import Group
+    from graphical.bar import Bar
+    from graphical.group import Horizontal
 
-colors = ["#ffffe5", "#d9f0a3", "#78c679", "#238443", "#004529"]
+    import math
 
-num_levels = 4
-distance = max(data) - min(data)
-step = distance / num_levels
+    base_series = [
+        -0.14, 0.64, 1.34, 2.02, 2.05, 2.06, 2.7, 2.76, 2.71, 2.68, 2.97, 2.39, 3.39, 2.46, 2.2, 2.32, 2.13,
+        1.99, 1.74, 1.66, 2.17, 1.49, 1.38, 1.23, 1.41, 0.66, 0.18, -0.81, -1.08, -1.72, -1.89, -2.62, -3.35,
+        -3.35, -3.74, -3.46, -3.79, -3.44, -3.42, -3.07, -2.66, -2.3, -1.37, -1.92, -0.99, -0.59, -0.61, -0.42,
+        -0.52, 0.47, 0.28, 0.09, -0.08, 0.59, 0.91, 1.18, 1.21, 2.17, 2.02, 2.71, 3.38, 3.83, 4.02, 3.4, 3.42,
+        3.35, 3.39, 3.01, 2.42, 1.89, 1.25, 0.76, -0.02, -0.15, -0.61, -0.58, -0.93, -1.6, -1.85, -2.68, -1.67,
+        -1.55, -1.78, -2.14, -1.53, -2.63, -2.22, -2.3, -2.31, -2.88, -3.16, -3.17, -2.79, -3.25, -2.66, -2.66,
+        -1.74, -1.56, -0.77, -0.24
+    ]
 
-stacks = []
-for d in data:
-    level = int((d - min(data)) // step)
-    print(level)
-    value = (d - min(data)) % step
-    stacks.append(
-        Bar(
-            value,
-            (0, step),
-            length=8,
-            orientation="vertical",
-            color=colors[level],
-            bgcolor=colors[level - 1] if level > 0 else None,
-        )
-    )
+    data_sets = [        
+        base_series,
+        [round(v * 0.92 + 0.35 * math.sin(i / 6) + 0.12, 2) for i, v in enumerate(base_series)],
+        [round(v * 0.78 - 0.28 * math.sin(i / 4) - 0.08, 2) for i, v in enumerate(base_series)],
+        [round(v * 0.5 - 0.28 * math.sin(i / 3) + 1.5, 2) for i, v in enumerate(base_series)],
+    ]
 
-output = Horizontal(*stacks)
-```
+    colors = ["#ffffe5", "#d9f0a3", "#78c679", "#238443", "#004529"]
+    levels = 4
+
+    value_range = [
+        min(d for data in data_sets for d in data),
+        max(d for data in data_sets for d in data),
+    ]
+    distance = value_range[1] - value_range[0]
+
+    graphs = []
+    for data in data_sets:
+        step = distance / levels
+        horizon_bars = []
+        for d in data:
+            level = int((d - value_range[0]) // step)
+            value = (d - value_range[0]) % step
+            horizon_bars.append(
+                Bar(
+                    value,
+                    (0, step),
+                    length=9,
+                    orientation="vertical",
+                    color=colors[level],
+                    bgcolor=colors[level - 1] if level > 0 else None,
+                )
+            )
+        horizon = Horizontal(*horizon_bars)
+        graphs.append(horizon)
+    output = Group(*graphs)
+    ```
+
+=== "Code"
+
+    ```python
+    import math
+    from rich.console import Console
+    from graphical.bar import Bar
+    from graphical.group import Horizontal
+
+    data_sets = [[...], [...], [...]]
+    colors = ["#ffffe5", "#d9f0a3", "#78c679", "#238443", "#004529"]
+    levels = 4
+
+    value_range = [
+        min(d for data in data_sets for d in data),
+        max(d for data in data_sets for d in data),
+    ]
+    distance = value_range[1] - value_range[0]
+
+    console = Console()
+    
+    for data in data_sets:
+        step = distance / levels
+        horizon_bars = []
+        for d in data:
+            level = int((d - value_range[0]) // step)
+            horizon_bars.append(
+                Bar(
+                    (d - value_range[0]) % step,
+                    (0, step),
+                    length=9,
+                    orientation="vertical",
+                    color=colors[level],
+                    bgcolor=colors[level - 1] if level > 0 else None,
+                )
+            )
+        console.print(Horizontal(**horizon_bars))
+    ```
 
 ## Gantt Chart
 
 
-```rich
+```{.rich}
 from graphical.bar import RangeStack
 from graphical.group import Vertical
 
@@ -72,7 +128,7 @@ output = Vertical(*lanes, gap=1)
 
 ## Stacked Bar
 
-```rich
+```{.rich}
 from graphical.bar import Stack
 from graphical.group import Horizontal
 
@@ -108,7 +164,7 @@ output = Horizontal(*stacks, gap=1)
 
 ## Stacked Area
 
-```rich
+```{.rich}
 from graphical.bar import Stack
 from graphical.group import Horizontal
 
@@ -164,7 +220,7 @@ output = Horizontal(*stacks)
 
 ## Streamgraph
 
-```rich
+```{.rich}
 from graphical.bar import Stack
 from graphical.group import Horizontal
 
