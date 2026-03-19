@@ -25,6 +25,6 @@
 }
 
 .md-typeset pre {
-    line-height: 1; /* Adds space between lines of code */
-    font-size: 0.8em;
+    line-height: 1.2; /* Adds space between lines of code */
+    font-size: 0.9em;
 }
