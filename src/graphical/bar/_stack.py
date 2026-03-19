@@ -158,7 +158,7 @@ class Stack:
                 cell_color = colors[cell_ids[0] % len(colors)]
                 cell_style = Style(color=cell_color, bgcolor=self.bgcolor)
                 invert = cell_value < 0 and self._invertible(cell_color)
-                invert_mark = invert and self.invert_negative == "swap"
+                invert_mark = invert and self.invert_negative is not None
                 if invert:
                     cell_style = invert_style(cell_style, self.invert_negative)
                 yield Segment(

@@ -102,7 +102,7 @@ class Bar:
         for segment in segments:
             cell_value = overlap(bar, segment, force_origin=self.force_origin)
             invert = cell_value < 0 and self._invertible()
-            invert_mark = invert and self.invert_negative == "swap"
+            invert_mark = invert and self.invert_negative is not None
             cell_style = invert_style(style, self.invert_negative) if invert else style
             if self.value in segment and self.value != segment.lower:
                 # Use cap character for the upper boundary of the bar

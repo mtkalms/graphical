@@ -156,7 +156,7 @@ def test_style(colors: list[str], bgcolor: Optional[str], expected: str):
             BAR_BLOCK_H,
             "blue",
             "reverse",
-            "[on blue]         [/on blue][reverse green on blue]▐████[/reverse green on blue][green on red]▋[/green on red][reverse red on blue]█████[/reverse red on blue]",
+            "[on blue]         [/on blue][reverse green on blue]▋    [/reverse green on blue][green on red]▋[/green on red][reverse red on blue]     [/reverse red on blue]",
         ),
         (
             BAR_HEAVY_H,
