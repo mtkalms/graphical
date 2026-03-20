@@ -13,7 +13,7 @@ from graphical.section import Section
 
 from ._invert_style import invert_style, InversionStrategy
 from ._overlap import overlap
-from ._types import Orientation, Numeric
+from ._types import OptimizationStrategy, Orientation, Numeric
 
 
 class Bar:
@@ -31,6 +31,7 @@ class Bar:
         orientation: (Literal["horizontal", "vertical"], optional): The orientation of the bar. Defaults to "horizontal".
         origin (Numeric, optional): Origin point. Defaults to 0.0.
         force_origin (bool, optional): Force origin to half cell grid. Defaults to False.
+        prefer_bg (OptimizationStrategy): Replace block characters with background, either "never", for "full" blocks only, or for all. Defaults to "full".
     """
 
     def __init__(
@@ -47,6 +48,7 @@ class Bar:
         orientation: Orientation = "horizontal",
         origin: Optional[Numeric] = None,
         force_origin: Optional[bool] = None,
+        prefer_bg: Optional[OptimizationStrategy] = None,
     ) -> None:
         self.value = data
         self.value_range = value_range
@@ -61,6 +63,7 @@ class Bar:
         self.orientation = orientation
         self.origin = origin or 0.0
         self.force_origin = force_origin is not False
+        self.prefer_bg = prefer_bg or "full"
 
     def _invertible(self) -> bool:
         if not self.marks.invertible or self.invert_negative is None:
@@ -101,6 +104,15 @@ class Bar:
             segments = list(segments)[::-1]
         for segment in segments:
             cell_value = overlap(bar, segment, force_origin=self.force_origin)
+            if self.prefer_bg == "full" and self.marks.get(cell_value) == "█":
+                # Replace full blocks with background
+                yield Segment(" ", style=invert_style(style))
+                continue
+            if self.prefer_bg == "all" and self.marks.invertible:
+                # Replace all blocks with background
+                _style = invert_style(style) if abs(cell_value) >= 0.5 else style
+                yield Segment(" ", style=_style)
+                continue
             invert = cell_value < 0 and self._invertible()
             invert_mark = invert and self.invert_negative is not None
             cell_style = invert_style(style, self.invert_negative) if invert else style

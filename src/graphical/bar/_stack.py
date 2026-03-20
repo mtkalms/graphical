@@ -13,7 +13,7 @@ from graphical.section import Section
 
 from ._invert_style import invert_style, InversionStrategy
 from ._overlap import overlap
-from ._types import Orientation, Numeric
+from ._types import OptimizationStrategy, Orientation, Numeric
 
 DEFAULT_COLORS = [
     "#1f77b4",
@@ -44,6 +44,7 @@ class Stack:
         orientation: (Literal["horizontal", "vertical"], optional): The orientation of the bar. Defaults to "horizontal".
         origin (Numeric, optional): Origin point. Defaults to 0.0.
         force_origin (bool, optional): Force origin to half cell grid. Defaults to False.
+        prefer_bg (OptimizationStrategy): Replace block characters with background, either "never", for "full" blocks only, or for all. Defaults to "full".
     """
 
     def __init__(
@@ -60,6 +61,7 @@ class Stack:
         orientation: Orientation = "horizontal",
         origin: Optional[Numeric] = None,
         force_origin: Optional[bool] = None,
+        prefer_bg: Optional[OptimizationStrategy] = None,
     ) -> None:
         self.values = data
         self.value_range = value_range
@@ -74,6 +76,7 @@ class Stack:
         self.invert_negative: Optional[InversionStrategy] = invert_negative
         self.origin = origin or 0.0
         self.force_origin = force_origin is not False
+        self.prefer_bg = prefer_bg or "full"
 
     def _stacked_colors(self) -> Sequence[Color]:
         colors = []
@@ -105,6 +108,16 @@ class Stack:
             return True
         else:
             return False
+
+    def _optimize_bg(self, value: float, style: Style) -> Optional[Segment]:
+        if self.prefer_bg == "full" and self.marks.get(value) == "█":
+            # Replace full blocks with background
+            return Segment(" ", style=invert_style(style))
+        if self.prefer_bg == "all" and self.marks.invertible:
+            # Replace all blocks with background
+            style = invert_style(style) if abs(value) >= 0.5 else style
+            return Segment(" ", style=style)
+        return None
 
     def segments(self, length: Optional[int] = None) -> Iterable[Segment]:
         """Returns rendered bar segments.
@@ -162,14 +175,16 @@ class Stack:
                 cell_value = cell_values[0]
                 cell_color = colors[cell_ids[0] % len(colors)]
                 cell_style = Style(color=cell_color, bgcolor=self.bgcolor)
+                # Check if background optimization can be applied
+                optimized = self._optimize_bg(cell_value, cell_style)
+                if optimized:
+                    yield optimized
+                    continue
                 invert = cell_value < 0 and self._invertible(cell_color)
                 invert_mark = invert and self.invert_negative is not None
                 if invert:
                     cell_style = invert_style(cell_style, self.invert_negative)
-                yield Segment(
-                    self.marks.get(cell_value, invert_mark),
-                    style=cell_style,
-                )
+                yield Segment(self.marks.get(cell_value, invert_mark), style=cell_style)
             # Multiple bars in segment
             else:
                 # Use the two largest sections in order
@@ -179,7 +194,16 @@ class Stack:
                 trailing_color = colors[trailing_id % len(colors)]
                 leading_id, leading_val = leading
                 leading_color = colors[leading_id % len(colors)]
-                if self.marks.invertible:
+                # Check if background optimization strategy can be applied
+                relative_val = abs(trailing_val) / (
+                    abs(leading_val) + abs(trailing_val)
+                )
+                default_style = Style(color=trailing_color, bgcolor=leading_color)
+                optimized = self._optimize_bg(relative_val, default_style)
+                if optimized:
+                    # Use background instead
+                    yield optimized
+                elif self.marks.invertible:
                     # Always use the trailing bar fragment for better resolution
                     yield Segment(
                         self.marks.get(trailing_val),
