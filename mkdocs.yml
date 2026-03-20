@@ -12,7 +12,7 @@ theme:
     - search.suggest
     - search.highlight
   font:
-    code: Fira Code
+    code: Cascadia Code
   palette:
     - media: "(prefers-color-scheme)"
       toggle:
@@ -33,10 +33,29 @@ theme:
         icon: material/weather-night
         name: Switch to system preference
 
+watch:
+  - src/graphical
+  - mkdocs.yml
+  - docs
 plugins:
   - search
   - mkdocstrings:
       default_handler: python
+      handlers:
+        python:
+          options:
+            docstring_options:
+              ignore_init_summary: true
+            merge_init_into_class: true
+            modernize_annotations: false
+            parameter_headings: true
+            separate_signature: true
+            show_root_heading: false
+            show_signature_annotations: false
+            show_source: false
+            show_symbol_type_heading: true
+            show_symbol_type_toc: true
+            signature_crossrefs: true
 
 markdown_extensions:
   - attr_list
@@ -50,6 +69,12 @@ markdown_extensions:
         - name: mermaid
           class: mermaid
           format: !!python/name:pymdownx.superfences.fence_code_format
+        - name: rich
+          class: rich
+          format: !!python/name:graphical._doc.rich
+        - name: glyphs
+          class: glyphs
+          format: !!python/name:graphical._doc.glyphs
   - pymdownx.snippets
   - pymdownx.inlinehilite
   - pymdownx.highlight:
@@ -60,3 +85,6 @@ markdown_extensions:
   - pymdownx.tasklist:
       custom_checkbox: true
   - admonition
+
+extra_css:
+  - stylesheets/extra.css
