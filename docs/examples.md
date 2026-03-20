@@ -5,9 +5,8 @@
 === "Output"
 
     ```{.rich}
-    from rich.console import Group
     from graphical.bar import Bar
-    from graphical.group import Horizontal
+    from graphical.group import Horizontal, Vertical
 
     import math
 
@@ -56,7 +55,7 @@
             )
         horizon = Horizontal(*horizon_bars)
         graphs.append(horizon)
-    output = Group(*graphs)
+    output = Vertical(*graphs, gap=1)
     ```
 
 === "Code"
