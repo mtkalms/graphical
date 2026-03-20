@@ -1,23 +1,58 @@
-[tool.poetry]
+[project]
 name = "graphical"
 version = "0.1.0"
-description = "Render data visualizations to the terminal."
-authors = ["Matthias Kalms <mtkalms@gmail.com>"]
-license = "MIT"
+description = "Modular visualization library for Rich and Textual"
 readme = "README.md"
+license = "MIT"
+authors = [
+    { name = "Matthias Kalms", email = "mtkalms@gmail.com" }
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Operating System :: Microsoft :: Windows :: Windows 10",
+    "Operating System :: Microsoft :: Windows :: Windows 11",
+    "Operating System :: MacOS",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Typing :: Typed",
+]
+requires-python = ">=3.9"
+dependencies = [
+    "rich>=14.2.0",
+]
 
-[tool.poetry.dependencies]
-python = "^3.9"
-rich = ">=14.2.0"
+[project.urls]
+Homepage = "https://github.com/mtkalms/graphical"
+Repository = "https://github.com/mtkalms/graphical"
+Documentation = "https://mtkalms.github.io/graphical"
+"Bug Tracker" = "https://github.com/mtkalms/graphical/issues"
 
-[tool.poetry.group.dev.dependencies]
-pytest = "^8.3.1"
-pytest-cov = "^7.0.0"
-ruff = "^0.14.1"
-mkdocs-material = "^9.6.22"
-mkdocstrings-python = "^1.18.2"
-mkdocstrings = {extras = ["python"], version = "^0.30.1"}
+[project.scripts]
+graphical = "graphical:main"
 
 [build-system]
-requires = ["poetry-core>=1.2.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["uv_build>=0.9.8,<0.10.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "mkdocs-material>=9.6.22",
+    "mkdocstrings >=0.30.1",
+    "mkdocstrings-python>=1.18.2",
+    "pytest>=8.4.2",
+    "pytest-clarity>=1.0.1",
+    "pytest-cov>=7.0.0",
+    "ruff>=0.14.4"
+]
+
+[tool.coverage.run]
+omit = [
+    "tests/*",
+]
