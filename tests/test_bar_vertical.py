@@ -171,6 +171,7 @@ def test_marks(value: float, cells: Mark, expected: str):
         length=20,
         marks=cells,
         orientation="vertical",
+        prefer_bg="never",
     )
     assert_markup(chart, expected)
 
@@ -212,6 +213,7 @@ def test_origin(origin: float, force_origin: bool, positive: str, negative: str)
         origin=origin,
         force_origin=force_origin,
         orientation="vertical",
+        prefer_bg="never",
     )
     assert_markup(chart, positive)
 
@@ -223,5 +225,6 @@ def test_origin(origin: float, force_origin: bool, positive: str, negative: str)
         origin=origin,
         force_origin=force_origin,
         orientation="vertical",
+        prefer_bg="never",
     )
     assert_markup(chart, negative)

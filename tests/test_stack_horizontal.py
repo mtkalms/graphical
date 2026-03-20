@@ -16,12 +16,12 @@ from tests.utilities.asserts import assert_markup
         (
             [3.0, 2.6],
             BAR_BLOCK_H,
-            "[red]█████[/red][red on green]█ [/red on green][green]████▎[/green]        ",
+            "[red]██████[/red][green]█████▎[/green]        ",
         ),
         (
             [-3.0, -2.6],
             BAR_BLOCK_H,
-            "        [green]▕████[/green][green on red]█ [/green on red][red]█████[/red]",
+            "        [green]▕█████[/green][red]██████[/red]",
         ),
         (
             [2.5, 2.8],
@@ -36,7 +36,7 @@ from tests.utilities.asserts import assert_markup
         (
             [2.5, 2.8],
             BAR_SHADE,
-            "[red]████[/red][red on green]█ [/red on green][green]████▒[/green]         ",
+            "[red]█████[/red][green]█████▒[/green]         ",
         ),
     ],
     ids=[
@@ -57,6 +57,7 @@ def test_marks(values: list[float], marks: Mark, expected: str):
         length=20,
         marks=marks,
         colors=["red", "green"],
+        prefer_bg="never",
     )
     assert_markup(chart, expected)
 
@@ -98,6 +99,7 @@ def test_origin(origin: float, force_origin: bool, positive: str, negative: str)
         colors=["red", "green"],
         origin=origin,
         force_origin=force_origin,
+        prefer_bg="never",
     )
     assert_markup(chart, positive)
 
@@ -109,6 +111,7 @@ def test_origin(origin: float, force_origin: bool, positive: str, negative: str)
         colors=["red", "green"],
         origin=origin,
         force_origin=force_origin,
+        prefer_bg="never",
     )
     assert_markup(chart, negative)
 
@@ -139,6 +142,7 @@ def test_style(colors: list[str], bgcolor: Optional[str], expected: str):
         length=20,
         colors=colors,
         bgcolor=bgcolor,
+        prefer_bg="never",
     )
     assert_markup(chart, expected)
 
@@ -199,6 +203,7 @@ def test_style_inversion(
         colors=["red", "green"],
         bgcolor=bgcolor,
         invert_negative=invert_negative,
+        prefer_bg="never",
     )
 
     assert_markup(chart, expected)

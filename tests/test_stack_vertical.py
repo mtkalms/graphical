@@ -27,8 +27,8 @@ from tests.utilities.asserts import assert_markup
                 "[green]█[/green]\n"
                 "[green]█[/green]\n"
                 "[green]█[/green]\n"
-                "[red on green] [/red on green]\n"
-                "[red on green]█[/red on green]\n"
+                "[green]█[/green]\n"
+                "[red]█[/red]\n"
                 "[red]█[/red]\n"
                 "[red]█[/red]\n"
                 "[red]█[/red]\n"
@@ -45,8 +45,8 @@ from tests.utilities.asserts import assert_markup
                 "[red]█[/red]\n"
                 "[red]█[/red]\n"
                 "[red]█[/red]\n"
-                "[green on red] [/green on red]\n"
-                "[green on red]█[/green on red]\n"
+                "[red]█[/red]\n"
+                "[green]█[/green]\n"
                 "[green]█[/green]\n"
                 "[green]█[/green]\n"
                 "[green]█[/green]\n"
@@ -101,8 +101,8 @@ from tests.utilities.asserts import assert_markup
                 "[green]█[/green]\n"
                 "[green]█[/green]\n"
                 "[green]█[/green]\n"
-                "[red on green] [/red on green]\n"
-                "[red on green]█[/red on green]\n"
+                "[green]█[/green]\n"
+                "[red]█[/red]\n"
                 "[red]█[/red]\n"
                 "[red]█[/red]\n"
                 "[red]█[/red]\n"
@@ -129,6 +129,7 @@ def test_marks(values: list[float], marks: Mark, expected: str):
         marks=marks,
         colors=["red", "green"],
         orientation="vertical",
+        prefer_bg="never",
     )
     assert_markup(chart, expected)
 
@@ -246,6 +247,7 @@ def test_origin(origin: float, force_origin: bool, positive: str, negative: str)
         origin=origin,
         force_origin=force_origin,
         orientation="vertical",
+        prefer_bg="never",
     )
     assert_markup(chart, positive)
 
@@ -258,6 +260,7 @@ def test_origin(origin: float, force_origin: bool, positive: str, negative: str)
         origin=origin,
         force_origin=force_origin,
         orientation="vertical",
+        prefer_bg="never",
     )
     assert_markup(chart, negative)
 
@@ -323,6 +326,7 @@ def test_style(colors: list[str], bgcolor: Optional[str], expected: str):
         colors=colors,
         bgcolor=bgcolor,
         orientation="vertical",
+        prefer_bg="never",
     )
     assert_markup(chart, expected)
 
@@ -481,6 +485,7 @@ def test_style_inversion(
         bgcolor=bgcolor,
         invert_negative=invert_negative,
         orientation="vertical",
+        prefer_bg="never",
     )
 
     assert_markup(chart, expected)
