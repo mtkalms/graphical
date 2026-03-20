@@ -63,7 +63,7 @@ class Stack:
     ) -> None:
         self.values = data
         self.value_range = value_range
-        self.length = length or 100
+        self.length = length or 25
         self.width = width or 1
         self.marks = marks or (
             BAR_BLOCK_H if orientation == "horizontal" else BAR_BLOCK_V
@@ -209,8 +209,7 @@ class Stack:
                     * (self.width - 1)
                 )
         else:
-            length = min(self.length, options.max_height)
-            for segment in self.segments(length):
+            for segment in self.segments():
                 yield Segments([segment] * self.width)
 
     def __rich_console__(
