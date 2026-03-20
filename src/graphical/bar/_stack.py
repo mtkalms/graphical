@@ -139,16 +139,21 @@ class Stack:
         if vertical:
             segments = list(segments)[::-1]
         for segment in segments:
-            cell_ids = [idx for idx, bar in enumerate(bars) if bar.overlaps(segment)]
-            cell_values = [
-                overlap(
-                    bars[idx],
+            cell_ids = []
+            cell_values = []
+            for idx, bar in enumerate(bars):
+                if not bar.overlaps(segment):
+                    continue
+                cell_value = overlap(
+                    bar,
                     segment,
                     origin=self.origin,
                     force_origin=self.force_origin,
                 )
-                for idx in cell_ids
-            ]
+                if cell_value == 0.0:
+                    continue
+                cell_ids.append(idx)
+                cell_values.append(cell_value)
             # No bar in segment
             if not cell_ids:
                 yield Segment(" ", style=base_style)
