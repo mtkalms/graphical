@@ -1,77 +1,77 @@
-from itertools import zip_longest, chain
-from typing import Any, Iterable, List, Protocol
+from itertools import zip_longest
 
-from rich.console import Console, ConsoleOptions, RenderResult
+from rich.console import Console, ConsoleOptions, RenderResult, RenderableType
 from rich.measure import Measurement
 from rich.segment import Segment
 
 
-def _add_between(array: Iterable[Any], insert: Any) -> List[Any]:
-    gapped = zip_longest(array, [insert] * (len(list(array)) - 1))
-    return [d for d in chain.from_iterable(gapped) if d]
-
-
-class GroupRenderable(Protocol):
-    def __graphical_group__(
-        self, console: Console, options: ConsoleOptions
-    ) -> RenderResult:  # pragma: no cover
-        ...
-
-
 class Horizontal:
     """Arranges renderables horizontally.
-    All renderables need to implement the `GroupRenderable` protocol.
 
     Args:
-        *renderables (GroupRenderable): Renderables to be arranged.
+        *renderables (RenderableType): Renderables to be arranged.
         gap (int, optional): Gap between renderables. Defaults to 0.
     """
 
-    def __init__(self, *renderables: GroupRenderable, gap: int = 0) -> None:
+    def __init__(self, *renderables: RenderableType, gap: int = 0) -> None:
         self._renderables = renderables
         self._gap = gap
 
     def __rich_measure__(
         self, console: Console, options: ConsoleOptions
     ) -> Measurement:
-        return Measurement(options.max_width, options.max_width)
+        mins = []
+        maxs = []
+        for renderable in self._renderables:
+            _min, _max = Measurement.get(console, options, renderable)
+            mins.append(_min)
+            maxs.append(_max)
+        return Measurement(max(mins), max(maxs))
 
     def __rich_console__(
         self, console: Console, options: ConsoleOptions
     ) -> RenderResult:
-        rendered = [
-            list(d.__graphical_group__(console, options)) for d in self._renderables
-        ]
-        for row in zip_longest(*rendered):
-            if self._gap > 0:
-                row = _add_between(row, Segment(" " * self._gap))
-            yield from row
-            yield Segment.line()
+        new_line = Segment.line()
+        rendered = [console.render_lines(d, pad=False) for d in self._renderables]
+        for row_idx, row in enumerate(zip_longest(*rendered)):
+            if row_idx > 0:
+                yield new_line
+            for col_idx, cell in enumerate(row):
+                if col_idx > 0 and self._gap > 0:
+                    yield Segment(" " * self._gap)
+                if cell is not None:
+                    yield from cell
 
 
 class Vertical:
     """Arranges renderables vertically.
-    All renderables need to implement the `GroupRenderable` protocol.
 
     Args:
-        *renderables (GroupRenderable): Renderables to be arranged.
+        *renderables (RenderableType): Renderables to be arranged.
         gap (int, optional): Gap between renderables. Defaults to 0.
     """
 
-    def __init__(self, *renderables: GroupRenderable, gap: int = 0) -> None:
+    def __init__(self, *renderables: RenderableType, gap: int = 0) -> None:
         self._renderables = renderables
         self._gap = gap
 
     def __rich_measure__(
         self, console: Console, options: ConsoleOptions
     ) -> Measurement:
-        return Measurement(options.max_width, options.max_width)
+        mins = []
+        maxs = []
+        for renderable in self._renderables:
+            _min, _max = Measurement.get(console, options, renderable)
+            mins.append(_min)
+            maxs.append(_max)
+        return Measurement(sum(mins), sum(maxs))
 
     def __rich_console__(
         self, console: Console, options: ConsoleOptions
     ) -> RenderResult:
-        for renderable in self._renderables:
-            yield from renderable.__graphical_group__(console, options)
-            if self._gap > 0:
-                yield from [Segment.line()] * self._gap
-            yield Segment.line()
+        new_line = Segment.line()
+        for row_idx, renderable in enumerate(self._renderables):
+            if row_idx > 0 and self._gap > 0:
+                yield from [new_line] * self._gap
+            yield renderable
+            yield new_line

@@ -227,4 +227,7 @@ class Stack:
     def __rich_measure__(
         self, console: Console, options: ConsoleOptions
     ) -> Measurement:
-        return Measurement(5, options.max_width)
+        if self.orientation in "horizontal":
+            return Measurement(5, self.length)
+        else:
+            return Measurement(self.width, self.width)
