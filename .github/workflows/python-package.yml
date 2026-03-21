@@ -18,14 +18,12 @@ jobs:
         shell: bash
     steps:
     - uses: actions/checkout@v5
-    - name: Install Poetry
-      run: pipx install poetry==2.2.1
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v6
+    - name: Install uv and set Python version ${{ matrix.python-version }}
+      uses: astral-sh/setup-uv@v7
       with:
+        enable-cache: true
         python-version: ${{ matrix.python-version }}
-        cache: "poetry"
-    - name: Install dependencies
-      run: poetry install --no-interaction
-    - name: Test with pytest
-      run: poetry run pytest tests -v
+    - name: Test with Python ${{ matrix.python-version }}
+      run: uv run --frozen pytest tests
+      env:
+        PYTHONIOENCODING: utf-8

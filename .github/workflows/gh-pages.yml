@@ -23,17 +23,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - name: Install Poetry
-        run: pipx install poetry==2.2.1
-      - name: Set up Python 3.14
-        uses: actions/setup-python@v6
+      - name: Install uv and set Python version 3.14
+        uses: astral-sh/setup-uv@v7
         with:
           python-version: 3.14
-          cache: "poetry"
-      - name: Install dependencies
-        run: poetry install --no-interaction
       - name: Build documentation
-        run: poetry run mkdocs build --clean
+        run: uv run mkdocs build --clean
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
