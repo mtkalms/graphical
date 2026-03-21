@@ -26,7 +26,7 @@ class Horizontal:
             _min, _max = Measurement.get(console, options, renderable)
             mins.append(_min)
             maxs.append(_max)
-        return Measurement(max(mins), max(maxs))
+        return Measurement(sum(mins), sum(maxs))
 
     def __rich_console__(
         self, console: Console, options: ConsoleOptions
@@ -64,7 +64,7 @@ class Vertical:
             _min, _max = Measurement.get(console, options, renderable)
             mins.append(_min)
             maxs.append(_max)
-        return Measurement(sum(mins), sum(maxs))
+        return Measurement(max(mins), max(maxs))
 
     def __rich_console__(
         self, console: Console, options: ConsoleOptions
