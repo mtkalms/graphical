@@ -37,6 +37,13 @@ def _blend(a: Segment, b: Segment) -> Segment:
 
 
 class Layers:
+    """Stacks and blends renderables as layers.
+
+    Args:
+        *renderables (RenderableType): Renderables to be stacked.
+        blend (BlendFunction, optional): Function that defines how two one-cell segments are blended.
+    """
+
     def __init__(
         self,
         *renderables: RenderableType,
