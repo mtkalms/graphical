@@ -13,6 +13,8 @@ Graphical is still in its early stages of development. The following is a list o
     - [ ] Timeseries
     - [ ] Box
     - [ ] Candelestick
+- [ ] Line
+- [ ] Heat (color cells)
 - [x] Mark
     - [x] Bar
     - [x] Whisker
@@ -22,6 +24,8 @@ Graphical is still in its early stages of development. The following is a list o
     - [ ] Isotype/Rating
     - [ ] Extended (using newer unicode sections)
 - [ ] Hierarchy
+    - [ ] Tree
+    - [ ] Treemap
 - [ ] Legend
 - [ ] Axis
 - [ ] Scale
@@ -32,5 +36,7 @@ Graphical is still in its early stages of development. The following is a list o
     - [ ] Linear
     - [ ] Log
     - [ ] Time
-- [ ] Group
+- [x] Group
     - [x] Horizontal
+    - [x] Vertical
+- [x] Layers
