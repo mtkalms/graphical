@@ -33,3 +33,28 @@ def _interpolate_closed(t: float, *values: float) -> float:
     p2 = values[(i + 1) % n]
     p3 = values[(i + 2) % n]
     return _spline(t, p0, p1, p2, p3)
+
+
+class Sequential:
+    def __init__(self, *colors: str, closed: Optional[bool] = None) -> None:
+        self._colors = [[*Color.parse(c).get_truecolor()] for c in colors]
+        self._closed = closed
+
+    def get(self, value: float) -> Color:
+        interpolate = _interpolate_closed if self._closed else _interpolate
+        channels = zip(*self._colors)
+        rgb_value = [interpolate(value, *channel) for channel in channels]
+        return Color.from_rgb(*rgb_value)
+
+
+class Ordinal:
+    def __init__(self, *colors: str, closed: Optional[bool] = None) -> None:
+        self._colors = [Color.parse(c) for c in colors]
+        self._closed = closed
+
+    def get(self, value: int) -> Color:
+        if self._closed:
+            value = max(0, min(len(self._colors) - 1, value))
+        else:
+            value = value % (len(self._colors) - 1)
+        return self._colors[value]
