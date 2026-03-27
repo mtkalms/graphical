@@ -1,5 +1,5 @@
 from math import floor
-from typing import Optional
+from typing import List, Optional
 from rich.color import Color
 
 
@@ -35,20 +35,25 @@ def _interpolate_closed(t: float, *values: float) -> float:
     return _spline(t, p0, p1, p2, p3)
 
 
-class Sequential:
-    def __init__(self, *colors: str, closed: Optional[bool] = None) -> None:
-        self._colors = [[*Color.parse(c).get_truecolor()] for c in colors]
+class SequentialScheme:
+    def __init__(self, *colors: str, closed: bool = False) -> None:
+        self._colors = [Color.parse(c) for c in colors]
         self._closed = closed
 
     def get(self, value: float) -> Color:
         interpolate = _interpolate_closed if self._closed else _interpolate
-        channels = zip(*self._colors)
+        triplets = [[*c.get_truecolor()] for c in self._colors]
+        channels = zip(*triplets)
         rgb_value = [interpolate(value, *channel) for channel in channels]
         return Color.from_rgb(*rgb_value)
 
+    @property
+    def colors(self) -> List[Color]:
+        return self._colors[:]
 
-class Ordinal:
-    def __init__(self, *colors: str, closed: Optional[bool] = None) -> None:
+
+class OrdinalScheme:
+    def __init__(self, *colors: str, closed: bool = True) -> None:
         self._colors = [Color.parse(c) for c in colors]
         self._closed = closed
 
@@ -58,3 +63,7 @@ class Ordinal:
         else:
             value = value % (len(self._colors) - 1)
         return self._colors[value]
+
+    @property
+    def colors(self) -> List[Color]:
+        return self._colors[:]

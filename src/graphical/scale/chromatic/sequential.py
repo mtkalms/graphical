@@ -1,6 +1,6 @@
-from graphical.scale.chromatic import Sequential
+from graphical.scale.chromatic import SequentialScheme
 
-BLUES = Sequential(
+BLUES = SequentialScheme(
     "#f7fbff",
     "#deebf7",
     "#c6dbef",
@@ -12,7 +12,7 @@ BLUES = Sequential(
     "#08306b",
 )
 
-GREENS = Sequential(
+GREENS = SequentialScheme(
     "#f7fcf5",
     "#e5f5e0",
     "#c7e9c0",
@@ -24,7 +24,7 @@ GREENS = Sequential(
     "#00441b",
 )
 
-GREYS = Sequential(
+GREYS = SequentialScheme(
     "#ffffff",
     "#f0f0f0",
     "#d9d9d9",
@@ -36,7 +36,7 @@ GREYS = Sequential(
     "#000000",
 )
 
-PURPLES = Sequential(
+PURPLES = SequentialScheme(
     "#fcfbfd",
     "#efedf5",
     "#dadaeb",
@@ -48,7 +48,7 @@ PURPLES = Sequential(
     "#3f007d",
 )
 
-REDS = Sequential(
+REDS = SequentialScheme(
     "#fff5f0",
     "#fee0d2",
     "#fcbba1",
@@ -60,7 +60,7 @@ REDS = Sequential(
     "#67000d",
 )
 
-ORANGES = Sequential(
+ORANGES = SequentialScheme(
     "#fff5eb",
     "#fee6ce",
     "#fdd0a2",
@@ -72,7 +72,7 @@ ORANGES = Sequential(
     "#7f2704",
 )
 
-BU_GN = Sequential(
+BU_GN = SequentialScheme(
     "#f7fcfd",
     "#e5f5f9",
     "#ccece6",
@@ -84,7 +84,7 @@ BU_GN = Sequential(
     "#00441b",
 )
 
-BU_PU = Sequential(
+BU_PU = SequentialScheme(
     "#f7fcfd",
     "#e0ecf4",
     "#bfd3e6",
@@ -96,7 +96,7 @@ BU_PU = Sequential(
     "#4d004b",
 )
 
-GN_BU = Sequential(
+GN_BU = SequentialScheme(
     "#f7fcf0",
     "#e0f3db",
     "#ccebc5",
@@ -108,7 +108,7 @@ GN_BU = Sequential(
     "#084081",
 )
 
-OR_RD = Sequential(
+OR_RD = SequentialScheme(
     "#fff7ec",
     "#fee8c8",
     "#fdd49e",
@@ -120,7 +120,7 @@ OR_RD = Sequential(
     "#7f0000",
 )
 
-PU_BU_GN = Sequential(
+PU_BU_GN = SequentialScheme(
     "#fff7fb",
     "#ece2f0",
     "#d0d1e6",
@@ -132,7 +132,7 @@ PU_BU_GN = Sequential(
     "#014636",
 )
 
-PU_BU = Sequential(
+PU_BU = SequentialScheme(
     "#fff7fb",
     "#ece7f2",
     "#d0d1e6",
@@ -144,7 +144,7 @@ PU_BU = Sequential(
     "#023858",
 )
 
-PU_RD = Sequential(
+PU_RD = SequentialScheme(
     "#f7f4f9",
     "#e7e1ef",
     "#d4b9da",
@@ -156,7 +156,7 @@ PU_RD = Sequential(
     "#67001f",
 )
 
-RD_PU = Sequential(
+RD_PU = SequentialScheme(
     "#fff7f3",
     "#fde0dd",
     "#fcc5c0",
@@ -168,7 +168,7 @@ RD_PU = Sequential(
     "#49006a",
 )
 
-YL_GN_BU = Sequential(
+YL_GN_BU = SequentialScheme(
     "#ffffd9",
     "#edf8b1",
     "#c7e9b4",
@@ -180,7 +180,7 @@ YL_GN_BU = Sequential(
     "#081d58",
 )
 
-YL_GN = Sequential(
+YL_GN = SequentialScheme(
     "#ffffe5",
     "#f7fcb9",
     "#d9f0a3",
@@ -192,7 +192,7 @@ YL_GN = Sequential(
     "#004529",
 )
 
-YL_OR_BR = Sequential(
+YL_OR_BR = SequentialScheme(
     "#ffffe5",
     "#fff7bc",
     "#fee391",
@@ -204,7 +204,7 @@ YL_OR_BR = Sequential(
     "#662506",
 )
 
-YL_OR_RD = Sequential(
+YL_OR_RD = SequentialScheme(
     "#ffffcc",
     "#ffeda0",
     "#fed976",

@@ -1,6 +1,6 @@
-from graphical.scale.chromatic import Sequential
+from graphical.scale.chromatic import SequentialScheme
 
-RAINBOW = Sequential(
+RAINBOW = SequentialScheme(
     "#6e40aa",
     "#873eb1",
     "#a03db3",
@@ -36,7 +36,7 @@ RAINBOW = Sequential(
     closed=True,
 )
 
-SINEBOW = Sequential(
+SINEBOW = SequentialScheme(
     "#ff4040",
     "#fd572b",
     "#f56f1a",

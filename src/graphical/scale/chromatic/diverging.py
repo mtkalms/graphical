@@ -1,6 +1,6 @@
-from graphical.scale.chromatic import Sequential
+from graphical.scale.chromatic import SequentialScheme
 
-BR_BG = Sequential(
+BR_BG = SequentialScheme(
     "#543005",
     "#8c510a",
     "#bf812d",
@@ -14,7 +14,7 @@ BR_BG = Sequential(
     "#003c30",
 )
 
-PR_GN = Sequential(
+PR_GN = SequentialScheme(
     "#40004b",
     "#762a83",
     "#9970ab",
@@ -28,7 +28,7 @@ PR_GN = Sequential(
     "#00441b",
 )
 
-PI_YG = Sequential(
+PI_YG = SequentialScheme(
     "#8e0152",
     "#c51b7d",
     "#de77ae",
@@ -42,7 +42,7 @@ PI_YG = Sequential(
     "#276419",
 )
 
-PU_OR = Sequential(
+PU_OR = SequentialScheme(
     "#2d004b",
     "#542788",
     "#8073ac",
@@ -56,7 +56,7 @@ PU_OR = Sequential(
     "#7f3b08",
 )
 
-RD_BU = Sequential(
+RD_BU = SequentialScheme(
     "#67001f",
     "#b2182b",
     "#d6604d",
@@ -70,7 +70,7 @@ RD_BU = Sequential(
     "#053061",
 )
 
-RD_GY = Sequential(
+RD_GY = SequentialScheme(
     "#67001f",
     "#b2182b",
     "#d6604d",
@@ -84,7 +84,7 @@ RD_GY = Sequential(
     "#1a1a1a",
 )
 
-RD_YL_BU = Sequential(
+RD_YL_BU = SequentialScheme(
     "#a50026",
     "#d73027",
     "#f46d43",
@@ -98,7 +98,7 @@ RD_YL_BU = Sequential(
     "#313695",
 )
 
-RD_YL_GN = Sequential(
+RD_YL_GN = SequentialScheme(
     "#a50026",
     "#d73027",
     "#f46d43",
@@ -112,7 +112,7 @@ RD_YL_GN = Sequential(
     "#006837",
 )
 
-SPECTRAL = Sequential(
+SPECTRAL = SequentialScheme(
     "#9e0142",
     "#d53e4f",
     "#f46d43",
