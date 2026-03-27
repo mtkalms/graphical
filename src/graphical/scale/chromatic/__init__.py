@@ -1,5 +1,5 @@
 from math import floor
-from typing import List, Optional
+from typing import List
 from rich.color import Color
 
 
@@ -50,6 +50,9 @@ class SequentialScheme:
     @property
     def colors(self) -> List[Color]:
         return self._colors[:]
+
+    def palette(self, n: int) -> List[Color]:
+        return [self.get(d / (n - 1)) for d in range(n)]
 
 
 class OrdinalScheme:

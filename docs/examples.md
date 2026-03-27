@@ -7,6 +7,7 @@
     ```{.rich}
     from graphical.bar import Bar
     from graphical.group import Horizontal, Vertical
+    from graphical.scale.chromatic.sequential import GREENS
 
     import math
 
@@ -27,7 +28,7 @@
         [round(v * 0.5 - 0.28 * math.sin(i / 3) + 1.5, 2) for i, v in enumerate(base_series)],
     ]
 
-    colors = ["#ffffe5", "#d9f0a3", "#78c679", "#238443", "#004529"]
+    colors = GREENS.palette(5)
     levels = 4
 
     value_range = [

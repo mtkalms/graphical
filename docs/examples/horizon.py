@@ -4,8 +4,9 @@ from graphical.bar import Bar
 from graphical.group import Horizontal, Vertical
 
 from data import data_horizon as data_sets
+from graphical.scale.chromatic.sequential import GREENS
 
-colors = ["#ffffe5", "#d9f0a3", "#78c679", "#238443", "#004529"]
+colors = GREENS.palette(5)
 levels = 4
 
 value_range = [
