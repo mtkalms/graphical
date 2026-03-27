@@ -10,23 +10,11 @@ from graphical.mark import Mark
 from graphical.mark.horizontal import BAR_BLOCK_H
 from graphical.mark.vertical import BAR_BLOCK_V
 from graphical.section import Section
+from graphical.scale.chromatic.ordinal import CATEGORY10
 
 from ._invert_style import invert_style, InversionStrategy
 from ._overlap import overlap
 from ._types import OptimizationStrategy, Orientation, Numeric
-
-DEFAULT_COLORS = [
-    "#1f77b4",
-    "#ff7f0e",
-    "#2ca02c",
-    "#d62728",
-    "#9467bd",
-    "#8c564b",
-    "#e377c2",
-    "#7f7f7f",
-    "#bcbd22",
-    "#17becf",
-]
 
 
 class Stack:
@@ -55,7 +43,7 @@ class Stack:
         length: Optional[int] = None,
         width: Optional[int] = None,
         marks: Optional[Mark] = None,
-        colors: Sequence[Union[Color, str]] = DEFAULT_COLORS,
+        colors: Sequence[Union[Color, str]] = CATEGORY10.colors,
         bgcolor: Optional[Union[Color, str]] = None,
         invert_negative: Optional[InversionStrategy] = None,
         orientation: Orientation = "horizontal",
