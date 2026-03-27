@@ -1,5 +1,5 @@
 from math import floor
-from typing import List
+from typing import List, Protocol
 from rich.color import Color
 
 
@@ -35,6 +35,10 @@ def _interpolate_closed(t: float, *values: float) -> float:
     return _spline(t, p0, p1, p2, p3)
 
 
+class Scheme(Protocol):
+    def get(self, value: float) -> Color: ...
+
+
 class SequentialScheme:
     def __init__(self, *colors: str, closed: bool = False) -> None:
         self._colors = [Color.parse(c) for c in colors]
@@ -60,7 +64,8 @@ class OrdinalScheme:
         self._colors = [Color.parse(c) for c in colors]
         self._closed = closed
 
-    def get(self, value: int) -> Color:
+    def get(self, value: float) -> Color:
+        value = int(value)
         if self._closed:
             value = max(0, min(len(self._colors) - 1, value))
         else:
