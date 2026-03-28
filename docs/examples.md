@@ -259,6 +259,7 @@
         stacks.append(Stack(
             d,
             (-offset, -offset + max_sum),
+            length=20,
             orientation="vertical"
         ))
 
@@ -268,5 +269,7 @@
 === "Code"
 
     ~~~python
-    --8<-- "docs/examples/horizon.py"
+    --8<-- "docs/examples/streamgraph.py"
+    ~~~
+
     ~~~
