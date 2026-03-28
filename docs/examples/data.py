@@ -146,3 +146,18 @@ data_gantt = [
     [0.54, 0.71, 0.03],
     [0.64, 0.95, 0.0],
 ]
+
+data_heatmap = [
+    [
+        round(
+            0.5
+            + 0.28 * math.sin(r / 1.7)
+            + 0.22 * math.cos(c * 0.9 + r / 4)
+            + 0.14 * math.sin((r + 1) * (c + 1) / 5)
+            + 0.08 * math.cos((c - r) * 1.6),
+            3,
+        )
+        for c in range(25)
+    ]
+    for r in range(5)
+]
