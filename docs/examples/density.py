@@ -1,5 +1,4 @@
-from data import data_heatmap as data
-from graphical.group import Horizontal
+from data import data_density as data
 from graphical.heat import Heat
 from rich.console import Console
 
@@ -7,19 +6,15 @@ from graphical.scale.chromatic.sequential import VIRIDIS
 
 value_range = (min(min(d) for d in data), max(max(d) for d in data))
 
-
 console = Console()
-for line in data:
-    cells = []
-    for entry in line:
-        cells.append(
+for pair in zip(data[1::2], data[::2]):
+    for entries in zip(*pair):
+        console.print(
             Heat(
-                data=entry,
+                data=entries,
                 value_range=value_range,
                 scheme=VIRIDIS,
-                repeat_x=4,
-                repeat_y=2,
+                orientation="vertical",
             )
         )
-    console.print(Horizontal(*cells))
     console.print()

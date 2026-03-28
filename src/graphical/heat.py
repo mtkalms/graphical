@@ -34,7 +34,9 @@ class Heat:
     ) -> RenderResult:
         data = self.data if isinstance(self.data, tuple) else [self.data]
         data = list(normalize(data, self.value_range))
-        colors = [self.scheme.get(d) if d else Color.default() for d in data]
+        colors = [
+            self.scheme.get(d) if d is not None else Color.default() for d in data
+        ]
         for _ in range(self.repeat_y or 1):
             for _ in range(self.repeat_x or 1):
                 if len(data) == 1:

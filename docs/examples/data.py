@@ -161,3 +161,20 @@ data_heatmap = [
     ]
     for r in range(5)
 ]
+
+data_density = [
+    [
+        round(
+            0.08
+            + 0.9 * math.exp(-(((c - 49.5) / 18) ** 2 + ((r - 14.5) / 7.2) ** 2))
+            + 0.2
+            * math.cos(
+                0.6 * math.sqrt(((c - 49.5) / 2.2) ** 2 + ((r - 14.5) / 1.65) ** 2)
+            )
+            * math.exp(-(((c - 49.5) / 28) ** 2 + ((r - 14.5) / 12.6) ** 2)),
+            3,
+        )
+        for c in range(100)
+    ]
+    for r in range(30)
+]
