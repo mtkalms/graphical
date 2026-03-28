@@ -1,33 +1,31 @@
 from rich.console import Console
 
 from graphical.bar import Bar
+from graphical.data._bands import bands
 from graphical.group import Horizontal, Vertical
 
 from data import data_horizon as data_sets
 from graphical.scale.chromatic.sequential import GREENS
 
-colors = GREENS.palette(5)
 levels = 4
+colors = GREENS.palette(levels)
 
-value_range = [
+value_range = (
     min(d for data in data_sets for d in data),
     max(d for data in data_sets for d in data),
-]
-distance = value_range[1] - value_range[0]
+)
 
 graph_rows = []
 for data in data_sets:
-    step = distance / levels
     horizon_bars = []
-    for d in data:
-        level = int((d - value_range[0]) // step)
+    for level, value in bands(data, levels):
         horizon_bars.append(
             Bar(
-                (d - value_range[0]) % step,
-                (0, step),
+                value if level < levels else 0.0,
+                (0, 1),
                 length=9,
                 orientation="vertical",
-                color=colors[level],
+                color=colors[level] if level < levels else None,
                 bgcolor=colors[level - 1] if level > 0 else None,
             )
         )

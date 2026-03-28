@@ -6,6 +6,7 @@
 
     ```{.rich}
     from graphical.bar import Bar
+    from graphical.data._bands import bands
     from graphical.group import Horizontal, Vertical
     from graphical.scale.chromatic.sequential import GREENS
 
@@ -27,36 +28,31 @@
         [round(v * 0.78 - 0.28 * math.sin(i / 4) - 0.08, 2) for i, v in enumerate(base_series)],
         [round(v * 0.5 - 0.28 * math.sin(i / 3) + 1.5, 2) for i, v in enumerate(base_series)],
     ]
-
-    colors = GREENS.palette(5)
     levels = 4
+    colors = GREENS.palette(levels)
 
     value_range = [
         min(d for data in data_sets for d in data),
         max(d for data in data_sets for d in data),
     ]
-    distance = value_range[1] - value_range[0]
 
-    graphs = []
+    graph_rows = []
     for data in data_sets:
-        step = distance / levels
         horizon_bars = []
-        for d in data:
-            level = int((d - value_range[0]) // step)
-            value = (d - value_range[0]) % step
+        for level, value in bands(data, levels):
             horizon_bars.append(
                 Bar(
-                    value,
-                    (0, step),
-                    length=4,
+                    value if level < levels else 0.0,
+                    (0, 1),
+                    length=6,
                     orientation="vertical",
-                    color=colors[level],
+                    color=colors[level] if level < levels else None,
                     bgcolor=colors[level - 1] if level > 0 else None,
                 )
             )
-        horizon = Horizontal(*horizon_bars)
-        graphs.append(horizon)
-    output = Vertical(*graphs, gap=1)
+        graph_rows.append(Horizontal(*horizon_bars))
+    output = Vertical(*graph_rows, gap=1)
+
     ```
 
 === "Code"
