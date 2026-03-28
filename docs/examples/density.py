@@ -7,7 +7,7 @@ from graphical.scale.chromatic.sequential import VIRIDIS
 value_range = (min(min(d) for d in data), max(max(d) for d in data))
 
 console = Console()
-for pair in zip(data[1::2], data[::2]):
+for pair in zip(data[::2], data[1::2]):
     for entries in zip(*pair):
         console.print(
             Heat(

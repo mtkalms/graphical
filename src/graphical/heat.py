@@ -44,7 +44,7 @@ class Heat:
                 elif self.orientation == "horizontal":
                     yield Segment("▌", style=Style(color=colors[0], bgcolor=colors[1]))
                 else:
-                    yield Segment("▄", style=Style(color=colors[0], bgcolor=colors[1]))
+                    yield Segment("▄", style=Style(color=colors[1], bgcolor=colors[0]))
             if self.repeat_y:
                 yield Segment.line()
 
