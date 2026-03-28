@@ -67,10 +67,10 @@ class Layers:
         self, console: Console, options: ConsoleOptions
     ) -> RenderResult:
         rendered = [_segments(r, console, options) for r in self._renderables]
-        for lines in zip_longest(*rendered):
+        for lines in zip_longest(*rendered, fillvalue=[]):
             segments = []
-            for cells in [d for d in zip_longest(*lines) if d]:
-                segment = Segment("")
+            for cells in [d for d in zip_longest(*lines)]:
+                segment = Segment(" ")
                 for cell in [d for d in cells if d]:
                     segment = self._blend(segment, cell)
                 segments.append(segment)
