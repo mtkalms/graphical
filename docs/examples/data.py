@@ -1,4 +1,5 @@
 import math
+import random
 
 # fmt: off
 _horizon_base_series = [
@@ -178,3 +179,31 @@ data_density = [
     ]
     for r in range(30)
 ]
+
+
+random.seed(42)
+
+num_lines = 10
+num_points = 100
+num_curves = 20
+
+
+data_ridgeline: list[list[float]] = [
+    [0.1 for _ in range(num_points)] for _ in range(num_lines)
+]
+
+# Place 20 bell-curve centers along a "C" shape.
+angles = [math.radians(45 + i * (270 / (num_curves - 1))) for i in range(num_curves)]
+
+for i, angle in enumerate(angles):
+    center_x = 50 + 28 * math.cos(angle)
+    center_y = 4.5 + 4.0 * math.sin(angle)
+
+    line_idx = max(0, min(num_lines - 1, round(center_y)))
+    amplitude = 0.5 + 0.3 * (i / (num_curves - 1))
+    sigma = 4.0 + (i % 5)
+
+    for x in range(num_points):
+        data_ridgeline[line_idx][x] += amplitude * math.exp(
+            -((x - center_x) ** 2) / (2 * sigma**2)
+        )

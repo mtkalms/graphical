@@ -373,3 +373,77 @@
     ~~~python
     --8<-- "docs/examples/density.py"
     ~~~
+
+## Ridgeline
+
+=== "Output"
+
+    ```{.rich}
+    import math
+    import random
+    from rich.console import Console
+
+    from graphical.bar import Bar
+    from graphical.group import Horizontal, Vertical
+    from graphical.layer import Layers
+    from graphical.scale.chromatic.sequential import VIRIDIS
+
+    random.seed(42)
+
+    num_lines = 10
+    num_points = 100
+    num_curves = 20
+
+
+    data: list[list[float]] = [
+        [0.1 for _ in range(num_points)] for _ in range(num_lines)
+    ]
+
+    # Place 20 bell-curve centers along a "C" shape.
+    angles = [math.radians(45 + i * (270 / (num_curves - 1))) for i in range(num_curves)]
+
+    for i, angle in enumerate(angles):
+        center_x = 50 + 28 * math.cos(angle)
+        center_y = 4.5 + 4.0 * math.sin(angle)
+
+        line_idx = max(0, min(num_lines - 1, round(center_y)))
+        amplitude = 0.5 + 0.3 * (i / (num_curves - 1))
+        sigma = 4.0 + (i % 5)
+
+        for x in range(num_points):
+            data[line_idx][x] += amplitude * math.exp(
+                -((x - center_x) ** 2) / (2 * sigma**2)
+            )
+
+
+
+    value_range = (0, max(max(d) for d in data))
+
+    colors = VIRIDIS.palette(10)
+    lines = []
+    for idx, line_data in enumerate(data):
+        line = []
+        for value in line_data:
+            line.append(
+                Bar(
+                    value,
+                    value_range,
+                    length=5,
+                    color=colors[idx],
+                    orientation="vertical",
+                )
+            )
+        lines.append(
+            Vertical(
+                *([""] * idx),
+                Horizontal(*line),
+            )
+        )
+    output = Layers(*lines)
+    ```
+
+=== "Code"
+
+    ~~~python
+    --8<-- "docs/examples/ridgeline.py"
+    ~~~
