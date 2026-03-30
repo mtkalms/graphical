@@ -6,7 +6,7 @@ from rich.measure import Measurement
 from rich.segment import Segment
 from rich.style import Style
 
-from graphical.bar import Orientation
+from graphical.options import Orientation
 from graphical.data import normalize
 from graphical.scale.chromatic import SequentialScheme
 

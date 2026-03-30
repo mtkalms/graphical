@@ -3,10 +3,9 @@ from typing import Optional, Tuple, Union
 from rich.color import Color
 
 from graphical.mark import Mark
+from graphical.options import Orientation, InversionStrategy
 
 from ._bar import Bar
-from ._invert_style import InversionStrategy
-from ._types import Orientation
 
 
 class Range(Bar):

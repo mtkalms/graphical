@@ -1,11 +1,8 @@
-from typing import Literal, Optional
+from typing import Optional
 
 from rich.style import Style
 
-InversionStrategy = Literal[
-    "reverse",  # Use reverse ANSI code
-    "swap",  # Swap color and bgcolor
-]
+from graphical.options import InversionStrategy
 
 
 def invert_style(style: Style, strategy: Optional[InversionStrategy] = "swap") -> Style:

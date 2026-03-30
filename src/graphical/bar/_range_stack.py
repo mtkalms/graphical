@@ -3,10 +3,9 @@ from typing import Optional, Sequence, Tuple, Union
 from rich.color import Color
 
 from graphical.mark import Mark
+from graphical.options import Orientation, InversionStrategy
 
 from ._stack import Stack
-from ._invert_style import InversionStrategy
-from ._types import Orientation
 
 
 class RangeStack(Stack):

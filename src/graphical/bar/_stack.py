@@ -9,12 +9,12 @@ from rich.style import Style
 from graphical.mark import Mark
 from graphical.mark.horizontal import BAR_BLOCK_H
 from graphical.mark.vertical import BAR_BLOCK_V
+from graphical.options import OptimizationStrategy, Orientation, InversionStrategy
 from graphical.section import Section
 from graphical.scale.chromatic.ordinal import CATEGORY10
 
-from ._invert_style import invert_style, InversionStrategy
+from ._invert_style import invert_style
 from ._overlap import overlap
-from ._types import OptimizationStrategy, Orientation
 
 
 class Stack:
