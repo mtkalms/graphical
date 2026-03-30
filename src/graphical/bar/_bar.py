@@ -21,7 +21,7 @@ class Bar:
 
     Args:
         data (float): The value.
-        value_range: Lower and upper boundary.
+        value_range (Tuple[float, float]): Lower and upper boundary.
         length (int): The length of the graph. Defaults to 100.
         width (int): The width of the bars. Defaults to 1.
         marks (Union[BarMark, Mark]], optional): Marks used for the bar. Defaults to "block".

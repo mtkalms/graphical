@@ -3,7 +3,13 @@ from typing import Optional, Tuple, Union
 
 
 class Mark:
-    """Defines the range of characters to render a mark."""
+    """Defines the range of characters to render a mark.
+
+    Args:
+        positive (str): Mark chars for positive value.
+        negative (str, optional): Mark chars for negative values. Defaults to positive.
+
+    """
 
     def __init__(
         self,
@@ -12,13 +18,6 @@ class Mark:
         caps: Optional[Union[str, Tuple[str, str]]] = None,
         invertible: bool = False,
     ):
-        """Initialize mark chars.
-
-        Args:
-            positive (str): Mark chars for positive value.
-            negative (str, optional): Mark chars for negative values. Defaults to positive.
-
-        """
         self._positive = positive
         self._negative = negative or positive
         if isinstance(caps, str):

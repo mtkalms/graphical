@@ -40,11 +40,23 @@ class Scheme(Protocol):
 
 
 class SequentialScheme:
-    def __init__(self, *colors: str, closed: bool = False) -> None:
+    """Sequential color scheme.
+
+    Args:
+        *colors (str): Colors in scheme.
+        closed (bool, optional): Interpolate cyclical. Defaults to False.
+    """
+
+    def __init__(
+        self,
+        *colors: str,
+        closed: bool = False,
+    ) -> None:
         self._colors = [Color.parse(c) for c in colors]
         self._closed = closed
 
     def get(self, value: float) -> Color:
+        """Get color for value."""
         interpolate = _interpolate_closed if self._closed else _interpolate
         triplets = [[*c.get_truecolor()] for c in self._colors]
         channels = zip(*triplets)
@@ -53,18 +65,32 @@ class SequentialScheme:
 
     @property
     def colors(self) -> List[Color]:
+        """Return colors in scheme."""
         return self._colors[:]
 
     def palette(self, n: int) -> List[Color]:
+        """Sample scheme for palette of `n` colors."""
         return [self.get(d / (n - 1)) for d in range(n)]
 
 
 class OrdinalScheme:
-    def __init__(self, *colors: str, closed: bool = True) -> None:
+    """Ordinal color scheme.
+
+    Args:
+        *colors (str): Colors in scheme.
+        closed (bool, optional): Use colors cyclical. Defaults to True.
+    """
+
+    def __init__(
+        self,
+        *colors: str,
+        closed: bool = True,
+    ) -> None:
         self._colors = [Color.parse(c) for c in colors]
         self._closed = closed
 
     def get(self, value: float) -> Color:
+        """Get color for value."""
         value = int(value)
         if self._closed:
             value = max(0, min(len(self._colors) - 1, value))
@@ -74,4 +100,5 @@ class OrdinalScheme:
 
     @property
     def colors(self) -> List[Color]:
+        """Return colors in scheme."""
         return self._colors[:]
