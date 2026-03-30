@@ -6,9 +6,9 @@ from data import data_stacked as data
 
 max_sum = max(sum(d) for d in data)
 
-stacks = []
-for d in data:
-    stacks.append(
+graph = Horizontal(gap=1)
+for d in data[:34]:
+    graph.append(
         Stack(
             d,
             (0, max_sum),
@@ -17,7 +17,6 @@ for d in data:
             length=15,
         )
     )
-graph = Horizontal(*stacks)
 
 console = Console()
 console.print(graph)

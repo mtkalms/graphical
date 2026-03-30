@@ -5,10 +5,10 @@ from graphical.group import Vertical
 from data import data_gantt as data
 
 
-lanes = []
+graph = Vertical(gap=1)
 for start, stop, progress in data:
     length = stop - start
-    lanes.append(
+    graph.append(
         RangeStack(
             (start, length * progress, length * (1.0 - progress)),
             (0, 1),
@@ -16,8 +16,6 @@ for start, stop, progress in data:
             colors=["purple", "red"],
         )
     )
-
-graph = Vertical(*lanes, gap=1)
 
 console = Console()
 console.print(graph)

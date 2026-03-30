@@ -6,10 +6,15 @@ from data import data_stacked as data
 
 max_sum = max(sum(d) for d in data)
 
-stacks = []
+graph = Horizontal()
 for d in data:
-    stacks.append(Stack(d, (0, max_sum), orientation="vertical"))
-graph = Horizontal(*stacks)
+    graph.append(
+        Stack(
+            d,
+            (0, max_sum),
+            orientation="vertical",
+        )
+    )
 
 console = Console()
 console.print(graph)

@@ -15,11 +15,11 @@ value_range = (
     max(d for data in data_sets for d in data),
 )
 
-graph_rows = []
+graph = Vertical(gap=1)
 for data in data_sets:
-    horizon_bars = []
+    horizon = Horizontal()
     for level, value in bands(data, levels):
-        horizon_bars.append(
+        horizon.append(
             Bar(
                 value if level < levels else 0.0,
                 (0, 1),
@@ -29,8 +29,7 @@ for data in data_sets:
                 bgcolor=colors[level - 1] if level > 0 else None,
             )
         )
-    graph_rows.append(Horizontal(*horizon_bars))
-graph = Vertical(*graph_rows, gap=1)
+    graph.append(horizon)
 
 console = Console()
 console.print(graph)
