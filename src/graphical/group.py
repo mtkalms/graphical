@@ -14,8 +14,12 @@ class Horizontal:
     """
 
     def __init__(self, *renderables: RenderableType, gap: int = 0) -> None:
-        self._renderables = renderables
+        self._renderables = list(renderables)
         self._gap = gap
+
+    def append(self, renderable: RenderableType):
+        """Add renderable as group."""
+        self._renderables.append(renderable)
 
     def __rich_measure__(
         self, console: Console, options: ConsoleOptions
@@ -52,8 +56,12 @@ class Vertical:
     """
 
     def __init__(self, *renderables: RenderableType, gap: int = 0) -> None:
-        self._renderables = renderables
+        self._renderables = list(renderables)
         self._gap = gap
+
+    def append(self, renderable: RenderableType):
+        """Add renderable as group."""
+        self._renderables.append(renderable)
 
     def __rich_measure__(
         self, console: Console, options: ConsoleOptions

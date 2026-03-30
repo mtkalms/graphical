@@ -49,8 +49,12 @@ class Layers:
         *renderables: RenderableType,
         blend: Optional[BlendFunction] = None,
     ) -> None:
-        self._renderables = renderables
+        self._renderables = list(renderables)
         self._blend = blend or _blend
+
+    def append(self, renderable: RenderableType):
+        """Add renderable as layer."""
+        self._renderables.append(renderable)
 
     def __rich_measure__(
         self, console: Console, options: ConsoleOptions
