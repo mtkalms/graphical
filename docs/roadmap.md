@@ -14,7 +14,7 @@ Graphical is still in its early stages of development. The following is a list o
     - [ ] Box
     - [ ] Candelestick
 - [ ] Line
-- [ ] Heat (color cells)
+- [x] Heat (color cells)
 - [x] Mark
     - [x] Bar
     - [x] Whisker
@@ -29,10 +29,10 @@ Graphical is still in its early stages of development. The following is a list o
 - [ ] Legend
 - [ ] Axis
 - [ ] Scale
-    - [ ] Chromatic
-        - [ ] Sequential
-        - [ ] Diverging
-        - [ ] Categorical
+    - [x] Chromatic
+        - [x] Sequential
+        - [x] Diverging
+        - [x] Categorical
     - [ ] Linear
     - [ ] Log
     - [ ] Time
@@ -40,3 +40,4 @@ Graphical is still in its early stages of development. The following is a list o
     - [x] Horizontal
     - [x] Vertical
 - [x] Layers
+- [x] Offset
