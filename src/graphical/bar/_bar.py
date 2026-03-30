@@ -13,14 +13,14 @@ from graphical.section import Section
 
 from ._invert_style import invert_style, InversionStrategy
 from ._overlap import overlap
-from ._types import OptimizationStrategy, Orientation, Numeric
+from ._types import OptimizationStrategy, Orientation
 
 
 class Bar:
     """Bar graph.
 
     Args:
-        data (Numeric): The value.
+        data (float): The value.
         value_range: Lower and upper boundary.
         length (int): The length of the graph. Defaults to 100.
         width (int): The width of the bars. Defaults to 1.
@@ -29,15 +29,15 @@ class Bar:
         bgcolor (Union[Color, str], optional): Background color. Defaults to "default".
         invert_negative (Literal["reverse",  "swap"], optional): Use positive marks and invert cell colors for negative number. If None or not supported by marks, the cell is not inverted.
         orientation: (Literal["horizontal", "vertical"], optional): The orientation of the bar. Defaults to "horizontal".
-        origin (Numeric, optional): Origin point. Defaults to 0.0.
+        origin (float, optional): Origin point. Defaults to 0.0.
         force_origin (bool, optional): Force origin to half cell grid. Defaults to False.
         prefer_bg (OptimizationStrategy): Replace block characters with background, either "never", for "full" blocks only, or for all. Defaults to "full".
     """
 
     def __init__(
         self,
-        data: Numeric,
-        value_range: Tuple[Numeric, Numeric],
+        data: float,
+        value_range: Tuple[float, float],
         *,
         length: Optional[int] = None,
         width: Optional[int] = None,
@@ -46,7 +46,7 @@ class Bar:
         bgcolor: Optional[Union[Color, str]] = None,
         invert_negative: Optional[InversionStrategy] = None,
         orientation: Orientation = "horizontal",
-        origin: Optional[Numeric] = None,
+        origin: Optional[float] = None,
         force_origin: Optional[bool] = None,
         prefer_bg: Optional[OptimizationStrategy] = None,
     ) -> None:

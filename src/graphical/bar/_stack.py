@@ -14,14 +14,14 @@ from graphical.scale.chromatic.ordinal import CATEGORY10
 
 from ._invert_style import invert_style, InversionStrategy
 from ._overlap import overlap
-from ._types import OptimizationStrategy, Orientation, Numeric
+from ._types import OptimizationStrategy, Orientation
 
 
 class Stack:
     """Stacked bar graph.
 
     Args:
-        data (Sequence[Numeric]): The values in order of stacking.
+        data (Sequence[float]): The values in order of stacking.
         value_range: Lower and upper boundary. Defaults to range of data.
         length (int): The length of the graph. Defaults to 100.
         width (int): The width of the bars. Defaults to 1.
@@ -30,15 +30,15 @@ class Stack:
         bgcolor (Union[Color, str], optional): Background color. Defaults to "default".
         invert_negative (Literal["reverse",  "swap"], optional): Use positive marks and invert cell colors for negative number. If None or not supported by marks, the cell is not inverted.
         orientation: (Literal["horizontal", "vertical"], optional): The orientation of the bar. Defaults to "horizontal".
-        origin (Numeric, optional): Origin point. Defaults to 0.0.
+        origin (float, optional): Origin point. Defaults to 0.0.
         force_origin (bool, optional): Force origin to half cell grid. Defaults to False.
         prefer_bg (OptimizationStrategy): Replace block characters with background, either "never", for "full" blocks only, or for all. Defaults to "full".
     """
 
     def __init__(
         self,
-        data: Sequence[Numeric],
-        value_range: Tuple[Numeric, Numeric],
+        data: Sequence[float],
+        value_range: Tuple[float, float],
         *,
         length: Optional[int] = None,
         width: Optional[int] = None,
@@ -47,7 +47,7 @@ class Stack:
         bgcolor: Optional[Union[Color, str]] = None,
         invert_negative: Optional[InversionStrategy] = None,
         orientation: Orientation = "horizontal",
-        origin: Optional[Numeric] = None,
+        origin: Optional[float] = None,
         force_origin: Optional[bool] = None,
         prefer_bg: Optional[OptimizationStrategy] = None,
     ) -> None:
@@ -75,7 +75,7 @@ class Stack:
                 colors.insert(0, self.colors[idx % len(self.colors)])
         return colors
 
-    def _stacked_values(self) -> Sequence[Numeric]:
+    def _stacked_values(self) -> Sequence[float]:
         pos = []
         neg = []
         for value in self.values:
@@ -84,7 +84,7 @@ class Stack:
             stack.append(cumulative + value)
         return neg[::-1] + [self.origin] + pos
 
-    def _stacked_bars(self, values: Sequence[Numeric]) -> Sequence[Section]:
+    def _stacked_bars(self, values: Sequence[float]) -> Sequence[Section]:
         return [Section(*bounds) for bounds in zip(values[:-1], values[1:])]
 
     def _invertible(self, color: Union[Color, str]) -> bool:

@@ -1,18 +1,16 @@
-from typing import Generator, Sequence, Tuple, Union
-
-Numeric = Union[int, float]
+from typing import Generator, Sequence, Tuple
 
 
 def normalize(
-    data: Sequence[Numeric],
-    value_range: Tuple[Numeric, Numeric],
+    data: Sequence[float],
+    value_range: Tuple[float, float],
     clip: bool = True,
 ) -> Generator[float, None, None]:
     """Normalize ``data`` to ``value_range``.
 
     Args:
-        data (Sequence[Numeric]): Data to normalize.
-        value_range (Tuple[Numeric, Numeric]): Value range to normalize to.
+        data (Sequence[float]): Data to normalize.
+        value_range (Tuple[float, float]): Value range to normalize to.
         clip (bool, optional): Clip out of range values. Defaults to True.
 
     Yields:

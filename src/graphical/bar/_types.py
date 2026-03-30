@@ -1,6 +1,4 @@
-from typing import Literal, Union
+from typing import Literal
 
-
-Numeric = Union[int, float]
 Orientation = Literal["horizontal", "vertical"]
 OptimizationStrategy = Literal["never", "full", "all"]

@@ -1,12 +1,11 @@
 from graphical.section import Section
-from ._types import Numeric
 
 
 def overlap(
     bar: Section,
     cell: Section,
     *,
-    origin: Numeric = 0.0,
+    origin: float = 0.0,
     force_origin: bool = False,
 ) -> float:
     """Calculates in percentage the directional overlap between a bar and a cell.
@@ -18,7 +17,7 @@ def overlap(
     Args:
         bar (Section): Value range of the bar.
         cell (Section): Value range of the cell.
-        origin (Numeric, optional): Origin point. Defaults to 0.0.
+        origin (float, optional): Origin point. Defaults to 0.0.
         force_origin (bool, optional): Force origin to half cell grid. Defaults to False.
 
     Returns:

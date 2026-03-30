@@ -6,14 +6,14 @@ from graphical.mark import Mark
 
 from ._stack import Stack
 from ._invert_style import InversionStrategy
-from ._types import Orientation, Numeric
+from ._types import Orientation
 
 
 class RangeStack(Stack):
     """Stack with an offset.
 
     Args:
-        data (Sequence[Numeric]): The values in order of stacking. The first value is the stack offset.
+        data (Sequence[float]): The values in order of stacking. The first value is the stack offset.
         value_range: Lower and upper boundary. Defaults to range of data.
         length (int): The length of the graph. Defaults to 100.
         width (int): The width of the bars. Defaults to 1.
@@ -26,8 +26,8 @@ class RangeStack(Stack):
 
     def __init__(
         self,
-        data: Sequence[Numeric],
-        value_range: Tuple[Numeric, Numeric],
+        data: Sequence[float],
+        value_range: Tuple[float, float],
         *,
         length: Optional[int] = None,
         width: Optional[int] = None,

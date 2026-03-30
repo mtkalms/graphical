@@ -6,14 +6,14 @@ from graphical.mark import Mark
 
 from ._bar import Bar
 from ._invert_style import InversionStrategy
-from ._types import Orientation, Numeric
+from ._types import Orientation
 
 
 class Range(Bar):
     """Bar with an offset.
 
     Args:
-        data (Tuple[Numeric, Numeric]): Start and end point of range.
+        data (Tuple[float, float]): Start and end point of range.
         value_range: Lower and upper boundary.
         length (int): The length of the graph. Defaults to 100.
         width (int): The width of the bars. Defaults to 1.
@@ -26,8 +26,8 @@ class Range(Bar):
 
     def __init__(
         self,
-        data: Tuple[Numeric, Numeric],
-        value_range: Tuple[Numeric, Numeric],
+        data: Tuple[float, float],
+        value_range: Tuple[float, float],
         *,
         length: Optional[int] = None,
         width: Optional[int] = None,

@@ -1,12 +1,11 @@
 from statistics import mean
-from typing import Callable, Generator, Sequence, Union
+from typing import Callable, Generator, Sequence
 
-Numeric = Union[int, float]
-SummaryFunction = Callable[[Sequence[Numeric]], float]
+SummaryFunction = Callable[[Sequence[float]], float]
 
 
 def bins(
-    data: Sequence[Numeric],
+    data: Sequence[float],
     num_bins: int,
     *,
     summary_function: SummaryFunction = mean,
@@ -15,7 +14,7 @@ def bins(
     """Resample ``data`` into ``num_bins`` bins.
 
     Args:
-        data (Sequence[Numeric]): Data to resample.
+        data (Sequence[float]): Data to resample.
         num_bins (int): Number of bins
         summary_function (SummaryFunction): Function to summarize the data in each bin. Defaults to ``mean``.
         spread (bool, optional): Fill in values if ``num_bins > len(data)``. Defaults to True.
