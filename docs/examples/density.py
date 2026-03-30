@@ -1,4 +1,5 @@
 from data import data_density as data
+from graphical.data._pairs import pairs
 from graphical.heat import Heat
 from rich.console import Console
 
@@ -7,7 +8,7 @@ from graphical.scale.chromatic.sequential import VIRIDIS
 value_range = (min(min(d) for d in data), max(max(d) for d in data))
 
 console = Console()
-for pair in zip(data[::2], data[1::2]):
+for pair in pairs(data):
     for entries in zip(*pair):
         console.print(
             Heat(
