@@ -6,7 +6,9 @@
 
     ```{.rich}
     from graphical.bar import Bar
+    from graphical.data._bands import bands
     from graphical.group import Horizontal, Vertical
+    from graphical.scale.chromatic.sequential import GREENS
 
     import math
 
@@ -26,36 +28,31 @@
         [round(v * 0.78 - 0.28 * math.sin(i / 4) - 0.08, 2) for i, v in enumerate(base_series)],
         [round(v * 0.5 - 0.28 * math.sin(i / 3) + 1.5, 2) for i, v in enumerate(base_series)],
     ]
-
-    colors = ["#ffffe5", "#d9f0a3", "#78c679", "#238443", "#004529"]
     levels = 4
+    colors = GREENS.palette(levels)
 
     value_range = [
         min(d for data in data_sets for d in data),
         max(d for data in data_sets for d in data),
     ]
-    distance = value_range[1] - value_range[0]
 
-    graphs = []
+    graph_rows = []
     for data in data_sets:
-        step = distance / levels
         horizon_bars = []
-        for d in data:
-            level = int((d - value_range[0]) // step)
-            value = (d - value_range[0]) % step
+        for level, value in bands(data, levels):
             horizon_bars.append(
                 Bar(
-                    value,
-                    (0, step),
-                    length=4,
+                    value if level < levels else 0.0,
+                    (0, 1),
+                    length=6,
                     orientation="vertical",
-                    color=colors[level],
+                    color=colors[level] if level < levels else None,
                     bgcolor=colors[level - 1] if level > 0 else None,
                 )
             )
-        horizon = Horizontal(*horizon_bars)
-        graphs.append(horizon)
-    output = Vertical(*graphs, gap=1)
+        graph_rows.append(Horizontal(*horizon_bars))
+    output = Vertical(*graph_rows, gap=1)
+
     ```
 
 === "Code"
@@ -197,6 +194,7 @@
         stacks.append(Stack(
             d,
             (0, max_sum),
+            length=20,
             orientation="vertical"
         ))
 
@@ -262,6 +260,7 @@
         stacks.append(Stack(
             d,
             (-offset, -offset + max_sum),
+            length=20,
             orientation="vertical"
         ))
 
@@ -271,5 +270,180 @@
 === "Code"
 
     ~~~python
-    --8<-- "docs/examples/horizon.py"
+    --8<-- "docs/examples/streamgraph.py"
+    ~~~
+
+## Heatmap
+
+=== "Output"
+
+    ```{.rich}
+    import math
+    from graphical.group import Horizontal, Vertical
+    from graphical.heat import Heat
+
+    from graphical.scale.chromatic.sequential import VIRIDIS
+
+    data = [
+        [
+            round(
+                0.5
+                + 0.28 * math.sin(r / 1.7)
+                + 0.22 * math.cos(c * 0.9 + r / 4)
+                + 0.14 * math.sin((r + 1) * (c + 1) / 5)
+                + 0.08 * math.cos((c - r) * 1.6),
+                3,
+            ) for c in range(25)
+        ] for r in range(10)
+    ]
+
+    value_range = (min(min(d) for d in data), max(max(d) for d in data))
+
+    lines = []
+    for line in data:
+        cells = []
+        for entry in line:
+            cells.append(
+                Heat(
+                    data=entry,
+                    value_range=value_range,
+                    scheme=VIRIDIS,
+                    repeat_x=4,
+                    repeat_y=2,
+                )
+            )
+        lines.append(Horizontal(*cells))
+    output = Vertical(*lines)
+    ```
+
+=== "Code"
+
+    ~~~python
+    --8<-- "docs/examples/heatmap.py"
+    ~~~
+
+## Density
+
+=== "Output"
+
+    ```{.rich}
+    import math
+    from graphical.group import Horizontal, Vertical
+    from graphical.heat import Heat
+
+    from graphical.scale.chromatic.sequential import VIRIDIS
+
+    data = [
+        [
+            round(
+                0.08
+                + 0.9 * math.exp(-(((c - 49.5) / 18) ** 2 + ((r - 14.5) / 7.2) ** 2))
+                + 0.2
+                * math.cos(
+                    0.6 * math.sqrt(((c - 49.5) / 2.2) ** 2 + ((r - 14.5) / 1.65) ** 2)
+                )
+                * math.exp(-(((c - 49.5) / 28) ** 2 + ((r - 14.5) / 12.6) ** 2)),
+                3,
+            )
+            for c in range(100)
+        ]
+        for r in range(30)
+    ]
+
+    value_range = (min(min(d) for d in data), max(max(d) for d in data))
+
+    lines = []
+    for pair in zip(data[::2], data[1::2]):
+        cells = []
+        for entries in zip(*pair):
+            cells.append(
+                Heat(
+                    data=entries,
+                    value_range=value_range,
+                    scheme=VIRIDIS,
+                    orientation="vertical",
+                )
+            )
+        lines.append(Horizontal(*cells))
+    output = Vertical(*lines)
+    ```
+
+=== "Code"
+
+    ~~~python
+    --8<-- "docs/examples/density.py"
+    ~~~
+
+## Ridgeline
+
+=== "Output"
+
+    ```{.rich}
+    import math
+    import random
+    from rich.console import Console
+
+    from graphical.bar import Bar
+    from graphical.group import Horizontal, Vertical
+    from graphical.layer import Layers
+    from graphical.scale.chromatic.sequential import VIRIDIS
+
+    random.seed(42)
+
+    num_lines = 10
+    num_points = 100
+    num_curves = 20
+
+
+    data: list[list[float]] = [
+        [0.1 for _ in range(num_points)] for _ in range(num_lines)
+    ]
+
+    # Place 20 bell-curve centers along a "C" shape.
+    angles = [math.radians(45 + i * (270 / (num_curves - 1))) for i in range(num_curves)]
+
+    for i, angle in enumerate(angles):
+        center_x = 50 + 28 * math.cos(angle)
+        center_y = 4.5 + 4.0 * math.sin(angle)
+
+        line_idx = max(0, min(num_lines - 1, round(center_y)))
+        amplitude = 0.5 + 0.3 * (i / (num_curves - 1))
+        sigma = 4.0 + (i % 5)
+
+        for x in range(num_points):
+            data[line_idx][x] += amplitude * math.exp(
+                -((x - center_x) ** 2) / (2 * sigma**2)
+            )
+
+
+
+    value_range = (0, max(max(d) for d in data))
+
+    colors = VIRIDIS.palette(10)
+    lines = []
+    for idx, line_data in enumerate(data):
+        line = []
+        for value in line_data:
+            line.append(
+                Bar(
+                    value,
+                    value_range,
+                    length=5,
+                    color=colors[idx],
+                    orientation="vertical",
+                )
+            )
+        lines.append(
+            Vertical(
+                *([""] * idx),
+                Horizontal(*line),
+            )
+        )
+    output = Layers(*lines)
+    ```
+
+=== "Code"
+
+    ~~~python
+    --8<-- "docs/examples/ridgeline.py"
     ~~~

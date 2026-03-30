@@ -9,7 +9,13 @@ max_sum = max(sum(d) for d in data)
 stacks = []
 for d in data:
     offset = (max_sum - sum(d)) / 2.0
-    stacks.append(Stack(d, (-offset, -offset + max_sum), orientation="vertical"))
+    stacks.append(
+        Stack(
+            d,
+            (-offset, -offset + max_sum),
+            orientation="vertical",
+        )
+    )
 graph = Horizontal(*stacks)
 
 console = Console()

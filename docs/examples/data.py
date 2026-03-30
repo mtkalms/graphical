@@ -1,4 +1,5 @@
 import math
+import random
 
 # fmt: off
 _horizon_base_series = [
@@ -146,3 +147,63 @@ data_gantt = [
     [0.54, 0.71, 0.03],
     [0.64, 0.95, 0.0],
 ]
+
+data_heatmap = [
+    [
+        round(
+            0.5
+            + 0.28 * math.sin(r / 1.7)
+            + 0.22 * math.cos(c * 0.9 + r / 4)
+            + 0.14 * math.sin((r + 1) * (c + 1) / 5)
+            + 0.08 * math.cos((c - r) * 1.6),
+            3,
+        )
+        for c in range(25)
+    ]
+    for r in range(5)
+]
+
+data_density = [
+    [
+        round(
+            0.08
+            + 0.9 * math.exp(-(((c - 49.5) / 18) ** 2 + ((r - 14.5) / 7.2) ** 2))
+            + 0.2
+            * math.cos(
+                0.6 * math.sqrt(((c - 49.5) / 2.2) ** 2 + ((r - 14.5) / 1.65) ** 2)
+            )
+            * math.exp(-(((c - 49.5) / 28) ** 2 + ((r - 14.5) / 12.6) ** 2)),
+            3,
+        )
+        for c in range(100)
+    ]
+    for r in range(30)
+]
+
+
+random.seed(42)
+
+num_lines = 10
+num_points = 100
+num_curves = 20
+
+
+data_ridgeline: list[list[float]] = [
+    [0.1 for _ in range(num_points)] for _ in range(num_lines)
+]
+
+# Place 20 bell-curve centers along a "C" shape.
+angles = [math.radians(45 + i * (270 / (num_curves - 1))) for i in range(num_curves)]
+
+for i, angle in enumerate(angles):
+    center_x = 50 + 28 * math.cos(angle)
+    center_y = 4.5 + 4.0 * math.sin(angle)
+
+    line_idx = max(0, min(num_lines - 1, round(center_y)))
+    amplitude = 0.5 + 0.3 * (i / (num_curves - 1))
+    sigma = 4.0 + (i % 5)
+
+    for x in range(num_points):
+        data_ridgeline[line_idx][x] += amplitude * math.exp(
+            -((x - center_x) ** 2) / (2 * sigma**2)
+        )
