@@ -1,3 +1,4 @@
+from functools import lru_cache
 from math import floor
 from typing import List, Protocol
 from rich.color import Color
@@ -55,6 +56,7 @@ class SequentialScheme:
         self._colors = [Color.parse(c) for c in colors]
         self._closed = closed
 
+    @lru_cache()
     def get(self, value: float) -> Color:
         """Get color for value."""
         interpolate = _interpolate_closed if self._closed else _interpolate
@@ -89,6 +91,7 @@ class OrdinalScheme:
         self._colors = [Color.parse(c) for c in colors]
         self._closed = closed
 
+    @lru_cache(64)
     def get(self, value: float) -> Color:
         """Get color for value."""
         value = int(value)
