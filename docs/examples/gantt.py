@@ -1,9 +1,7 @@
 from rich.console import Console
-
 from graphical.bar import RangeStack
 from graphical.group import Vertical
 from data import data_gantt as data
-
 
 graph = Vertical(gap=1)
 for start, stop, progress in data:

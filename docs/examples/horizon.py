@@ -1,15 +1,12 @@
 from rich.console import Console
-
 from graphical.bar import Bar
-from graphical.data._bands import bands
+from graphical.data import bands
 from graphical.group import Horizontal, Vertical
-
-from data import data_horizon as data_sets
 from graphical.scale.chromatic.sequential import GREENS
+from data import data_horizon as data_sets
 
 levels = 4
 colors = GREENS.palette(levels)
-
 value_range = (
     min(d for data in data_sets for d in data),
     max(d for data in data_sets for d in data),

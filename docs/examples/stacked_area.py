@@ -1,5 +1,4 @@
 from rich.console import Console
-
 from graphical.bar import Stack
 from graphical.group import Horizontal
 from data import data_stacked as data
