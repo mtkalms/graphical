@@ -12,15 +12,15 @@ from graphical.scale.chromatic import SequentialScheme
 
 
 class Heat:
-    """Single or double cell for a heatmap or density graph.
+    """Single or double value cell for a heatmap or density graph.
 
     Args:
         data (Union[float, Tuple[float, float]]): The value(s).
         value_range (Tuple[float, float]): Lower and upper boundary.
         scheme (SequentialScheme): Color scheme.
-        orientation: (Literal["horizontal", "vertical"], optional): The orientation of the bar. Defaults to "horizontal".
-        repeat_x (int, optional): Repeat heat cell horizontally. No repeats if None.
-        repeat_y (int, optional): Repeat heat cell vertically. No repeats if None.
+        orientation (Literal["horizontal", "vertical"], optional): The stacking direction if two values are supplied. Defaults to "horizontal".
+        repeat_x (int, optional): Repeat (widen) heat cell horizontally. No repeats if None.
+        repeat_y (int, optional): Repeat (lengthen) heat cell vertically. No repeats if None.
     """
 
     def __init__(
